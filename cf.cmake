@@ -26,8 +26,8 @@ if test "x$NC4" = x ; then
 FLAGS="$FLAGS -DENABLE_NETCDF_4=false"
 fi
 FLAGS="$FLAGS -DENABLE_CONVERSION_WARNINGS=false"
-
 FLAGS="$FLAGS -DENABLE_DAP_REMOTE_TESTS=true"
+FLAGS="$FLAGS -DENABLE_TESTS=true"
 
 rm -fr build
 mkdir build
