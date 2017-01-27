@@ -70,7 +70,7 @@ popd
 # For each .dap file, see if a corresponding .cdl file
 # exists in ${SRC}/testfiles; if so, copy it over.
 for f in ${F} ; do
-if test -f ${SRC}/testfiles/${f}.cdl ; then
+if test -a ${SRC}/testfiles/${f}.cdl ; then
   cp ${SRC}/testfiles/${f}.cdl ./cdltestfiles
 else
   echo "Not found: ${SRC}/testfiles/${f}.cdl"
@@ -81,7 +81,7 @@ done
 pushd ./cdltestfiles
 F=`ls -1 *.cdl | sed -e 's/[.]cdl//' |tr '\r\n' '  '`
 popd
-if ! test -f nctestfiles ; then mkdir nctestfiles; fi
+if ! test -a nctestfiles ; then mkdir nctestfiles; fi
 for f in $F ; do
     ../ncgen/ncgen -4 -o nctestfiles/${f}.nc cdltestfiles/${f}.cdl 
 done

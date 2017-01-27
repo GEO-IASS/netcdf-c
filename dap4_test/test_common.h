@@ -60,16 +60,20 @@ setup(int tdmr, int argc, char** argv)
     int ret = NC_NOERR;
     argc--; argv++;
     int expected = 0;
+    NCD4mode mode = 0;
 
     switch(tdmr) {
     case TDMR_PARSE:
 	expected = 1;
+	mode = NCD4_DMR;
 	break;
     case TDMR_META:
 	expected = 2;
+	mode = NCD4_DMR;
 	break;
     case TDMR_DATA:
 	fprintf(stderr,"setup is not used for t_dmrdata\n");
+	mode = NCD4_DAP;
 	exit(1);
     }    
 
@@ -82,7 +86,6 @@ setup(int tdmr, int argc, char** argv)
     input = ncbytesnew();
     output = ncbytesnew();
     if((ret = readfile(infile,input))) fail(ret);
-
     {
 	const char* trans = getenv("translatenc4");
 	if(trans != NULL)
@@ -93,8 +96,10 @@ setup(int tdmr, int argc, char** argv)
     NCD4_dumpbytes(ncbyteslength(input),ncbytescontents(input),0);
 #endif
 
-    if((metadata=NCD4_newmeta(NCD4_CSUM_ALL,ncbyteslength(input),ncbytescontents(input)))==NULL)
+    if((metadata=NCD4_newmeta(ncbyteslength(input),ncbytescontents(input)))==NULL)
 	fail(NC_ENOMEM);
+    metadata->mode = mode;
+
     /* Create a fake NCD4INFO */
     {
 	NCD4INFO* controller = (NCD4INFO*)calloc(1,sizeof(NCD4INFO));
@@ -105,13 +110,10 @@ setup(int tdmr, int argc, char** argv)
         if(translatenc4)
 	    controller->controls.translation = NCD4_TRANSNC4;
     }
-    if(NCD4_isdmr(metadata->serial.rawdata)) {
-	char* dmr = (char*)metadata->serial.rawdata;
-	NCD4_setdmr(metadata,dmr);
-    } else {
-	if((ret=NCD4_dechunk(metadata))) fail(ret);
+    if((ret=NCD4_dechunk(metadata))) /* ok for mode == DMR or mode == DAP */
+	fail(ret);
 #ifdef DEBUG
-	{
+    {
 	int swap = (metadata->serial.hostbigendian != metadata->serial.remotebigendian);
 	void* d = metadata->serial.dap;
 	size_t sz = metadata->serial.dapsize;
@@ -121,9 +123,8 @@ setup(int tdmr, int argc, char** argv)
 	NCD4_dumpbytes(sz,d,swap);
 	fprintf(stderr,"====================\n");
 	fflush(stderr);
-	}
-#endif
     }
+#endif
     if(expected > 1) {
         outfile = argv[1];
         if((ret = nc_create(outfile,NC_CLOBBER|NC_NETCDF4,&ncid))) fail(ret);

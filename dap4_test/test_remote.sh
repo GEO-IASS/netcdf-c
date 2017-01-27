@@ -51,7 +51,7 @@ test_sequence_2.syn
 test_struct_array.syn
 "
 
-TESTSERVER=`../liblib/findtestserver dap4 d4ts`
+TESTSERVER=`./findtestserver4 dap4 d4ts`
 if test "x$TESTSERVER" = x ; then
 failure "WARNING: Cannot find d4ts testserver"
 exit

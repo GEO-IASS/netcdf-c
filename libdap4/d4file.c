@@ -12,6 +12,7 @@
 /**************************************************/
 /* Forward */
 
+static void applyclientmetacontrols(NCD4meta* meta);
 static void applyclientparamcontrols(NCD4INFO*);
 static int constrainable(NCURI*);
 static void freeCurl(NCD4curl*);
@@ -35,6 +36,8 @@ NCD4_open(const char * path, int mode,
     int ret = NC_NOERR;
     NCD4INFO* d4info = NULL;
     const char* value;
+    NCD4meta* meta;
+    NCD4mode dapmode;
 
     if(path == NULL)
 	return THROW(NC_EDAPURL);
@@ -145,9 +148,9 @@ NCD4_open(const char * path, int mode,
 	size_t responselen = ncbyteslength(d4info->curl->packet);
 
         /* Apply some heuristics to see what we have.
-The leading byte will have the chunk flags, which should
-be less than 0x0f (for now). However, it will not be zero if
-the data was little-endian
+           The leading byte will have the chunk flags, which should
+           be less than 0x0f (for now). However, it will not be zero if
+           the data was little-endian
 	*/
         if(responselen == 0 || response[0] >= ' ') {
 	    /* does not look like a chunk, so probable server failure */
@@ -166,32 +169,33 @@ the data was little-endian
     }
 
     /* Build the meta data */
-    if((d4info->substrate.metadata=NCD4_newmeta(NCD4_CSUM_ALL,
-	ncbyteslength(d4info->curl->packet),
+    if((d4info->substrate.metadata=NCD4_newmeta(ncbyteslength(d4info->curl->packet),
         ncbytescontents(d4info->curl->packet)))==NULL)
 	{ret = NC_ENOMEM; goto done;}
-    d4info->substrate.metadata->controller = d4info;
-    d4info->substrate.metadata->ncid = getnc4id(nc); /* Transfer netcdf ncid */
+    meta = d4info->substrate.metadata;
+    meta->controller = d4info;
+    meta->ncid = getnc4id(nc); /* Transfer netcdf ncid */
 
-    if(NCD4_isdmr(d4info->substrate.metadata->serial.rawdata)) {
-	char* dmr = (char*)d4info->substrate.metadata->serial.rawdata;
-	NCD4_setdmr(d4info->substrate.metadata,dmr);
-    } else {
-	if((ret=NCD4_dechunk(d4info->substrate.metadata))) goto done;
-    }
+    /* process meta control parameters */
+    applyclientmetacontrols(meta);
+
+    /* Infer the mode */
+    if((ret=NCD4_infermode(meta))) goto done;
+
+    if((ret=NCD4_dechunk(meta))) goto done;
 
 #ifdef D4DUMPDMR
-{
+  {
     fprintf(stderr,"=============\n");
     fputs(d4info->substrate.metadata->serial.dmr,stderr);
     fprintf(stderr,"\n=============\n");
     fflush(stderr);
-}
+  }
 #endif
 
     if((ret = NCD4_parse(d4info->substrate.metadata))) goto done;
 #ifdef D4DEBUGMETA
-{
+  {
     fprintf(stderr,"\n/////////////\n");
     NCbytes* buf = ncbytesnew();
     NCD4_print(d4info->substrate.metadata,buf);
@@ -200,7 +204,7 @@ the data was little-endian
     ncbytesfree(buf);
     fprintf(stderr,"\n/////////////\n");
     fflush(stderr);
-}
+  }
 #endif
     if((ret = NCD4_metabuild(d4info->substrate.metadata,d4info->substrate.metadata->ncid))) goto done;
     if(ret != NC_NOERR && ret != NC_EVARSIZE) goto done;
@@ -399,6 +403,9 @@ fail:
 static void
 applyclientparamcontrols(NCD4INFO* info)
 {
+    NCD4meta* meta = info->substrate.metadata;
+    const char* value;
+
     /* clear the flags */
     CLRFLAG(info->controls.flags,NCF_CACHE);
     CLRFLAG(info->controls.flags,NCF_SHOWFETCH);
@@ -415,13 +422,24 @@ applyclientparamcontrols(NCD4INFO* info)
     if(paramcheck(info,"translate","nc4"))
 	info->controls.translation = NCD4_TRANSNC4;
 
-    /* Look at the mode flags */
+    /* Look at the debug flags */
     if(paramcheck(info,"debug","copy"))
 	SETFLAG(info->controls.debugflags,NCF_DEBUG_COPY); /* => close */
-    {
-	const char* value = getparam(info,"substratename");
-	if(value != NULL)
-	    strncpy(info->controls.substratename,value,NC_MAX_NAME);
+
+    value = getparam(info,"substratename");
+    if(value != NULL)
+	strncpy(info->controls.substratename,value,NC_MAX_NAME);
+
+}
+
+static void
+applyclientmetacontrols(NCD4meta* meta)    
+{
+    NCD4INFO* info = meta->controller;
+    const char* value = getparam(info,"checksummode");
+    if(value != NULL) {
+        if(strcmp(value,"ignore")==0)
+	    meta->ignorechecksums = 1;
     }
 }
 

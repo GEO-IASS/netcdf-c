@@ -56,7 +56,7 @@ NCD4_swapdata(NCD4meta* compiler, NClist* topvars)
 	}
 	var->data.dap4data.size = (d4size_t)(offset - var->data.dap4data.memory);
 	/* skip checksum, if there is one */
-        if(!compiler->serial.nochecksum)
+        if(compiler->serial.remotechecksumming)
 	    offset += CHECKSUMSIZE;
     }
 done:

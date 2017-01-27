@@ -65,20 +65,6 @@ NCD4_processdata(NCD4meta* meta)
     NCD4_getToplevelVars(meta,root,toplevel);
 
     /* If necessary, byte swap the serialized data */
-
-    /* There are two state wrt checksumming.
-       1. the incoming data may have checksums,
-          but we are not computing a local checksum.
-          Flag for this is meta->checksumming
-       2. the incoming data does not have checksums at all.
-          Flag for this is meta->nochecksum
-    */
-    meta->checksumming = (meta->checksummode != NCD4_CSUM_NONE);
-    /* However, if the data sent by the server says its does not have checksums,
-       then do not bother */
-    if(meta->serial.nochecksum)
-	meta->checksumming = 0;
-
     /* Do we need to swap the dap4 data? */
     meta->swap = (meta->serial.hostlittleendian != meta->serial.remotelittleendian);
 
@@ -99,7 +85,7 @@ NCD4_processdata(NCD4meta* meta)
     }
 
     /* Compute the checksums of the top variables */
-    if(meta->checksumming) {
+    if(meta->localchecksumming) {
 	for(i=0;i<nclistlength(toplevel);i++) {
 	    unsigned int csum = 0;
 	    NCD4node* var = (NCD4node*)nclistget(toplevel,i);
@@ -109,7 +95,7 @@ NCD4_processdata(NCD4meta* meta)
     }
 
     /* verify checksums */
-    if(meta->checksummode != NCD4_CSUM_NONE) {
+    if(!meta->ignorechecksums && meta->serial.remotechecksumming) {
         for(i=0;i<nclistlength(toplevel);i++) {
 	    NCD4node* var = (NCD4node*)nclistget(toplevel,i);
 	    if(var->data.localchecksum != var->data.remotechecksum) {

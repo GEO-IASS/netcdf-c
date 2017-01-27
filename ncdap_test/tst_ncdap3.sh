@@ -10,7 +10,7 @@ set -e
 # than the one containing it; so capture the path to this script
 # as the location of the source directory.
 
-topsrcdir=`test_environment topsrcdir`
+topsrcdir=`./test_environment topsrcdir`
 if test "x$topsrcdir" != x ; then
   srcdir="$topsrcdir/ncdap_test"
 else

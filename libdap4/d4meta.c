@@ -94,12 +94,11 @@ done:
 */
 
 NCD4meta*
-NCD4_newmeta(NCD4CSUM checksummode, size_t rawsize, void* rawdata)
+NCD4_newmeta(size_t rawsize, void* rawdata)
 {
     NCD4meta* meta = (NCD4meta*)calloc(1,sizeof(NCD4meta));
     if(meta == NULL) return NULL;
     meta->allnodes = nclistnew();
-    meta->checksummode = checksummode;
     meta->serial.rawsize = rawsize;
     meta->serial.rawdata = rawdata;
 #ifdef D4DEBUG

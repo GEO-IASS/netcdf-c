@@ -3,25 +3,36 @@ P=data
 V=valgrind --leak-check=full --num-callers=100
 G=gdb --args
 
-ROOT=${HOME}/git/dap4
-#ROOT=d:/git/dap4
+#ROOT=${HOME}/git/dap4
+ROOT=d:/git/dap4
 
-X=test_sequence_2.syn
-I=${ROOT}/dap4_test/daptestfiles/${X}
-O=./t.nc
+X=test_one_var.nc
 
 ifeq ($P, parse)
 T=../dap4_test/test_parse.c
+DIR=dmrtestfiles
+EXT=.dmr
+O=
 endif
 ifeq ($P, parser)
 T=../dap4_test/test_parse.c
+DIR=dmrtestfiles
+EXT=.dmr
+O=
 endif
 ifeq ($P, meta)
 T=../dap4_test/test_meta.c
+DIR=dmrtestfiles
+EXT=.dmr
 endif
 ifeq ($P, data)
 T=../dap4_test/test_data.c
+DIR=daptestfiles
+EXT=
 endif
+
+I=${ROOT}/dap4_test/${DIR}/${X}${EXT}
+O=./t.nc
 
 CFLAGS=-Wall -g -O0 -I.. -I../include -I../libdap4 -I../dap4_test
 
@@ -37,7 +48,7 @@ all:: clean build
 else
 all:: clean mkt
 	./t $I $O
-	../ncdump/ncdump $O	
+	if test "x$O" != x ; then ../ncdump/ncdump $O; fi
 endif
 
 g:: mkt

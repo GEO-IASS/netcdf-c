@@ -146,3 +146,10 @@ done:
     return THROW(ret);
 }
 
+/* Provide a string printer that can be called from gdb */
+void
+NCD4_printstring(const char* s)
+{
+    fprintf(stderr,"%s\n",s);
+    fflush(stderr);
+}

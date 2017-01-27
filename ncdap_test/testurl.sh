@@ -17,7 +17,7 @@
 # capture the build directory
 # Do a hack to remove e.g. c: for CYGWIN
 
-topsrcdir=`test_environment topsrcdir`
+topsrcdir=`./test_environment topsrcdir`
 if test "x$topsrcdir" != x ; then
   srcdir="$topsrcdir/ncdap_test"
 else

@@ -77,10 +77,11 @@ typedef enum NCD4sort {
 
 #define RESERVECHAR '_'
 
-#define UCARTAG        "_edu.ucar."
+#define UCARTAG         "_edu.ucar."
 #define UCARTAGVLEN     "_edu.ucar.isvlen"
 #define UCARTAGOPAQUE   "_edu.ucar.opaque.size"
 #define UCARTAGORIGTYPE "_edu.ucar.orig.type"
+#define UCARTAGUNLIM    "_edu.ucar.isunlimited"
 
 /* These are attributes inserted into the netcdf-4 file */
 #define NC4TAGMAPS      "_edu.ucar.maps"
@@ -102,17 +103,9 @@ NCD4_TRANSNC4 = 1, /* Use _edu.ucar flags to achieve better translation */
 enum NCD4mode {
 NCD4_DMR = 1,
 NCD4_DAP = 2,
+NCD4_DSR = 4
 };
 
-
-/* Define possible checksum modes */
-enum NCD4CSUM {
-    NCD4_CSUM_NONE   = 0,
-    NCD4_CSUM_IGNORE = 1, /*=> checksums are present; do not validate */
-    NCD4_CSUM_DMR    = 2, /*=> compute checksums for DMR requests only*/
-    NCD4_CSUM_DAP    = 4, /*=> compute checksums for DAP requests only*/
-    NCD4_CSUM_ALL    = 6  /*=> compute checksums for both kinds of requests */
-};
 
 /* Define storage for all the primitive types (plus vlen) */
 union ATOMICS {
@@ -214,12 +207,11 @@ typedef struct NCD4serial {
     void* rawdata;
     size_t dapsize; /* |dapdata|; this is transient */
     void* dap; /* pointer into rawdata where dap data starts */ 
-    size_t dmrsize; /* |dmrdata| */
-    char* dmr;/* pointer into rawdata where dmr starts */ 
+    char* dmr;/* copy of dmr */ 
     char* errdata; /* null || error chunk (null terminated) */
     int hostlittleendian; /* 1 if the host is little endian */
     int remotelittleendian; /* 1 if the packet says data is little endian */
-    int nochecksum; /* 1 if the packet says no checksums are included */
+    int remotechecksumming; /* 1 if the packet says checksums are included */
 } NCD4serial;
 
 /* This will be passed out of the parse */
@@ -227,6 +219,7 @@ struct NCD4meta {
     NCD4INFO* controller;
     int ncid; /* root ncid of the substrate netcdf-4 file; copy of NCD4parse argument*/
     NCD4node* root;
+    NCD4mode  mode; /* Are we reading DMR (only) or DAP (includes DMR) */
     NClist* allnodes; /*list<NCD4node>*/
     struct Error { /* Content of any error response */
 	char* parseerror;
@@ -237,16 +230,9 @@ struct NCD4meta {
     } error;
     int debuglevel;
     NCD4serial serial;
-    NCD4CSUM checksummode;
-    int checksumming; /* 1=>compute local checksum */
+    int ignorechecksums; /* 1=> compute but ignore */
+    int localchecksumming; /* 1=>compute local checksum */
     int swap; /* 1 => swap data */
-#if 0
-    /* To avoid lost memory, we keep lists of malloc'd chunks that might need to
-       be reclaimed. */
-    NClist* blobs;  /* remember blobs that need to be reclaimed if there was an error;
-                           as a rule, these are the blobs constituting data being
-                           returned to the client */
-#endif
     /* Define some "global" (to a DMR) data */
     NClist* groupbyid; /* NClist<NCD4node*> indexed by groupid >> 16; this is global */
     NCD4node* _bytestring; /* If needed */

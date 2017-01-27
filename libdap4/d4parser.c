@@ -258,7 +258,7 @@ parseDimensions(NCD4parser* parser, NCD4node* group, ezxml_t xml)
 	sizestr = ezxml_attr(x,"size");
 	if(sizestr == NULL)
 	    FAIL(NC_EDIMSIZE,"Dimension has no size");
-	unlimstr = ezxml_attr(x,"unlimited");
+	unlimstr = ezxml_attr(x,UCARTAGUNLIM);
 	if((ret = parseULL(sizestr,&size))) goto done;
 	if((ret=makeNode(parser,group,x,NCD4_DIM,NC_NULL,&dimnode))) goto done;
 	dimnode->dim.size = (long long)size;
@@ -731,7 +731,17 @@ parseAttributes(NCD4parser* parser, NCD4node* container, ezxml_t xml)
 	NCD4node* basetype;
 
 	if(name == NULL) FAIL(NC_EBADNAME,"Missing <Attribute> name");
-	if(type == NULL) FAIL(NC_EBADTYPE,"Missing <Attribute> type");
+#ifdef HYRAXHACK
+	/* Hyrax specifies type="container" for container types */
+	if(strcmp(type,"container")==0
+	   || strcmp(type,"Container")==0)
+	    type = NULL;
+#endif
+	if(type == NULL) {
+	    /* <Attribute> containers not supported; ignore */
+	    continue;
+	}
+
 	if((ret=makeNode(parser,container,x,NCD4_ATTR,NC_NULL,&attr))) goto done;
 	/* HACK: If the attribute is _FillValue, then force the use of the
            container's type as the attribute type */

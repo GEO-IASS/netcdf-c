@@ -104,6 +104,8 @@ printNode(D4printer* out, NCD4node* node, int depth)
 	if(node->name != NULL)
 	    printXMLAttributeName(out, "name", node->name);
 	printXMLAttributeSize(out, "size", node->dim.size);
+	if(node->dim.isunlimited)
+	    printXMLAttributeString(out, UCARTAGUNLIM, "1");
 	CAT("/>");
 	break;
 

@@ -2,7 +2,7 @@ netcdf test_unlim1 {
 dimensions:
 	lat = 3 ;
 	lon = 2 ;
-	time = UNLIMITED ; // (0 currently)
+	time = UNLIMITED ; // (0 currently)	
 variables:
 	float lat(lat) ;
 		string lat:units = "degrees_north" ;

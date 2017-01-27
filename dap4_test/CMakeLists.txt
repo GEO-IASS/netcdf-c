@@ -24,11 +24,15 @@ IF(ENABLE_TESTS)
   add_sh_test(dap4_test t_dmrdata.sh)
   add_sh_test(dap4_test test_raw.sh)
 
-  BUILD_BIN_TEST_NO_PREFIX(test_environment)
+  # Change name (add '4') to avoid cmake
+  # complaint about duplicate targets.
+  BUILD_BIN_TEST_NO_PREFIX(test_environment4)
 
   IF(ENABLE_DAP4_REMOTE_TESTS)
 
-    BUILD_BIN_TEST_NO_PREFIX(findtestserver)
+    # Change name (add '4') to avoid cmake
+    # complaint about duplicate targets.
+    BUILD_BIN_TEST_NO_PREFIX(findtestserver4)
 
     IF(BUILD_UTILITIES)
       add_sh_test(dap4_test test_remote.sh)

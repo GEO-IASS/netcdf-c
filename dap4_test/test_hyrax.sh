@@ -5,6 +5,8 @@ export srcdir;
 
 . ${srcdir}/test_common.sh
 
+FRAG="#checksummode=ignore"
+
 F="\
 nc4_nc_classic_comp.nc \
 nc4_nc_classic_no_comp.nc \
@@ -25,7 +27,7 @@ mkdir -p ./results
 
 if test "x${RESET}" = x1 ; then rm -fr ${BASELINEH}/*.dmp ; fi
 for f in $F ; do
-    URL="dap4://test.opendap.org:8080/opendap/nc4_test_files/${f}"
+    URL="dap4://test.opendap.org:8080/opendap/nc4_test_files/${f}${FRAG}"
     echo "testing: $URL"
     if ! ../ncdump/ncdump ${URL} > ./results/${f}.hyrax; then
         failure "${URL}"

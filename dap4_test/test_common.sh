@@ -1,4 +1,4 @@
-topsrcdir=`test_environment topsrcdir`
+topsrcdir=`./test_environment4 topsrcdir`
 if test "x$srcdir" = "x" ; then srcdir=`dirname $0`; fi; export srcdir
 
 if test $# = 0 ; then
@@ -26,6 +26,7 @@ cd ${srcdir}/cdltestfiles; CDLTESTFILES=`pwd` ; cd ${WD}
 cd ${srcdir}/baseline; BASELINE=`pwd` ; cd ${WD}
 cd ${srcdir}/baselineraw; BASELINERAW=`pwd` ; cd ${WD}
 cd ${srcdir}/baselineremote; BASELINEREM=`pwd` ; cd ${WD}
+BASELINEH=${BASELINEREM}
 
 rm -fr ./results
 mkdir -p ./results
@@ -48,7 +49,7 @@ popd >>/dev/null
 
 filesexist() {
     for x in "$@" ; do
-	if ! test -f $x ; then
+	if ! test -a $x ; then
 	  failure "missing file: $x"
 	fi
     done

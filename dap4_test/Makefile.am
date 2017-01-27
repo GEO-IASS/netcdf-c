@@ -50,12 +50,16 @@ clean-local-check:
 	-rm -rf results
 	-rm -f .dodsrc .daprc
 
-check_PROGRAMS += test_environment
-test_environment_SOURCES = test_environment.c
+# Note: This program name was changed to test_environment4
+# to avoid cmake complaint about duplicate targets.
+check_PROGRAMS += test_environment4
+test_environment4_SOURCES = test_environment4.c
 
 if ENABLE_DAP4_REMOTE_TESTS
-check_PROGRAMS += findtestserver
-findtestserver_SOURCES = findtestserver.c nctestserver.h
+# Note: This program name was changed to findtestserver4
+# to avoid cmake complaint about duplicate targets.
+check_PROGRAMS += findtestserver4
+findtestserver_SOURCES = findtestserver4.c nctestserver.h
 endif
 
 # The shell file maketests.sh is used to build the testdata

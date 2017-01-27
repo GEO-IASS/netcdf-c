@@ -216,7 +216,7 @@ NCD4_delimit(NCD4meta* compiler, NCD4node* topvar, void** offsetp)
        any checksum */
     topvar->data.dap4data.size = (d4size_t)(offset - *offsetp);
     /* extract the dap4 data checksum, if present */
-    if(compiler->checksummode != NCD4_CSUM_NONE) {
+    if(compiler->serial.remotechecksumming) {
 	union ATOMICS csum;
         memcpy(csum.u8,offset,CHECKSUMSIZE);
         topvar->data.remotechecksum = csum.u32[0];

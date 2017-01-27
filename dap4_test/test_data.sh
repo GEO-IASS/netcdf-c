@@ -8,20 +8,20 @@ cd ${DAPTESTFILES}
 F=`ls -1 *.dap | sed -e 's/[.]dap//g' | tr '\r\n' '  '`
 cd $WD
 
-if test "x${RESET}" = x1 ; then rm -fr ${BASELINE}/*.dap.ncdump ; fi
+if test "x${RESET}" = x1 ; then rm -fr ${BASELINE}/*.d4d ; fi
 for f in $F ; do
     echo "testing: ${f}"
     if ! ${VG} ./test_data ${DAPTESTFILES}/${f} ./results/${f}.nc ; then
         failure "./test_data ${DAPTESTFILES}/${f} ./results/${f}.nc"
     fi
-    ../ncdump/ncdump ./results/${f}.nc > ./results/${f}.dap.ncdump
+    ../ncdump/ncdump ./results/${f}.nc > ./results/${f}.d4d
     if test "x${TEST}" = x1 ; then
-	if ! diff -wBb ${BASELINE}/${f}.dap.ncdump ./results/${f}.dap.ncdump ; then
-	    failure "diff -wBb ${BASELINE}/${f}.dap.ncdump ./results/${f}.dap.ncdump"
+	if ! diff -wBb ${BASELINE}/${f}.d4d ./results/${f}.d4d ; then
+	    failure "diff -wBb ${BASELINE}/${f}.d4d ./results/${f}.d4d"
 	fi
     elif test "x${RESET}" = x1 ; then
 	echo "${f}:" 
-	cp ./results/${f}.dap.ncdump ${BASELINE}/${f}.dap.ncdump
+	cp ./results/${f}.d4d ${BASELINE}/${f}.d4d
     fi
 done
 
@@ -68,14 +68,14 @@ resultclean() {
 if test "x${CDLDIFF}" = x1 ; then
   for f in $F ; do
     STEM=`echo $f | cut -d. -f 1`
-    if ! test -f ${CDLTESTFILES}/${STEM}.cdl ; then
+    if ! test -a ${CDLTESTFILES}/${STEM}.cdl ; then
       echo "Not found: ${CDLTESTFILES}/${STEM}.cdl"
       continue
     fi
-    echo "diff -wBb ${CDLTESTFILES}/${STEM}.cdl ./results/${f}.dap.ncdump"
+    echo "diff -wBb ${CDLTESTFILES}/${STEM}.cdl ./results/${f}.d4d"
     rm -f ./b1 ./b2 ./r1 ./r2
     trim ${CDLTESTFILES}/${STEM}.cdl ./b1
-    trim ./results/${f}.dap.ncdump ./r1
+    trim ./results/${f}.d4d ./r1
     baseclean b1 b2
     resultclean r1 r2  
     if ! diff -wBb ./b2 ./r2 ; then

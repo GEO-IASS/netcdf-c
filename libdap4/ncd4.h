@@ -101,7 +101,7 @@ extern NCD4node* NCD4_groupFor(NCD4node* node);
 extern int NCD4_print(NCD4meta*, NCbytes* output);
 
 /* From d4meta.c */
-extern NCD4meta* NCD4_newmeta(NCD4CSUM, size_t size, void* rawdata);
+extern NCD4meta* NCD4_newmeta(size_t size, void* rawdata);
 extern void NCD4_reclaimMeta(NCD4meta*);
 extern void NCD4_setdebuglevel(NCD4meta*,int);
 extern int NCD4_metabuild(NCD4meta*, int ncid);
@@ -109,8 +109,7 @@ extern size_t NCD4_computeTypeSize(NCD4meta*, NCD4node* type);
 
 /* From d4chunk.c */
 extern int NCD4_dechunk(NCD4meta*);
-extern int NCD4_isdmr(const void* data);
-extern void NCD4_setdmr(NCD4meta* meta, const char* dmr);
+extern int NCD4_infermode(NCD4meta* meta);
 
 /* From d4swap.c */
 extern int NCD4_swapdata(NCD4meta*, NClist* topvars);
@@ -202,6 +201,13 @@ extern int nc__dap4(void);
 #else
 #define d4alloc(n) (malloc((size_t)(n)))
 #endif
+
+/* A number of hacks have been inserted
+   to deal with issues in accessing hyrax
+   using DAP4.
+*/
+#undef HYRAXHACK
+
 
 #endif /*NCD4_H*/
 

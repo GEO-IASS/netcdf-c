@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Dataset
          name="test_unlim1.nc"
          dapVersion="4.0"
@@ -6,7 +7,7 @@
          xmlns:dap="http://xml.opendap.org/ns/DAP/4.0#">
     <Dimension name="lat" size="3"/>
     <Dimension name="lon" size="2"/>
-    <Dimension name="time" size="2" unlimited="1"/>
+    <Dimension name="time" size="2" _edu.ucar.isunlimited="1"/>
     <Float32 name="lat">
         <Dim name="/lat"/>
         <Attribute name="units" type="String">
