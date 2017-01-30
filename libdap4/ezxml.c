@@ -657,7 +657,6 @@ ezxml_t ezxml_parse_fd(int fd)
 #endif /* EZXML_MMAP*/
     return &root->xml;
 }
-#endif
 
 /* a wrapper for ezxml_parse_fd that accepts a file name*/
 ezxml_t ezxml_parse_file(const char *file)
@@ -668,6 +667,7 @@ ezxml_t ezxml_parse_file(const char *file)
     if (fd >= 0) close(fd);
     return xml;
 }
+#endif /*0*/
 
 /* Encodes ampersand sequences appending the results to *dst, reallocating *dst*/
 /* if length excedes max. a is non-zero for attribute encoding. Returns *dst*/
