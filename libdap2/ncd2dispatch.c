@@ -186,8 +186,6 @@ static NC_Dispatch NCD2_dispatcher;
 int
 NCD2_initialize(void)
 {
-    int i;
-
     NCD2_dispatch_table = &NCD2_dispatch_base;
     ncd2initialized = 1;
 #ifdef DEBUG
@@ -623,7 +621,6 @@ buildncstructures(NCDAPCOMMON* dapcomm)
 {
     NCerror ncstat = NC_NOERR;
     CDFnode* dds = dapcomm->cdf.ddsroot;
-    NC* ncsub;
 
     ncstat = buildglobalattrs(dapcomm,dds);
     if(ncstat != NC_NOERR) goto done;

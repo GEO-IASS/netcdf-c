@@ -4,6 +4,10 @@
 #include <string.h>
 #include "nctestserver.h"
 
+/* Support stringification of -D macros */
+#define XSTRINGIFY(s) #s
+#define STRINGIFY(s) XSTRINGIFY(s)
+
 /**
 usage: findtestserver dap2|dap4 suffix [serverlist]
 
@@ -34,7 +38,6 @@ main(int argc, char** argv)
     const char* proto = NULL;
     const char* serverlist = NULL;
     int isdap4 = 0; /* 1 => dap4 */
-    int i;
 
     argc--; argv++;
     if(argc < 2)

@@ -77,16 +77,8 @@ NC_check_id(int ncid, NC **ncpp);
    overlap real file descriptors */
 extern int nc__pseudofd(void);
 
-/* This function sets a default create flag that will be logically
-   or'd to whatever flags are passed into nc_create for all future
-   calls to nc_create.
-   Valid default create flags are NC_64BIT_OFFSET, NC_CLOBBER,
-   NC_LOCK, NC_SHARE. */
-extern int nc_set_default_format(int format, int *old_formatp);
-
 /* This function gets a current default create flag */
 extern int nc_get_default_format(void);
-
 
 extern int add_to_NCList(NC*);
 extern void del_from_NCList(NC*);/* does not free object */

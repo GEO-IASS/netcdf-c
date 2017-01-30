@@ -346,7 +346,10 @@ NCD4_mktmp(const char* base, char** tmpnamep)
 {
     int fd;
     char tmp[NC_MAX_PATH];
+#ifdef HAVE_MKSTEMP
     mode_t mask;
+#endif
+
     strncpy(tmp,base,sizeof(tmp));
 #ifdef HAVE_MKSTEMP
     strncat(tmp,"XXXXXX",sizeof(tmp));

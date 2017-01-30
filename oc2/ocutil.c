@@ -694,7 +694,7 @@ ocmktmp(const char* base, char** tmpnamep)
 {
     int fd;
     char tmpname[OCPATHMAX+1];
-    mode_t mask;
+
     if(!occopycat(tmpname,sizeof(tmpname)-1,1,base)) {
 	return OC_EOVERRUN;
     }
@@ -704,10 +704,11 @@ ocmktmp(const char* base, char** tmpnamep)
     }
     /* Note Potential problem: old versions of this function
        leave the file in mode 0666 instead of 0600 */
-
-    mask=umask(0077);
-    fd = mkstemp(tmpname);
-    (void)umask(mask);
+    {
+	mode_t mask=umask(0077);
+	fd = mkstemp(tmpname);
+	(void)umask(mask);
+    }
 #else /* !HAVE_MKSTEMP */
     /* Need to simulate by using some kind of pseudo-random number */
     {

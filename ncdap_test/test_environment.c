@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Support stringification of -D macros */
 #define XSTRINGIFY(s) #s
 #define STRINGIFY(s) XSTRINGIFY(s)
 

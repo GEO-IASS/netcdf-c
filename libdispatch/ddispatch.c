@@ -51,7 +51,6 @@ int
 NCDISPATCH_finalize(void)
 {
     int status = NC_NOERR;
-    int i;
     return status;
 }
 

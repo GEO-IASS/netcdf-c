@@ -786,11 +786,7 @@ ENDIF()
 OPTION(ENABLE_DAP_LONG_TESTS "Enable DAP long tests." OFF)
 OPTION(ENABLE_DAP_REMOTE_TESTS "Enable DAP remote tests." ON)
 OPTION(ENABLE_DAP4_REMOTE_TESTS "Enable DAP4 remote tests." OFF)
-SET(REMOTETESTSERVERS "remotetest.unidata.ucar.edu" CACHE STRING "test servers to use for remote tests.")
-
-IF(ENABLE_DAP_REMOTE_TESTS)
-  OPTION(ENABLE_DAP_AUTH_TESTS "Enable DAP remote authorization tests." OFF)
-ENDIF()
+SET(REMOTETESTSERVERS "localhost:8081,localhost:8080,remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu" CACHE STRING "test servers to use for remote test")
 
 # If netCDF4 and DAP, Option for DAP groups.
 IF(ENABLE_NETCDF_4 AND ENABLE_DAP2)
@@ -1143,6 +1139,8 @@ CHECK_INCLUDE_FILE("stddef.h"   HAVE_STDDEF_H)
 
 # Type checks
 CHECK_TYPE_SIZE("void*"     SIZEOF_VOIDSTAR)
+# Alias for automake consistency
+SET(SIZEOF_VOIDP ${SIZEOF_VOIDSTAR})
 CHECK_TYPE_SIZE("char"      SIZEOF_CHAR)
 CHECK_TYPE_SIZE("double"    SIZEOF_DOUBLE)
 CHECK_TYPE_SIZE("float"     SIZEOF_FLOAT)
@@ -1363,7 +1361,7 @@ MACRO(print_conf_summary)
   MESSAGE(STATUS "Building Shared Libraries:     ${BUILD_SHARED_LIBS}")
   MESSAGE(STATUS "Building netCDF-4:             ${ENABLE_NETCDF_4}")
   MESSAGE(STATUS "Building DAP2 Support:         ${ENABLE_DAP2}")
-  MESSAGE(STATUS "Building DAP4 Support:          ${ENABLE_DAP4}")
+  MESSAGE(STATUS "Building DAP4 Support:         ${ENABLE_DAP4}")
   MESSAGE(STATUS "Building Utilities:            ${BUILD_UTILITIES}")
   IF(CMAKE_PREFIX_PATH)
     MESSAGE(STATUS "CMake Prefix Path:             ${CMAKE_PREFIX_PATH}")

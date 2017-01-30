@@ -14,7 +14,7 @@ IF(ENABLE_TESTS)
   # keep it from being too bad.
   # Binary Test Macro
 
-  BUILD_BIN_TEST_NO_PREFIX(test_environment)
+  BUILD_BIN_TEST(test_environment)
 
   add_sh_test(ncdap tst_ncdap3)
 
@@ -26,7 +26,7 @@ IF(ENABLE_TESTS)
 
   IF(ENABLE_DAP_REMOTE_TESTS)
 
-    BUILD_BIN_TEST_NO_PREFIX(findtestserver)
+    BUILD_BIN_TEST(findtestserver)
 
     IF(BUILD_UTILITIES)
       add_sh_test(ncdap tst_remote.sh)

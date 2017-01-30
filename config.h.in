@@ -326,8 +326,8 @@
 /* Define to 1 if the system has the type `uint'. */
 #undef HAVE_UINT
 
-/* Define to 1 if the system has the type `uint64'. */
-#undef HAVE_UINT64
+/* Define to 1 if the system has the type `uint64 off_t'. */
+#undef HAVE_UINT64_OFF_T
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
@@ -434,6 +434,9 @@
 
 /* The size of `size_t', as computed by sizeof. */
 #undef SIZEOF_SIZE_T
+
+/* The size of `ssize_t', as computed by sizeof. */
+#undef SIZEOF_SSIZE_T
 
 /* The size of `uint', as computed by sizeof. */
 #undef SIZEOF_UINT
@@ -561,9 +564,6 @@
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
-
-/* Define to `long int' if <sys/types.h> does not define. */
-#undef off_t
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t

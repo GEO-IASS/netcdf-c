@@ -60,7 +60,6 @@ NCD4_dechunk(NCD4meta* metadata)
     q = metadata->serial.rawdata;
     if(memcmp(q,"<?xml",strlen("<?xml"))==0
        || memcmp(q,"<Dataset",strlen("<Dataset"))==0) {
-	char* dmrend;
 	if(metadata->mode != NCD4_DMR) 
 	    return THROW(NC_EDMR);
 	/* setup as dmr only */
@@ -116,7 +115,7 @@ NCD4_dechunk(NCD4meta* metadata)
 	}
 	if(hdr.flags & LAST_CHUNK) break;
     }
-    metadata->serial.dapsize = (size_t)(((void*)q) - metadata->serial.dap);
+    metadata->serial.dapsize = (size_t)DELTA(q,metadata->serial.dap);
 #ifdef D4DUMPDMR
     fprintf(stderr,"%s\n",metadata->serial.dmr);
     fflush(stderr);
@@ -154,7 +153,7 @@ getheader(void* p, struct HDR* hdr, int hostlittleendian)
     memcpy(orig,p,sizeof(bytes));/* save a copy */
 #endif
     memcpy(bytes,p,sizeof(bytes));
-    p += 4; /* on-the-wire hdr is 4 bytes */
+    p = INCR(p,4); /* on-the-wire hdr is 4 bytes */
     /* assume header is network (big) order */
     hdr->flags = bytes[0]; /* big endian => flags are in byte 0 */
     bytes[0] = 0; /* so we can do byte swap to get count */

@@ -37,7 +37,6 @@ NCD4_open(const char * path, int mode,
     NCD4INFO* d4info = NULL;
     const char* value;
     NCD4meta* meta;
-    NCD4mode dapmode;
 
     if(path == NULL)
 	return THROW(NC_EDAPURL);
@@ -347,8 +346,13 @@ set_curl_properties(NCD4INFO* d4info)
 	/* If no cookie file was defined, define a default */
 	char tmp[4096+1];
         int ok;
+#ifdef  _WIN32
+	int pid = _getpid();
+#else
 	pid_t pid = getpid();
+#endif
 	snprintf(tmp,sizeof(tmp)-1,"%s/%s.%ld/",NCD4_globalstate->tempdir,"netcdf",(long)pid);
+
 #ifdef _WIN32
 	ok = mkdir(tmp);
 #else

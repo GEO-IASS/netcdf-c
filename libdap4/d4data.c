@@ -136,7 +136,7 @@ NCD4_fillinstance(NCD4meta* meta, NCD4node* type, void** offsetp, void** dstp, N
 	/* memsize and dapsize are the same */
 	assert(memsize == dapsize);
 	memcpy(dst,offset,dapsize);
-	offset += dapsize;
+	offset = INCR(offset,dapsize);
     } else switch(type->subsort) {
         case NC_STRING: /* oob strings */
 	    if((ret=fillstring(meta,&offset,&dst,blobs)))
@@ -188,11 +188,11 @@ fillstruct(NCD4meta* meta, NCD4node* type, void** offsetp, void** dstp, NClist* 
     for(i=0;i<nclistlength(type->vars);i++) {
 	NCD4node* field = nclistget(type->vars,i);
 	NCD4node* ftype = field->basetype;
-	void* fdst = dst + field->meta.offset;
+	void* fdst = INCR(dst,field->meta.offset);
 	if((ret=NCD4_fillinstance(meta,ftype,&offset,&fdst,blobs)))
             FAIL(ret,"fillstruct");
     }
-    dst += type->meta.memsize;
+    dst = INCR(dst,type->meta.memsize);
     *dstp = dst;
     *offsetp = offset;    
 done:
@@ -227,7 +227,7 @@ fillseq(NCD4meta* meta, NCD4node* type, void** offsetp, void** dstp, NClist* blo
 
     for(i=0;i<recordcount;i++) {
 	/* Read each record instance */
-	void* recdst = (dst->p) + (recordsize * i);
+	void* recdst = INCR((dst->p),(recordsize * i));
 	if((ret=NCD4_fillinstance(meta,vlentype,&offset,&recdst,blobs)))
 	    FAIL(ret,"fillseq");
     }
@@ -264,7 +264,7 @@ fillstring(NCD4meta* meta, void** offsetp, void** dstp, NClist* blobs)
     *dst = q;
     dst++;
     *dstp = dst;    
-    offset += count;
+    offset = INCR(offset,count);
     *offsetp = offset;
 done:
     return THROW(ret);
@@ -286,9 +286,9 @@ fillopfixed(NCD4meta* meta, d4size_t opaquesize, void** offsetp, void** dstp)
         FAIL(NC_EVARSIZE,"Expected opaque size to be %lld; found %lld",opaquesize,count);
     /* move */
     memcpy(dst,offset,count);
-    dst += count;
+    dst = INCR(dst,count);
     *dstp = dst;
-    offset += count;
+    offset = INCR(offset,count);
     *offsetp = offset;
 done:
     return THROW(ret);
@@ -322,9 +322,9 @@ fillopvar(NCD4meta* meta, NCD4node* type, void** offsetp, void** dstp, NClist* b
     memcpy(q,offset,count);
     vlen->p = q;
     vlen->len = (size_t)count;
-    dst += sizeof(nc_vlen_t);
+    dst = INCR(dst,sizeof(nc_vlen_t));
     *dstp = dst;
-    offset += count;
+    offset = INCR(offset,count);
     *offsetp = offset;
 done:
     return THROW(ret);

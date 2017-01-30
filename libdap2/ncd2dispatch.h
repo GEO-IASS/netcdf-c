@@ -270,16 +270,7 @@ NCD2_var_par_access(int, int, int);
 EXTERNL int
 NCD2_get_var_chunk_cache(int, int, size_t *, size_t *, float *);
 
-
 #endif //USE_NETCDF4
-
-
-
-
-
-
-
-extern int NCD2_initialize(void);
 
 #if defined(__cplusplus)
 }

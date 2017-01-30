@@ -665,8 +665,7 @@ parseDimRefs(NCD4parser* parser, NCD4node* var, ezxml_t xml)
 	} else {
 	    const char* sizestr = ezxml_attr(x,"size");
 	    if(sizestr == NULL) {
-	        ERROR(NC_EBADDIM,"Dimension reference has no name and no size");
-		goto done;
+	        FAIL(NC_EBADDIM,"Dimension reference has no name and no size");
 	    }
 	    /* Make or reuse anonymous dimension in root group */
 	    dim = makeAnonDim(parser,sizestr);

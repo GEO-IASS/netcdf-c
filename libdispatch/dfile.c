@@ -199,18 +199,18 @@ static int NC_check_file_type(const char *path, int flags, void *parameters,
             goto done;
           }
 else
-
-	    if(!(fstat(fileno(fp),&st) == 0)) {
+	  { int fno = fileno(fp);
+	    if(!(fstat(fno,&st) == 0)) {
 	        fclose(fp);
 	        status = errno;
 	        goto done;
 	    }
-
 	    if(st.st_size < MAGIC_NUMBER_LEN) {
-          fclose(fp);
-          status = NC_ENOTNC;
-          goto done;
+              fclose(fp);
+              status = NC_ENOTNC;
+              goto done;
 	    }
+	  }
 #endif //HAVE_FILE_LENGTH_I64
 
 #endif //HAVE_SYS_STAT_H

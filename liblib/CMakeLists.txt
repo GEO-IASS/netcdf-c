@@ -13,19 +13,19 @@ IF(USE_PNETCDF)
   SET(liblib_LIBS ${liblib_LIBS} netcdfp)
 ENDIF()
 
-IF(USE_DAP)
+IF(ENABLE_DAP2)
   SET(liblib_LIBS ${liblib_LIBS} oc2 dap2)
 ENDIF()
 
+IF(ENABLE_DAP4)
+  SET(liblib_LIBS ${liblib_LIBS} dap4)
+ENDIF()
 
 FOREACH(LIBS ${liblib_LIBS})
   SET(LARGS ${LARGS} $<TARGET_OBJECTS:${LIBS}>)
 ENDFOREACH()
 
 SET(LIBLIBCODE nc_initialize.c)
-IF(USE_DAP)
-SET(LIBLIBCODE ${LIBLIBCODE} nctestserver.c)
-ENDIF()
 
 ADD_LIBRARY(netcdf ${LIBLIBCODE} ${LARGS} )
 

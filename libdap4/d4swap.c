@@ -54,10 +54,10 @@ NCD4_swapdata(NCD4meta* compiler, NClist* topvars)
 	    if((ret=walkSeqArray(compiler,var,var,&offset))) goto done;
 	    break;
 	}
-	var->data.dap4data.size = (d4size_t)(offset - var->data.dap4data.memory);
+	var->data.dap4data.size = DELTA(offset,var->data.dap4data.memory);
 	/* skip checksum, if there is one */
         if(compiler->serial.remotechecksumming)
-	    offset += CHECKSUMSIZE;
+	    offset = INCR(offset,CHECKSUMSIZE);
     }
 done:
     return THROW(ret);
@@ -85,7 +85,7 @@ walkAtomicVar(NCD4meta* compiler, NCD4node* topvar, NCD4node* var, void** offset
         int typesize = NCD4_typesize(subsort);
 	d4size_t totalsize = typesize*dimproduct;
 	if(typesize == 1) {
-	    offset += totalsize;
+	    offset = INCR(offset,totalsize);
 	} else { /*(typesize > 1)*/
 	    for(i=0;i<dimproduct;i++) {
 	        char* sp = (char*)offset;
@@ -97,7 +97,7 @@ walkAtomicVar(NCD4meta* compiler, NCD4node* topvar, NCD4node* var, void** offset
 	            default: break;
 	            }
 		}
-	        offset += typesize;
+	        offset = INCR(offset,typesize);
 	    }
 	}
     } else if(subsort == NC_STRING) { /* remaining case; just convert the counts */
@@ -109,7 +109,7 @@ walkAtomicVar(NCD4meta* compiler, NCD4node* topvar, NCD4node* var, void** offset
 	    count = GETCOUNTER(offset);
 	    SKIPCOUNTER(offset);
 	    /* skip count bytes */
-	    offset += count;
+	    offset = INCR(offset,count);
 	}
     }
     *offsetp = offset;
@@ -134,7 +134,7 @@ walkOpaqueVar(NCD4meta* compiler, NCD4node* topvar, NCD4node* var, void** offset
 	    swapinline64(offset);
 	count = GETCOUNTER(offset);
 	SKIPCOUNTER(offset);
-	offset += count;
+	offset = INCR(offset,count);
     }
     *offsetp = offset;
     return THROW(ret);

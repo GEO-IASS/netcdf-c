@@ -34,7 +34,7 @@ test_environment_SOURCES = test_environment.c
 
 if ENABLE_DAP_REMOTE_TESTS
 check_PROGRAMS += findtestserver
-findtestserver_SOURCES = findtestserver.c nctestserver.h
+findtestserver_SOURCES = findtestserver.c
 
 if BUILD_UTILITIES
 TESTS += tst_remote3.sh tst_formatx.sh

@@ -22,12 +22,14 @@ defined here, including function-like #defines.
 #define RCFILEENV "DAPRCFILE"
 
 /* Figure out a usable max path name max */
-#if defined(PATH_MAX) /* *nix* */
+#ifdef PATH_MAX /* *nix* */
 #define NC_MAX_PATH PATH_MAX
-#elif defined(MAX_PATH) /*windows*/
-#define NC_MAX_PATH MAX_PATH
-else
-#define NC_MAX_PATH 4096
+#else
+#  ifdef MAX_PATH /*windows*/
+#    define NC_MAX_PATH MAX_PATH
+#  else
+#    define NC_MAX_PATH 4096
+#  endif
 #endif
 
 #define COUNTERTYPE unsigned long long
@@ -170,10 +172,11 @@ extern int nc__dap4(void);
 /* Macro defined functions */
 
 #define NCCHECK(expr) if((ret=(expr))) {ret = NCD4_errorNC(ret,__LINE__,__FILE__); goto done;}else{}
-#define ERROR(code,fmt,...) NCD4_error(code,__LINE__,__FILE__,fmt , ##__VA_ARGS__)
 #define FAIL(code,fmt,...) do{ret=NCD4_error(code,__LINE__,__FILE__,fmt , ##__VA_ARGS__); goto done;}while(0)
 
 #define INCR(offset,size) ((void*)(((char*)(offset))+(size)))
+#define DECR(offset,size) ((void*)(((char*)(offset))-(size)))
+#define DELTA(p1,p2) ((ptrdiff_t)(((char*)(p1))-((char*)(p2))))
 
 #define GETCOUNTER(p) ((d4size_t)*((COUNTERTYPE*)(p)))
 #define SKIPCOUNTER(p) {p=INCR(p,COUNTERSIZE);}

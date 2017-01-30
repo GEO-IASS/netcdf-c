@@ -59,7 +59,7 @@ if ENABLE_DAP4_REMOTE_TESTS
 # Note: This program name was changed to findtestserver4
 # to avoid cmake complaint about duplicate targets.
 check_PROGRAMS += findtestserver4
-findtestserver_SOURCES = findtestserver4.c nctestserver.h
+findtestserver_SOURCES = findtestserver4.c
 endif
 
 # The shell file maketests.sh is used to build the testdata

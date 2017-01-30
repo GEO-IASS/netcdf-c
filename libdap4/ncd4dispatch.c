@@ -791,62 +791,6 @@ done:
 
 /**************************************************/
 
-int
-NCDAP4_ping(const char* url)
-{
-    int stat = NC_NOERR;
-    CURLcode cstat = CURLE_OK;
-    CURL* curl = NULL;
-    NCbytes* buf = NULL;
-
-    /* Create a CURL instance */
-    stat = NCD4_curlopen(&curl);
-    if(stat != NC_NOERR) return stat;    
-
-    /* Use redirects */
-    cstat = curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 10L);
-    if (cstat != CURLE_OK)
-        goto done;
-    cstat = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-    if (cstat != CURLE_OK)
-        goto done;
-
-    /* use a very short timeout: 5 seconds */
-    cstat = curl_easy_setopt(curl, CURLOPT_TIMEOUT, (long)5);
-    if (cstat != CURLE_OK)
-        goto done;
-
-    /* fail on HTTP 400 code errors */
-    cstat = curl_easy_setopt(curl, CURLOPT_FAILONERROR, (long)1);
-    if (cstat != CURLE_OK)
-        goto done;
-
-    /* Try to get the file */
-    buf = ncbytesnew();
-    stat = NCD4_fetchurl(curl,url,buf,NULL,NULL);
-    if(stat == NC_NOERR) {
-	/* Don't trust curl to return an error when request gets 404 */
-	long http_code = 0;
-	cstat = curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE, &http_code);
-        if (cstat != CURLE_OK)
-            goto done;
-	if(http_code >= 400) {
-	    cstat = CURLE_HTTP_RETURNED_ERROR;
-	    goto done;
-	}
-    } else
-        goto done;
-
-done:
-    ncbytesfree(buf);
-    NCD4_curlclose(curl);
-    if(cstat != CURLE_OK) {
-        nclog(NCLOGERR, "curl error: %s", curl_easy_strerror(cstat));
-        stat = NC_EDAPSVC;
-    }
-    return THROW(stat);
-}
-
 static int
 globalinit(void)
 {

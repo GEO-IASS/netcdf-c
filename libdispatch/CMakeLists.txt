@@ -14,6 +14,11 @@ ENDIF(BUILD_V2)
 
 add_library(dispatch OBJECT ${libdispatch_SOURCES}) 
 
+# Allow use in other modules
+add_library(ncuri OBJECT ncuri.c)
+add_library(nclist OBJECT nclist.c)
+add_library(ncbytes OBJECT ncbytes.c)
+
 FILE(GLOB CUR_EXTRA_DIST RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 SET(CUR_EXTRA_DIST ${CUR_EXTRA_DIST} CMakeLists.txt Makefile.am)
 ADD_EXTRA_DIST("${CUR_EXTRA_DIST}")

@@ -210,8 +210,6 @@ dapcvtattrval(nc_type etype, void* dst, NClist* src)
 	ok = 0;
 	switch (etype) {
 	case NC_BYTE: {
-		char tmp[128];
-		
 		unsigned char* p = (unsigned char*)dstmem;
 #ifdef _MSC_VER
 		ok = sscanf(s,"%hC%n",p,&nread);

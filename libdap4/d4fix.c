@@ -214,14 +214,14 @@ NCD4_delimit(NCD4meta* compiler, NCD4node* topvar, void** offsetp)
     }
     /* Track the variable size (in the dap4 data) but do not include
        any checksum */
-    topvar->data.dap4data.size = (d4size_t)(offset - *offsetp);
+    topvar->data.dap4data.size = (d4size_t)(((char*)offset) - ((char*)*offsetp));
     /* extract the dap4 data checksum, if present */
     if(compiler->serial.remotechecksumming) {
 	union ATOMICS csum;
         memcpy(csum.u8,offset,CHECKSUMSIZE);
         topvar->data.remotechecksum = csum.u32[0];
 	if(compiler->swap) swapinline32(&topvar->data.remotechecksum);
-        offset += CHECKSUMSIZE;
+	offset = INCR(offset,CHECKSUMSIZE);
     }
     *offsetp = offset;
 done:
@@ -255,7 +255,7 @@ delimitAtomicVar(NCD4meta* compiler, NCD4node* var, void** offsetp)
     tid = truetype->subsort;
     typesize = NCD4_typesize(tid);
     if(tid != NC_STRING) {
-        offset += (typesize*dimproduct);
+	offset = INCR(offset,(typesize*dimproduct));
     } else if(tid == NC_STRING) { /* walk the counts */
         unsigned long long count;
         for(i=0;i<dimproduct;i++) {
@@ -264,7 +264,7 @@ delimitAtomicVar(NCD4meta* compiler, NCD4node* var, void** offsetp)
             SKIPCOUNTER(offset);
   	    if(compiler->swap) swapinline64(&count);
             /* skip count bytes */
-            offset += count;
+  	    offset = INCR(offset,count);
         }
     }
     *offsetp = offset;
@@ -286,7 +286,7 @@ delimitOpaqueVar(NCD4meta* compiler,  NCD4node* var, void** offsetp)
         count = GETCOUNTER(offset);
         SKIPCOUNTER(offset);
         if(compiler->swap) swapinline64(&count);
-        offset += count;
+        offset = INCR(offset,count);
     }
     *offsetp = offset;
     return THROW(ret);
@@ -479,20 +479,20 @@ skipAtomicInstance(NCD4meta* compiler, NCD4node* type, void** offsetp)
     switch (type->subsort) {
     default: /* fixed size atomic type */
         typesize = NCD4_typesize(type->meta.id);
-	offset += typesize;	
+	offset = INCR(offset,typesize);
 	break;
     case NC_STRING:
         /* Get string count */
         count = GETCOUNTER(offset);
         SKIPCOUNTER(offset);
         /* skip count bytes */
-        offset += count;
+	offset = INCR(offset,count);
 	break;
     case NC_OPAQUE:
         /* get count */
         count = GETCOUNTER(offset);
         SKIPCOUNTER(offset);
-        offset += count;
+	offset = INCR(offset,count);
 	break;
     case NC_ENUM:
         return skipAtomicInstance(compiler,type->basetype,offsetp);
