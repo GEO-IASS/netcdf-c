@@ -55,8 +55,8 @@ main(int argc, char** argv)
 #ifdef ENABLE_DAP4
     if(strcasecmp(proto,"dap4")==0)
 	isdap4 = 1;
-#endif
     else
+#endif
 	usage();
 
     if(serverlist == NULL) {

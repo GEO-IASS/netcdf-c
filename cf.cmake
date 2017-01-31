@@ -1,6 +1,6 @@
 # Is netcdf-4 and/or DAP enabled?
 NC4=1
-DAP=1
+#DAP=1
 
 # Is visual studio being used?
 VS=yes
