@@ -16,14 +16,14 @@ IF(ENABLE_TESTS)
   # must be run in a particular order. It is painful but will use macros to help
   # keep it from being too bad.
 
-  add_executable(test_ncuri test_ncuri.c netcdf)
-  add_executable(test_parse test_parse.c netcdf)
-  add_executable(test_meta test_meta.c netcdf)
+  add_executable(test_ncuri test_ncuri.c)
+  add_executable(test_parse test_parse.c)
+  add_executable(test_meta test_meta.c)
   add_executable(test_data test_data.c)
 
-#  target_link_libraries(test_ncuri netcdf)
-#  target_link_libraries(test_parse netcdf)
-#  target_link_libraries(test_meta netcdf)
+  target_link_libraries(test_ncuri netcdf)
+  target_link_libraries(test_parse netcdf)
+  target_link_libraries(test_meta netcdf)
   target_link_libraries(test_data netcdf)
 
   add_sh_test(dap4_test test_parse.sh)
