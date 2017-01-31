@@ -27,7 +27,7 @@ static char SccsId[] = "$Id: ncgen.y,v 1.42 2010/05/18 21:32:46 dmh Exp $";
 #define YY_NO_INPUT 1
 
 /* True if string a equals string b*/
-#define STREQ(a, b)     (*(a) == *(b) && strcmp((a), (b)) == 0)
+#define STREQUAL(a, b)     (*(a) == *(b) && strcmp((a), (b)) == 0)
 #define VLENSIZE  (sizeof(nc_vlen_t))
 #define MAXFLOATDIM 4294967295.0
 

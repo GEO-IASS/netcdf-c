@@ -367,7 +367,7 @@ NIL|nil|Nil {
 		    id = bbContents(lextext);
 		    len = unescape(id,id,bbLength(lextext),ISIDENT);
 		    bbSetlength(lextext,len);
-		    if (STREQ(id, FILL_STRING)) return lexdebug(FILLMARKER);
+		    if (STREQUAL(id, FILL_STRING)) return lexdebug(FILLMARKER);
 		    yylval.sym = install(id);
 		    return lexdebug(IDENT);
 		}

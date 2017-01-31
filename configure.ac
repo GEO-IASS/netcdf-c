@@ -327,7 +327,6 @@ AC_ARG_ENABLE([dap],[AS_HELP_STRING([--disable-dap],[disable DAP2 and DAP4 clien
 test "x$enable_dap" = xno || enable_dap=yes
 AC_MSG_RESULT($enable_dap)
 if test "x$enable_dap" = "xyes" ; then
-    enable_dap4=yes
     enable_dap2=yes
 fi
 

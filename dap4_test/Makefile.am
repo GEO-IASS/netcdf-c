@@ -32,7 +32,7 @@ EXTRA_DIST = test_parse.sh test_meta.sh test_data.sh \
              test_raw.sh test_remote.sh test_hyrax.sh \
              test_common.sh \
 	     daptestfiles dmrtestfiles cdltestfiles nctestfiles \
-	     baseline baselineraw
+	     baseline baselineraw baselineremote
 
 CLEANFILES = *.exe
 
@@ -49,6 +49,7 @@ clean-local: clean-local-check
 clean-local-check:
 	-rm -rf results
 	-rm -f .dodsrc .daprc
+	-cat *.log
 
 # Note: This program name was changed to test_environment4
 # to avoid cmake complaint about duplicate targets.
@@ -59,7 +60,7 @@ if ENABLE_DAP4_REMOTE_TESTS
 # Note: This program name was changed to findtestserver4
 # to avoid cmake complaint about duplicate targets.
 check_PROGRAMS += findtestserver4
-findtestserver_SOURCES = findtestserver4.c
+findtestserver4_SOURCES = findtestserver4.c
 endif
 
 # The shell file maketests.sh is used to build the testdata

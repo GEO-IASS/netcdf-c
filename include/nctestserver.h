@@ -20,10 +20,10 @@ parseServers(const char* remotetestservers)
     char** l;
     
     list = (char**)malloc(sizeof(char*) * (int)(strlen(remotetestservers)/2));
-    if(list == NULL) return NC_ENOMEM;
+    if(list == NULL) return NULL;
     l = list;
     rts = strdup(remotetestservers);
-    if(rts == NULL) {free(list); return NC_ENOMEM;}
+    if(rts == NULL) {free(list); return NULL;}
     p = rts;
     for(;;) {
 	svc = p;

@@ -10,6 +10,7 @@ for arg in "$@"; do
   reset) RESET=1 ;;
   diff) DIFF=1 ;;
   cdl) CDLDIFF=1 ;;
+  log) ;;
   *) echo unknown argument $arg ;;
   esac
 done
