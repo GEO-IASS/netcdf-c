@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#if test x"$1" = x ; then rm -fr meta.log; sh -x $0 log >>meta.log; exit $? ; fi
+if test x"$1" = x ; then rm -fr meta.log; sh -x $0 log >>meta.log; exit 0 ; fi
 
 if test "x$srcdir" = "x"; then srcdir=`dirname $0`; fi; export srcdir
 
