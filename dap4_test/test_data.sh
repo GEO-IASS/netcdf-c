@@ -1,7 +1,5 @@
 #!/bin/sh
 
-if test x"$1" = x ; then rm -fr data.log; sh -x $0 log >>data.log; exit 0 ; fi
-
 if test "x$srcdir" = "x"; then srcdir=`dirname $0`; fi; export srcdir
 
 . ${srcdir}/test_common.sh

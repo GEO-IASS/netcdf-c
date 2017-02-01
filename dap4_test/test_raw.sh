@@ -1,7 +1,5 @@
 #!/bin/sh
 
-if test x"$1" = x ; then rm -fr raw.log; sh -x $0 log >>raw.log; exit 0 ; fi
-
 if test "x$srcdir" = "x"; then srcdir=`dirname $0`; fi
 export srcdir;
 

@@ -23,14 +23,15 @@ check_PROGRAMS += test_parse test_meta test_data
 check_PROGRAMS += test_ncuri
 
 TESTS += test_ncuri
-TESTS += test_parse.sh
-TESTS += test_meta.sh
-TESTS += test_data.sh
-TESTS += test_raw.sh
+#TESTS += test_parse.sh
+#TESTS += test_meta.sh
+#TESTS += test_data.sh
+#TESTS += test_raw.sh
+TESTS += test_test.sh
 
 EXTRA_DIST = test_parse.sh test_meta.sh test_data.sh \
              test_raw.sh test_remote.sh test_hyrax.sh \
-             test_common.sh \
+             test_common.sh test_test.sh \
 	     daptestfiles dmrtestfiles cdltestfiles nctestfiles \
 	     baseline baselineraw baselineremote
 
