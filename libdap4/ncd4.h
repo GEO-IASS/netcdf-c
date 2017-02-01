@@ -171,16 +171,24 @@ extern int nc__dap4(void);
 /**************************************************/
 /* Macro defined functions */
 
+#undef NCCHECK
+#undef FAIL
 #define NCCHECK(expr) if((ret=(expr))) {ret = NCD4_errorNC(ret,__LINE__,__FILE__); goto done;}else{}
 #define FAIL(code,fmt,...) do{ret=NCD4_error(code,__LINE__,__FILE__,fmt , ##__VA_ARGS__); goto done;}while(0)
 
+#undef INCR
+#undef DECR
+#undef DELTA
 #define INCR(offset,size) ((void*)(((char*)(offset))+(size)))
 #define DECR(offset,size) ((void*)(((char*)(offset))-(size)))
 #define DELTA(p1,p2) ((ptrdiff_t)(((char*)(p1))-((char*)(p2))))
 
+#undef GETCOUNTER
+#undef SKIPCOUNTER
 #define GETCOUNTER(p) ((d4size_t)*((COUNTERTYPE*)(p)))
 #define SKIPCOUNTER(p) {p=INCR(p,COUNTERSIZE);}
 
+#undef PUSH
 #define PUSH(list,value) do{if((list)==NULL) {(list)=nclistnew();} else{}; nclistpush((list),(value));}while(0)
 
 #define getnc3id(d4) (getdap(d4)->nc4id)
