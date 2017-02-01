@@ -10,7 +10,7 @@ LDADD = ${top_builddir}/liblib/libnetcdf.la
 AM_CPPFLAGS += -DTOPSRCDIR=${abs_top_srcdir}
 AM_CPPFLAGS += -I$(top_srcdir)/libdap4
 
-AM_TESTS_FD_REDIRECT = 9>&2
+AM_TESTS_FD_REDIRECT = ;cat test_parse.sh.log
 
 # Set up the tests; do the .sh first, then .c
 check_PROGRAMS =
@@ -25,15 +25,14 @@ check_PROGRAMS += test_parse test_meta test_data
 check_PROGRAMS += test_ncuri
 
 #TESTS += test_ncuri
-#TESTS += test_parse.sh
+TESTS += test_parse.sh
 #TESTS += test_meta.sh
 #TESTS += test_data.sh
 #TESTS += test_raw.sh
-XFAIL_TESTS += test_test.sh
 
 EXTRA_DIST = test_parse.sh test_meta.sh test_data.sh \
              test_raw.sh test_remote.sh test_hyrax.sh \
-             test_common.sh test_test.sh \
+             test_common.sh \
 	     daptestfiles dmrtestfiles cdltestfiles nctestfiles \
 	     baseline baselineraw baselineremote
 

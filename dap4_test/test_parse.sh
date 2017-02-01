@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 if test "x$srcdir" = "x" ; then srcdir=`dirname $0`; fi; export srcdir
 
 . ${srcdir}/test_common.sh

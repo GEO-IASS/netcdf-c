@@ -1,3 +1,4 @@
+set -x
 topsrcdir=`./test_environment4 topsrcdir`
 if test "x$srcdir" = "x" ; then srcdir=`dirname $0`; fi; export srcdir
 
