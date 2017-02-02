@@ -137,8 +137,14 @@
 /* Define to 1 if you have the `H5Pget_fapl_mpiposix' function. */
 #undef HAVE_H5PGET_FAPL_MPIPOSIX
 
+/* Define to 1 if you have the `H5Pset_all_coll_metadata_ops' function. */
+#undef HAVE_H5PSET_ALL_COLL_METADATA_OPS
+
 /* Define to 1 if you have the `H5Pset_deflate' function. */
 #undef HAVE_H5PSET_DEFLATE
+
+/* Define to 1 if you have the `H5Pset_libver_bounds' function. */
+#undef HAVE_H5PSET_LIBVER_BOUNDS
 
 /* Define to 1 if you have the `H5Z_SZIP' function. */
 #undef HAVE_H5Z_SZIP
@@ -343,6 +349,9 @@
 
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL
+
+/* if true, use collective metadata ops in parallel netCDF-4 */
+#undef HDF5_HAS_COLL_METADATA_OPS
 
 /* if true, H5free_memory() will be used to free hdf5-allocated memory in
    nc4file. */
