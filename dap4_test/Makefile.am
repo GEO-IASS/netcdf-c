@@ -6,12 +6,12 @@
 # Put together AM_CPPFLAGS and AM_LDFLAGS.
 include $(top_srcdir)/lib_flags.am
 
+LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver-verbose
+TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver-verbose
+
 LDADD = ${top_builddir}/liblib/libnetcdf.la
 AM_CPPFLAGS += -DTOPSRCDIR=${abs_top_srcdir}
 AM_CPPFLAGS += -I$(top_srcdir)/libdap4
-
-#AM_TESTS_FD_REDIRECT = ;cat $(top_builddir)/test_parse.sh.log
-AM_TESTS_FD_REDIRECT = | cat >/dev/tty
 
 # Set up the tests; do the .sh first, then .c
 check_PROGRAMS =
