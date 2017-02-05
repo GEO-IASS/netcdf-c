@@ -10,7 +10,7 @@ LDADD = ${top_builddir}/liblib/libnetcdf.la
 AM_CPPFLAGS += -DTOPSRCDIR=${abs_top_srcdir}
 AM_CPPFLAGS += -I$(top_srcdir)/libdap4
 
-#AM_TESTS_FD_REDIRECT = ;cat $(abs_builddir)/test_parse.sh.log
+AM_TESTS_FD_REDIRECT = ;cat $(abs_builddir)/test_parse.sh.log
 #AM_TESTS_FD_REDIRECT = ;ls -l *.sh
 
 # Set up the tests; do the .sh first, then .c
