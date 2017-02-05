@@ -70,7 +70,7 @@ clean-local: clean-local-check
 
 .PHONY: clean-local-check
 
-xclean-local-check:
+clean-local-check:
 	-rm -rf results
 	-rm -f .dodsrc .daprc
 
