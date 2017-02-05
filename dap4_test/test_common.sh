@@ -1,10 +1,27 @@
 set -x
+
+if test "x$SETX" = x1 ; then set -x ; fi
+
+if test "x$srcdir" = "x" ; then echo "srcdir not set"; exit 2; fi
+
 topsrcdir=`./test_environment4 topsrcdir`
 if test "x$srcdir" = "x" ; then srcdir=`dirname $0`; fi; export srcdir
 
+# validate srcdir against topsrcdir
+sd0=`pwd`
+cd ${topsrcdir}
+tsd0=`pwd`
+cd $srcdir/..
+tsd1=`pwd`
+cd $sd0
+
+if test "x$tsd0" != "x${tds1}" ; then
+echo "srcdir mismatch: ${tsd0} vs ${tsd1}"
+fi
+
 if test $# = 0 ; then
 TEST=1
-else
+nelse
 for arg in "$@"; do
   case "${arg}" in
   test) TEST=1 ;;
@@ -16,9 +33,6 @@ for arg in "$@"; do
   esac
 done
 fi
-
-set -e
-if test "x$SETX" = x1 ; then echo "file=$0"; set -x ; fi
 
 # Define input paths
 WD=`pwd`
@@ -88,5 +102,5 @@ suppress() {
 }
 
 VG="valgrind --leak-check=full --error-exitcode=1 --num-callers=100"
-if test "x$USEVG" = x ; then VG=;fi
+if test "x$USEVG" = x ; then VG=; fi
 
