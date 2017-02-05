@@ -203,7 +203,7 @@ ncbytesnull(NCbytes* bb)
 
 /* Remove char at position i */
 int
-ncbytesremove(NCbytes* bb, int pos)
+ncbytesremove(NCbytes* bb, unsigned long pos)
 {
     if(bb == NULL) return ncbytesfail();
     if(bb->length <= pos) return ncbytesfail();

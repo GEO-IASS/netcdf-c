@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <string.h>
 
+#include "netcdf.h"
 #include "ocinternal.h"
 #include "ocdebug.h"
 #include "ocdump.h"

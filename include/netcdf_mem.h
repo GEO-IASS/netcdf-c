@@ -12,7 +12,7 @@
 #ifndef NETCDF_MEM_H
 #define NETCDF_MEM_H 1
 
-#include "netcdf.h"
+#include <netcdf.h>
 
 #if defined(__cplusplus)
 extern "C" {

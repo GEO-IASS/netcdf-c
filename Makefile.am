@@ -54,7 +54,7 @@ NC_TEST4 = nc_test4
 endif
 
 # Build the dap2 client
-if ENABLE_DAP2
+if ENABLE_DAP
 OCLIB = oc2
 DAP2 = libdap2
 NCDAP2TESTDIR = ncdap_test

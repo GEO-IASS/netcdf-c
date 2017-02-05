@@ -52,6 +52,10 @@ typedef struct NCURI {
 #endif
 } NCURI;
 
+#if defined(_CPLUSPLUS_) || defined(__CPLUSPLUS__) || defined(__CPLUSPLUS)
+extern "C" {
+#endif
+
 extern int ncuriparse(const char* s, NCURI** ncuri);
 extern void ncurifree(NCURI* ncuri);
 
@@ -73,5 +77,9 @@ extern char* ncuriencode(char* s, char* allowable);
 extern char* ncuridecode(char* s);
 extern char* ncuridecodeonly(char* s, char*);
 extern int ncuriremoveparam(NCURI*, const char* key);
+
+#if defined(_CPLUSPLUS_) || defined(__CPLUSPLUS__) || defined(__CPLUSPLUS)
+}
+#endif
 
 #endif /*NCURI_H*/

@@ -33,6 +33,7 @@ rm -fr build
 mkdir build
 cd build
 
-cmake -GVisual\ Studio\ 14\ 2015 $FLAGS ${ZLIB} ${HDF5} ${CURL} ..
-cmake --build . --config Debug
-CTEST_OUTPUT_ON_FAILURE=1 cmake --build . --target test
+cmake $FLAGS ${ZLIB} ${HDF5} ${CURL} ..
+# We must use Release config here because Debug will invoke a runtime dialog box.
+cmake --build . --config Release
+cmake --build . --target RUN_TESTS

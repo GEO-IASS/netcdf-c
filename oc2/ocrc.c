@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "netcdf.h"
 #include "ocinternal.h"
 #include "ocdebug.h"
 #include "nclog.h"

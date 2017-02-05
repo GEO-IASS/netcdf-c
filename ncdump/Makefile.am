@@ -28,7 +28,7 @@ nc4print_SOURCES = nc4print.c
 endif
 
 # Conditionally build the ocprint program, but do not install
-if ENABLE_DAP2
+if ENABLE_DAP
 bin_PROGRAMS += ocprint
 ocprint_SOURCES=ocprint.c
 endif

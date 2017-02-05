@@ -1,7 +1,7 @@
 ## This is a automake file, part of Unidata's netCDF package.
 # Copyright 2011, see the COPYRIGHT file for more information.
 
-# This file builds and runs DAP tests.
+# This file builds and runs DAP4 tests.
 
 # Put together AM_CPPFLAGS and AM_LDFLAGS.
 include $(top_srcdir)/lib_flags.am
@@ -10,25 +10,47 @@ LDADD = ${top_builddir}/liblib/libnetcdf.la
 AM_CPPFLAGS += -DTOPSRCDIR=${abs_top_srcdir}
 AM_CPPFLAGS += -I$(top_srcdir)/libdap4
 
-AM_TESTS_FD_REDIRECT = ;cat $(abs_builddir)/test_parse.sh.log
+#AM_TESTS_FD_REDIRECT = ;cat $(abs_builddir)/test_parse.sh.log
+#AM_TESTS_FD_REDIRECT = ;ls -l *.sh
 
 # Set up the tests; do the .sh first, then .c
 check_PROGRAMS =
 TESTS =
 
-test_ncuri_SOURCES = test_ncuri.c
+if ENABLE_DAP4
+
+# WARNING: these are unit tests, so they will not
+# appear in CMakeLists.txt
+check_PROGRAMS += test_parse test_meta test_data
 test_parse_SOURCES = test_parse.c test_common.h
 test_meta_SOURCES = test_meta.c test_common.h
 test_data_SOURCES = test_data.c test_common.h
-
-check_PROGRAMS += test_parse test_meta test_data
-check_PROGRAMS += test_ncuri
-
-#TESTS += test_ncuri
 TESTS += test_parse.sh
-#TESTS += test_meta.sh
-#TESTS += test_data.sh
-#TESTS += test_raw.sh
+TESTS += test_meta.sh
+TESTS += test_data.sh
+
+if BUILD_UTILITIES
+# These rely on ncdump
+TESTS += test_raw.sh
+endif
+
+# Note: This program name was changed to test_environment4
+# to avoid cmake complaint about duplicate targets.
+check_PROGRAMS += test_environment4
+test_environment4_SOURCES = test_environment4.c
+
+if ENABLE_DAP_REMOTE_TESTS
+# Note: This program name was changed to findtestserver4
+# to avoid cmake complaint about duplicate targets.
+check_PROGRAMS += findtestserver4
+findtestserver4_SOURCES = findtestserver4.c
+if BUILD_UTILITIES
+  # relies on ncdump
+  TESTS += test_remote.sh
+endif
+endif
+
+endif #ENABLE_DAP4
 
 EXTRA_DIST = test_parse.sh test_meta.sh test_data.sh \
              test_raw.sh test_remote.sh test_hyrax.sh \
@@ -48,21 +70,9 @@ clean-local: clean-local-check
 
 .PHONY: clean-local-check
 
-clean-local-check:
+xclean-local-check:
 	-rm -rf results
 	-rm -f .dodsrc .daprc
-
-# Note: This program name was changed to test_environment4
-# to avoid cmake complaint about duplicate targets.
-check_PROGRAMS += test_environment4
-test_environment4_SOURCES = test_environment4.c
-
-if ENABLE_DAP4_REMOTE_TESTS
-# Note: This program name was changed to findtestserver4
-# to avoid cmake complaint about duplicate targets.
-check_PROGRAMS += findtestserver4
-findtestserver4_SOURCES = findtestserver4.c
-endif
 
 # The shell file maketests.sh is used to build the testdata
 # for dap4 testing. It creates and fills the directories

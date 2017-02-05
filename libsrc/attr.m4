@@ -9,8 +9,8 @@ dnl
  *      See netcdf/COPYRIGHT file for copying and redistribution conditions.
  */
 
+#include "netcdf.h"
 #include "nc3internal.h"
-#include "ncdispatch.h"
 #include "nc3dispatch.h"
 #include <stdlib.h>
 #include <string.h>

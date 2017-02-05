@@ -4,7 +4,7 @@ DB=1
 #X=-x
 FAST=1
 
-HDF5=1
+#HDF5=1
 DAP=1
 #HDF4=1
 #PNETCDF=1
@@ -86,7 +86,7 @@ if test "x$HDF4" = "x1" ; then
 LDFLAGS="$LDFLAGS -ljpeg"
 fi
 
-if test "x$DAP" = "x1" -o "x$CDMR" = "x1" -o "x$RPC" = "x1" ; then
+if test "x$DAP" = "x1" ; then
 if curl-config --version >/dev/null ; then
 TMP=`curl-config --cflags`
 CPPFLAGS="$TMP $CPPFLAGS"
@@ -115,7 +115,6 @@ FLAGS="$FLAGS --disable-examples"
 #FLAGS="$FLAGS --enable-large-file-tests"
 #FLAGS="$FLAGS --disable-testsets"
 #FLAGS="$FLAGS --disable-dap-remote-tests"
-FLAGS="$FLAGS --enable-dap4-remote-tests"
 #FLAGS="$FLAGS --with-testservers=remotetest.unidata.ucar.edu,localhost:8081"
 #FLAGS="$FLAGS --enable-dap-auth-tests" -- requires a new remotetest server
 #FLAGS="$FLAGS --enable-doxygen"

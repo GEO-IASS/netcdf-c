@@ -53,8 +53,8 @@ test_struct_array.syn
 
 TESTSERVER=`./findtestserver4 dap4 d4ts`
 if test "x$TESTSERVER" = x ; then
-failure "WARNING: Cannot find d4ts testserver"
-exit
+echo "***XFAIL: Cannot find d4ts testserver"
+exit 0
 fi
 
 if test "x${RESET}" = x1 ; then rm -fr ${BASELINER}/*.dmp ; fi

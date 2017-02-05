@@ -33,8 +33,9 @@ int optind;
 #ifdef HAVE_LOCALE_H
 #include <locale.h>
 #endif	/* HAVE_LOCALE_H */
-#include "netcdf.h"
+
 #include "netcdf_mem.h"
+#include "netcdf.h"
 #include "utils.h"
 #include "nccomps.h"
 #include "nctime0.h"		/* new iso time and calendar stuff */

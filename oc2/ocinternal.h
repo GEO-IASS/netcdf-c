@@ -40,6 +40,7 @@
 #define CURL_DISABLE_TYPECHECK 1
 #include <curl/curl.h>
 
+#include "netcdf.h"
 #include "nclist.h"
 #include "ncbytes.h"
 #include "ncuri.h"

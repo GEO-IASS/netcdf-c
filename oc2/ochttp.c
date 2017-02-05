@@ -2,11 +2,9 @@
  See the COPYRIGHT file for more information. */
 
 #include "config.h"
-#include <sys/stat.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include <fcntl.h>
 #include "ocinternal.h"
 #include "ocdebug.h"
 #include "ochttp.h"

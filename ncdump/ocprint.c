@@ -17,10 +17,11 @@
 #include <string.h>
 #include <strings.h>
 
-#include <oc.h>
-#include <ocx.h>
+#include "oc.h"
+#include "ocx.h"
 
 /* Utilities */
+#include "netcdf.h"
 #include "ncuri.h"
 #include "nclist.h"
 #include "nclog.h"

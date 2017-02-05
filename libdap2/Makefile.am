@@ -29,7 +29,7 @@ if USE_NETCDF4
 #HDRS +=constraints4.h ncd4dispatch.h ncdap4.h
 endif
 
-if ENABLE_DAP2
+if ENABLE_DAP
 
 if USE_NETCDF4
 AM_CPPFLAGS += -I$(top_srcdir)/libsrc4
@@ -49,7 +49,7 @@ libdap2_la_LIBADD =
 #	 ${top_builddir}/oc2/liboc.la			\
 #	 ${top_builddir}/libdispatch/libdispatch.la
 #
-endif # ENABLE_DAP2
+endif # ENABLE_DAP
 
 # These rule are used if someone wants to rebuild the grammar files.
 # Otherwise never invoked, but records how to do it.

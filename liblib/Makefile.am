@@ -47,11 +47,11 @@ libnetcdf_la_LIBADD += ${top_builddir}/libsrcp/libnetcdfp.la
 endif # USE_PNETCDF
 
 # + dap
-if ENABLE_DAP2
+if ENABLE_DAP
 AM_CPPFLAGS += -I${top_srcdir}/libdap2 -I${top_srcdir}/oc
 libnetcdf_la_LIBADD += ${top_builddir}/libdap2/libdap2.la
 libnetcdf_la_LIBADD += ${top_builddir}/oc2/liboc.la
-endif # ENABLE_DAP2
+endif # ENABLE_DAP
 
 if ENABLE_DAP4
 AM_CPPFLAGS += -I${top_srcdir}/libdap4

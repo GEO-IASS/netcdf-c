@@ -7,14 +7,16 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
 #endif
-#include <errno.h>
+#if defined(_WIN32) || defined(_WIN64)
+#include <io.h>
+#include <direct.h>
+#include <process.h>
+#endif
 
-#ifdef _MSC_VER
-typedef int pid_t;
-#endif
+#include <errno.h>
 
 #include "ocinternal.h"
 #include "ocdebug.h"
@@ -52,18 +54,6 @@ static int dataError(XXDR* xdrs, OCstate*);
 static OCerror ocset_curlproperties(OCstate*);
 
 extern OCnode* makeunlimiteddimension(void);
-
-#if defined(_WIN32) || defined(_WIN64)
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
-#endif
-#define _S_IREAD 256
-#define _S_IWRITE 128
-#else
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
-#endif
 
 /* Collect global state info in one place */
 struct OCGLOBALSTATE ocglobalstate;
@@ -618,7 +608,11 @@ ocset_curlproperties(OCstate* state)
 	/* If no cookie file was defined, define a default */
 	char tmp[OCPATHMAX+1];
         int stat;
+#if defined(_WIN32) || defined(_WIN64)
+	int pid = _getpid();
+#else
 	pid_t pid = getpid();
+#endif
 	snprintf(tmp,sizeof(tmp)-1,"%s/%s.%ld/",ocglobalstate.tempdir,OCDIR,(long)pid);
 #ifdef _WIN32
 	stat = mkdir(tmp);

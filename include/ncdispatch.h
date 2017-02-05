@@ -112,40 +112,40 @@ typedef struct NC_MEM_INFO {
 /*Forward*/
 typedef struct NC_Dispatch NC_Dispatch;
 
-EXTERNL int NCDISPATCH_initialize(void);
-EXTERNL int NCDISPATCH_finalize(void);
+extern int NCDISPATCH_initialize(void);
+extern int NCDISPATCH_finalize(void);
 
-EXTERNL NC_Dispatch* NC3_dispatch_table;
-EXTERNL int NC3_initialize(void);
-EXTERNL int NC3_finalize(void);
+extern NC_Dispatch* NC3_dispatch_table;
+extern int NC3_initialize(void);
+extern int NC3_finalize(void);
 
-#ifdef ENABLE_DAP2
-EXTERNL NC_Dispatch* NCD2_dispatch_table;
-EXTERNL int NCD2_initialize(void);
-EXTERNL int NCD2_finalize(void);
+#ifdef ENABLE_DAP
+extern NC_Dispatch* NCD2_dispatch_table;
+extern int NCD2_initialize(void);
+extern int NCD2_finalize(void);
 #endif
 #ifdef ENABLE_DAP4
-EXTERNL NC_Dispatch* NCD4_dispatch_table;
-EXTERNL int NCD4_initialize(void);
-EXTERNL int NCD4_finalize(void);
+extern NC_Dispatch* NCD4_dispatch_table;
+extern int NCD4_initialize(void);
+extern int NCD4_finalize(void);
 #endif
 
 #ifdef USE_PNETCDF
-EXTERNL NC_Dispatch* NCP_dispatch_table;
-EXTERNL int NCP_initialize(void);
-EXTERNL int NCP_finalize(void);
+extern NC_Dispatch* NCP_dispatch_table;
+extern int NCP_initialize(void);
+extern int NCP_finalize(void);
 #endif
 
 #ifdef USE_NETCDF4
-EXTERNL NC_Dispatch* NC4_dispatch_table;
-EXTERNL int NC4_initialize(void);
-EXTERNL int NC4_finalize(void);
+extern NC_Dispatch* NC4_dispatch_table;
+extern int NC4_initialize(void);
+extern int NC4_finalize(void);
 #endif
 
 /* Vectors of ones and zeros */
-EXTERNL size_t nc_sizevector0[NC_MAX_VAR_DIMS];
-EXTERNL size_t nc_sizevector1[NC_MAX_VAR_DIMS];
-EXTERNL ptrdiff_t nc_ptrdiffvector1[NC_MAX_VAR_DIMS];
+extern size_t nc_sizevector0[NC_MAX_VAR_DIMS];
+extern size_t nc_sizevector1[NC_MAX_VAR_DIMS];
+extern ptrdiff_t nc_ptrdiffvector1[NC_MAX_VAR_DIMS];
 
 /**************************************************/
 /* Forward */
@@ -170,14 +170,14 @@ int NC_open(const char *path, int cmode,
 	    int *ncidp);
 
 /* Expose the default vars and varm dispatch entries */
-EXTERNL int NCDEFAULT_get_vars(int, int, const size_t*,
+extern int NCDEFAULT_get_vars(int, int, const size_t*,
 	       const size_t*, const ptrdiff_t*, void*, nc_type);
-EXTERNL int NCDEFAULT_put_vars(int, int, const size_t*,
+extern int NCDEFAULT_put_vars(int, int, const size_t*,
 	       const size_t*, const ptrdiff_t*, const void*, nc_type);
-EXTERNL int NCDEFAULT_get_varm(int, int, const size_t*,
+extern int NCDEFAULT_get_varm(int, int, const size_t*,
                const size_t*, const ptrdiff_t*, const ptrdiff_t*,
                void*, nc_type);
-EXTERNL int NCDEFAULT_put_varm(int, int, const size_t*,
+extern int NCDEFAULT_put_varm(int, int, const size_t*,
                const size_t*, const ptrdiff_t*, const ptrdiff_t*,
                const void*, nc_type);
 
@@ -316,29 +316,29 @@ typedef struct NCcommon {
 	char* path; /* as specified at open or create */
 } NCcommon;
 
-EXTERNL size_t NC_atomictypelen(nc_type xtype);
-EXTERNL char* NC_atomictypename(nc_type xtype);
+extern size_t NC_atomictypelen(nc_type xtype);
+extern char* NC_atomictypename(nc_type xtype);
 
 #ifdef OBSOLETE
 /* Provide a dispatch table overlay facility */
-EXTERNL int NC_dispatch_overlay(const NC_Dispatch* overlay,
+extern int NC_dispatch_overlay(const NC_Dispatch* overlay,
                                         const NC_Dispatch* base,
 					NC_Dispatch* merge);
 
 /* Get/set the override dispatch table */
-EXTERNL NC_Dispatch* NC_get_dispatch_override(void);
-EXTERNL void NC_set_dispatch_override(NC_Dispatch*);
+extern NC_Dispatch* NC_get_dispatch_override(void);
+extern void NC_set_dispatch_override(NC_Dispatch*);
 #endif
 
 /* Return model as specified by the url, if any;
    return a modified url suitable for passing to curl
 */
-EXTERNL int NC_urlmodel(const char* path, int mode, char** newurl);
+extern int NC_urlmodel(const char* path, int mode, char** newurl);
 
 /* allow access url parse and params without exposing nc_url.h */
-EXTERNL int NCDAP_urlparse(const char* s, void** dapurl);
-EXTERNL void NCDAP_urlfree(void* dapurl);
-EXTERNL const char* NCDAP_urllookup(void* dapurl, const char* param);
+extern int NCDAP_urlparse(const char* s, void** dapurl);
+extern void NCDAP_urlfree(void* dapurl);
+extern const char* NCDAP_urllookup(void* dapurl, const char* param);
 
 #if defined(DLL_NETCDF)
 # if defined(DLL_EXPORT)
@@ -348,24 +348,19 @@ EXTERNL const char* NCDAP_urllookup(void* dapurl, const char* param);
 # endif
 NCC_EXTRA extern int nc__testurl(const char* path, char** basename);
 #else
-EXTERNL int
+extern int
  nc__testurl(const char* parth, char** basename);
 #endif
 
-/* Test for specific set of servers */
-EXTERNL char* NC_findtestserver(const char*, const char**);
-EXTERNL int nc_open_mem(const char*, int, size_t, void*, int*);
-EXTERNL int nc_finalize();
-
 /* Ping a specific server */
-EXTERNL int NCDAP2_ping(const char*);
-EXTERNL int NCDAP4_ping(const char*);
+extern int NCDAP2_ping(const char*);
+extern int NCDAP4_ping(const char*);
 
 /* Misc */
 
-EXTERNL int NC_getshape(int ncid, int varid, int ndims, size_t* shape);
-EXTERNL int NC_is_recvar(int ncid, int varid, size_t* nrecs);
-EXTERNL int NC_inq_recvar(int ncid, int varid, int* nrecdims, int* is_recdim);
+extern int NC_getshape(int ncid, int varid, int ndims, size_t* shape);
+extern int NC_is_recvar(int ncid, int varid, size_t* nrecs);
+extern int NC_inq_recvar(int ncid, int varid, int* nrecdims, int* is_recdim);
 
 #define nullstring(s) (s==NULL?"(null)":s)
 
@@ -378,14 +373,16 @@ EXTERNL int NC_inq_recvar(int ncid, int varid, int* nrecdims, int* is_recdim);
 #define TRACE(fname)
 #endif
 
-EXTERNL size_t NC_coord_zero[NC_MAX_VAR_DIMS];
-EXTERNL size_t NC_coord_one[NC_MAX_VAR_DIMS];
+extern size_t NC_coord_zero[NC_MAX_VAR_DIMS];
+extern size_t NC_coord_one[NC_MAX_VAR_DIMS];
 
-EXTERNL int NC_argc;
-EXTERNL char* NC_argv[];
-EXTERNL int NC_initialized;
+extern int NC_argc;
+extern char* NC_argv[];
+extern int NC_initialized;
 
-EXTERNL int nc_initialize();
+extern int nc_initialize();
+extern int nc_finalize();
+
 
 
 /**
@@ -394,7 +391,7 @@ but not in the netcdf.h API. These need to
 be exposed for use in delegation such as
 in libdap2.
 */
-EXTERNL int
+extern int
 NCDISPATCH_inq_var_all(int ncid, int varid, char *name, nc_type *xtypep,
                int *ndimsp, int *dimidsp, int *nattsp,
                int *shufflep, int *deflatep, int *deflate_levelp,
@@ -402,7 +399,7 @@ NCDISPATCH_inq_var_all(int ncid, int varid, char *name, nc_type *xtypep,
                int *no_fill, void *fill_valuep, int *endiannessp,
 	       int *options_maskp, int *pixels_per_blockp);
 
-EXTERNL int
+extern int
 NCDISPATCH_get_att(int ncid, int varid, const char* name, void* value, nc_type t);
 
 #endif /* _DISPATCH_H */

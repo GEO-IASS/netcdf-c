@@ -20,10 +20,8 @@ Research/Unidata. See COPYRIGHT file for more info.
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
-#endif
 #include "ncdispatch.h"
+#include "netcdf_mem.h"
 
 extern int NC_initialized;
 extern int NC_finalized;
@@ -166,9 +164,6 @@ static int NC_check_file_type(const char *path, int flags, void *parameters,
 	{
 	    FILE *fp;
 	    size_t i;
-#ifdef HAVE_SYS_STAT_H
-	    struct stat st;
-#endif
 #ifdef HAVE_FILE_LENGTH_I64
           __int64 file_len = 0;
 #endif
@@ -1889,7 +1884,7 @@ NC_open(const char *path0, int cmode,
    if(dispatcher != NULL) goto havetable;
 
    /* Figure out what dispatcher to use */
-#if defined(ENABLE_DAP2)
+#if defined(ENABLE_DAP)
    if(model == (NC_FORMATX_DAP2))
 	dispatcher = NCD2_dispatch_table;
    else
@@ -1915,6 +1910,9 @@ NC_open(const char *path0, int cmode,
       return  NC_ENOTNC;
 
 havetable:
+
+   if(dispatcher == NULL)
+	return NC_ENOTNC;
 
    /* Create the NC* instance and insert its dispatcher */
    stat = new_NC(dispatcher,path,cmode,&ncp);

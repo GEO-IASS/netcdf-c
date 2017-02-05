@@ -31,11 +31,6 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include <sys/types.h>
-#ifdef EZXML_MMAP
-#include <sys/mman.h>
-#endif /* EZXML_MMAP*/
-#include <sys/stat.h>
 #include "ezxml.h"
 
 #define EZXML_WS   "\t\r\n "  /* whitespace*/
@@ -624,50 +619,6 @@ ezxml_t ezxml_parse_fp(FILE *fp)
     root->len = -1; /* so we know to free s in ezxml_free()*/
     return &root->xml;
 }
-
-#if 0
-/* A wrapper for ezxml_parse_str() that accepts a file descriptor. First*/
-/* attempts to mem map the file. Failing that, reads the file into memory.*/
-/* Returns NULL on failure.*/
-ezxml_t ezxml_parse_fd(int fd)
-{
-    ezxml_root_t root;
-    struct stat st;
-    size_t l;
-    void *m;
-
-    if (fd < 0) return NULL;
-    fstat(fd, &st);
-
-#ifdef EZXML_MMAP
-    l = (st.st_size + sysconf(_SC_PAGESIZE) - 1) & ~(sysconf(_SC_PAGESIZE) -1);
-    if ((m = mmap(NULL, l, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0)) !=
-        MAP_FAILED) {
-        madvise(m, l, MADV_SEQUENTIAL); /* optimize for sequential access*/
-        root = (ezxml_root_t)ezxml_parse_str(m, st.st_size);
-        madvise(m, root->len = l, MADV_NORMAL); /* put it back to normal*/
-    }
-    else { /* mmap failed, read file into memory*/
-#endif /* EZXML_MMAP*/
-        l = read(fd, m = malloc(st.st_size), st.st_size);
-        root = (ezxml_root_t)ezxml_parse_str(m, l);
-        root->len = -1; /* so we know to free s in ezxml_free()*/
-#ifdef EZXML_MMAP
-    }
-#endif /* EZXML_MMAP*/
-    return &root->xml;
-}
-
-/* a wrapper for ezxml_parse_fd that accepts a file name*/
-ezxml_t ezxml_parse_file(const char *file)
-{
-    int fd = open(file, O_RDONLY, 0);
-    ezxml_t xml = ezxml_parse_fd(fd);
-    
-    if (fd >= 0) close(fd);
-    return xml;
-}
-#endif /*0*/
 
 /* Encodes ampersand sequences appending the results to *dst, reallocating *dst*/
 /* if length excedes max. a is non-zero for attribute encoding. Returns *dst*/

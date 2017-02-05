@@ -6,8 +6,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "nclog.h"
 #include "dapincludes.h"
+#include "nclog.h"
 
 int ncdap3debug = 0;
 

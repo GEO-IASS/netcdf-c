@@ -320,42 +320,18 @@ AC_ARG_ENABLE([logging],
 test "x$enable_logging" = xyes || enable_logging=no
 AC_MSG_RESULT([$enable_logging])
 
-## Capture the state of the --disable-dap, --disable-dap2, --disable-dap4 flags
-
-AC_MSG_CHECKING([whether DAP2+DAP4 client is to enabled])
-AC_ARG_ENABLE([dap],[AS_HELP_STRING([--disable-dap],[disable DAP2 and DAP4 clients.])])
+## Capture the state of the --enable-dap flag => enable dap2+dap4
+AC_MSG_CHECKING([whether DAP client(s) are to be built])
+AC_ARG_ENABLE([dap],
+                 [AS_HELP_STRING([--disable-dap],
+                                 [build without DAP client support.])])
 test "x$enable_dap" = xno || enable_dap=yes
 AC_MSG_RESULT($enable_dap)
-if test "x$enable_dap" = "xyes" ; then
-    enable_dap2=yes
-fi
-
-AC_MSG_CHECKING([whether DAP2 client is ensabled])
-AC_ARG_ENABLE([dap2],[AS_HELP_STRING([--disable-dap2],[disable DAP2 clients.])])
-test "x$enable_dap2" = xno || enable_dap2=yes
-AC_MSG_RESULT($enable_dap2)
-
-AC_MSG_CHECKING([whether DAP4 client is to ensabled])
-AC_ARG_ENABLE([dap4],[AS_HELP_STRING([--disable-dap4],[disable DAP4 clients.])])
-test "x$enable_dap4" = xno || enable_dap4=yes
-AC_MSG_RESULT($enable_dap4)
-
-# Now figure out what is enabled; enable/disable dap takes precedence
-if test "x$enable_dap" = "xno" ; then
-    enable_dap4=no
-    enable_dap2=no
-fi
-
-# Enable dap4 only if netcdf-4 is enabled
-if test "x$enable_netcdf_4" = "xno" ; then
-    enable_dap4=no
-fi
 
 # Curl support is required if and only if any of these flags are set:
-# 1. --enable-dap2
-# 2. --enable-dap4
+# 1. --enable-dap
 
-if test "x$enable_dap2" = "xyes" -o "x$enable_dap4" = "xyes" ; then
+if test "x$enable_dap" = "xyes" ; then
 require_curl=yes
 else
 require_curl=no
@@ -373,8 +349,7 @@ if test $require_curl = yes ; then
   #elif test $found_curl = no ; then
   if test $found_curl = no ; then
     AC_MSG_NOTICE([libcurl not found; disabling remote protocol(s) support])
-    enable_dap2=no
-    enable_dap4=no
+    enable_dap=no
   elif test $found_curl = yes ; then
     # Redo the check lib to actually add -lcurl
     #AC_CHECK_LIB([curl], [curl_easy_setopt])
@@ -383,27 +358,15 @@ if test $require_curl = yes ; then
 fi
 
 # Default is now to always do the short remote tests
-# This applied to both dap2 and dap4
 AC_MSG_CHECKING([whether dap remote testing should be enabled (default on)])
 AC_ARG_ENABLE([dap-remote-tests],
               [AS_HELP_STRING([--disable-dap-remote-tests],
                                  [disable dap remote tests])])
 test "x$enable_dap_remote_tests" = xno || enable_dap_remote_tests=yes
-if test "x$enable_dap2" = "xno" -o "x$enable_dap4" = "xno"; then
+if test "x$enable_dap" = "xno" ; then
   enable_dap_remote_tests=no
 fi
-
-# Temporary: default is to not do dap4 remote tests
-AC_MSG_RESULT($enable_dap4_remote_tests)
-AC_MSG_CHECKING([whether DAP4  remote testing should be enabled (default off)])
-AC_ARG_ENABLE([dap4-remote-tests],
-              [AS_HELP_STRING([--enable-dap4-remote-tests],
-                                 [enable dap4 remote tests])])
-test "x$enable_dap4_remote_tests" = xyes || enable_dap4_remote_tests=no
-AC_MSG_RESULT($enable_dap4_remote_tests)
-if test "x$enable_dap4" = "xno" ; then
-  enable_dap4_remote_tests=no
-fi
+AC_MSG_RESULT($enable_dap_remote_tests)
 
 # Default is now to do the remote authorization tests
 AC_MSG_CHECKING([whether dap remote authorization testing should be enabled (default off)])
@@ -412,7 +375,7 @@ AC_ARG_ENABLE([dap-auth-tests],
                                  [enable dap remote authorization tests])])
 test "x$enable_dap_auth_tests" = xyes || enable_dap_auth_tests=no
 # dap must be enabled
-if test "x$enable_dap2" = "xno" -o "x$enable_dap4" = "xno" ; then
+if test "x$enable_dap" = "xno" ; then
   enable_dap_auth_tests=no
 fi
 # if remote tests are disabled, then so is this
@@ -420,6 +383,21 @@ if test "x$enable_dap_remote_tests" = "xno" ; then
   enable_dap_remote_tests=no
 fi
 AC_MSG_RESULT($enable_dap_auth_tests)
+
+# Control if groups are supported in [netcdf4]dap2 code
+AC_MSG_CHECKING([whether [netcdf4] group names for DAP2 hould be enabled (default on)])
+AC_ARG_ENABLE([dap-groups],
+              [AS_HELP_STRING([--disable-dap-groups],
+                                 [disable [netcdf4] DAP2 group names])])
+test "x$enable_dap_groups" = xno || enable_dap_groups=yes
+AC_MSG_RESULT($enable_dap_groups)
+if test "x$enable_dap" = "xno" ; then
+  AC_MSG_NOTICE([DAP2 groups is being disabled because DAP2 support is  disabled or netcdf-4 disabled])
+  enable_dap_groups=no
+fi
+if test "x$enable_dap_groups" = xyes; then
+AC_DEFINE([ENABLE_DAP_GROUPS], [1], [if true, enable DAP group names])
+fi
 
 # Did the user specify a list of test servers to try for remote tests?
 AC_MSG_CHECKING([which remote test server(s) to use])
@@ -429,31 +407,20 @@ AC_ARG_WITH([testservers],
             [REMOTETESTSERVERS=$with_testservers], [REMOTETESTSERVERS=no])
 msg="$REMOTETESTSERVERS"
 if test "x$REMOTETESTSERVERS" = xno ; then
-msg="localhost:8081,localhost:8080,remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu (default)"
-REMOTETESTSERVERS=localhost:8081,localhost:8080,remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu
+  msg="localhost:8081,localhost:8080,remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu (default)"
+  REMOTETESTSERVERS=localhost:8081,localhost:8080,remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu
 fi
 AC_MSG_RESULT([$msg])
 AC_DEFINE_UNQUOTED([REMOTETESTSERVERS], ["$REMOTETESTSERVERS"], [the testservers for remote tests.])
 
 # Set the config.h flags
-if test "x$enable_dap2" = xyes -a "x$enable_dap4" = xyes; then
-   enable_dap=yes
-   AC_DEFINE([ENABLE_DAP], [1], [if true, build DAP2 and DAP4 Client])
-fi
-
-if test "x$enable_dap2" = xyes; then
-   AC_DEFINE([USE_DAP], [1], [(Deprecated) if true, build DAP Client])
-   AC_DEFINE([ENABLE_DAP2], [1], [if true, build DAP2 Client])
-fi
-if test "x$enable_dap4" = xyes; then
-   AC_DEFINE([ENABLE_DAP4], [1], [if true, build DAP4 Client])
+if test "x$enable_dap" = xyes; then
+   AC_DEFINE([USE_DAP], [1], [if true, build DAP Client])
+   AC_DEFINE([ENABLE_DAP], [1], [if true, build DAP Client])
 fi
 
 if test "x$enable_dap_remote_tests" = xyes; then
-   AC_DEFINE([ENABLE_DAP_REMOTE_TESTS], [1], [if true, do dap remote tests])
-fi
-if test "x$enable_dap4_remote_tests" = xyes; then
-   AC_DEFINE([ENABLE_DAP4_REMOTE_TESTS], [1], [if true, do dap4 remote tests])
+   AC_DEFINE([ENABLE_DAP_REMOTE_TESTS], [1], [if true, do remote tests])
 fi
 
 AC_MSG_CHECKING([whether the time-consuming dap tests should be enabled (default off)])
@@ -823,7 +790,7 @@ AC_CHECK_FUNCS([strlcat strerror snprintf strchr strrchr strcat strcpy \
 		mkstemp rand random memcmp \
 		getrlimit gettimeofday fsync MPI_Comm_f2c])
 
-# Does the user want to disable NC_DISKLESS?
+# Does the user want to use NC_DISKLESS?
 AC_MSG_CHECKING([whether in-memory files are enabled])
 AC_ARG_ENABLE([diskless],
               [AS_HELP_STRING([--disable-diskless],
@@ -831,14 +798,24 @@ AC_ARG_ENABLE([diskless],
 test "x$enable_diskless" = xno || enable_diskless=yes
 AC_MSG_RESULT($enable_diskless)
 
-# DAP2 & DAP4 require diskless
-if test "x$enable_diskless" = "xno" ; then
-  if test "x$enable_dap2" = "xyes" -o "x$enable_dap4" = "xyes"; then
-    enable_dap2=no
+# Check for enable DAP
+if test "x$enable_dap" = "xyes" -a "xenable_diskless" = xno  ; then
+AC_MSG_NOTICE([--enable-dap requires --enable-diskless])
+AC_MSG_NOTICE([dap support disabled])
+enable_dap=no
+fi
+
+# Set flags for dap4
+enable_dap4=$enable_dap
+
+# disable dap4 if netcdf-4 is disabled
+if test "x$enable_netcdf_4" = "xno" ; then
+    AC_MSG_WARN([netcdf-4 not enabled; disabling DAP4])
     enable_dap4=no
-    AC_MSG_NOTICE([--enable-dap(2|4) requires --enable-diskless])
-    AC_MSG_NOTICE([dap2 & dap4 support disabled])
-  fi
+fi
+
+if test "x$enable_dap4" = xyes; then
+   AC_DEFINE([ENABLE_DAP4], [1], [if true, build DAP4 Client])
 fi
 
 # check for useful, but not essential, memio support
@@ -875,6 +852,7 @@ AC_STRUCT_ST_BLKSIZE
 UD_CHECK_IEEE
 AC_CHECK_TYPES([size_t, ssize_t, ptrdiff_t, uchar, longlong, ushort, uint, int64, uint64 off_t])
 AC_TYPE_SIZE_T
+AC_TYPE_OFF_T
 AC_C_CHAR_UNSIGNED
 AC_C_BIGENDIAN
 
@@ -902,13 +880,13 @@ AC_CHECK_SIZEOF(float)
 $SLEEPCMD
 AC_CHECK_SIZEOF(double)
 $SLEEPCMD
-AC_CHECK_SIZEOF(unsigned long long)
-$SLEEPCMD
 AC_CHECK_SIZEOF(off_t)
 $SLEEPCMD
 AC_CHECK_SIZEOF(size_t)
 $SLEEPCMD
-AC_CHECK_SIZEOF(ssize_t)
+AC_CHECK_SIZEOF(unsigned long long)
+$SLEEPCMD
+AC_CHECK_SIZEOF(unsigned long long)
 
 $SLEEPCMD
 if test "$ac_cv_type_ushort" = yes ; then
@@ -923,10 +901,6 @@ if test "$ac_cv_type_uint" = yes ; then
 else
    AC_CHECK_SIZEOF(unsigned int)
 fi
-
-$SLEEPCMD
-AC_CHECK_SIZEOF(unsigned long long)
-
 $SLEEPCMD
 if test "$ac_cv_type_ushort" = yes ; then
    AC_CHECK_SIZEOF(ushort)
@@ -941,14 +915,15 @@ else
 fi
 $SLEEPCMD
 AC_CHECK_SIZEOF(ptrdiff_t)
+$SLEEPCDM
+AC_CHECK_SIZEOF(ssize_t)
 $SLEEPCMD
 AC_CHECK_SIZEOF([void*])
 
-
-if test "x$enable_netcdf_4" = xyes -o "x$enable_dap2" = xyes -o "x$enable_dap4" = xyes; then
+if test "x$enable_netcdf_4" = xyes || test "x$enable_dap" = xyes; then
    AC_SEARCH_LIBS([deflate], [zlibwapi zlibstat zlib zlib1 z], [], [
-     AC_MSG_ERROR([Can't find or link to the z library. Please use the \
-     --disable-netcdf-4 and --disable-dap flags, or see config.log for errors.])])
+     AC_MSG_ERROR([Can't find or link to the z library. Turn off netCDF-4 and \
+     DAP clients with --disable-netcdf-4 --disable-dap, or see config.log for errors.])])
 fi
 
 # We need the math library
@@ -1177,14 +1152,13 @@ fi
 # or no.
 AM_CONDITIONAL(BUILD_PARALLEL, [test x$enable_parallel = xyes])
 AM_CONDITIONAL(TEST_PARALLEL4, [test "x$enable_parallel4" = xyes -a "x$enable_parallel_tests" = xyes])
-AM_CONDITIONAL(BUILD_DAP, [test "x$enable_dap2" = xyes])
-AM_CONDITIONAL(USE_DAP, [test "x$enable_dap2" = xyes]) # Alias
-AM_CONDITIONAL(ENABLE_DAP2, [test "x$enable_dap2" = xyes])
+AM_CONDITIONAL(BUILD_DAP, [test "x$enable_dap" = xyes])
+AM_CONDITIONAL(USE_DAP, [test "x$enable_dap" = xyes]) # Alias
+# Provide protocol specific flags
+AM_CONDITIONAL(ENABLE_DAP, [test "x$enable_dap" = xyes])
 AM_CONDITIONAL(ENABLE_DAP4, [test "x$enable_dap4" = xyes])
-# Convenient to know if either is being built
-AM_CONDITIONAL(ENABLE_DAP2OR4, [test "x$enable_dap2" = xyes -o "x$enable_dap4" = xyes])
+
 AM_CONDITIONAL(ENABLE_DAP_REMOTE_TESTS, [test "x$enable_dap_remote_tests" = xyes])
-AM_CONDITIONAL(ENABLE_DAP4_REMOTE_TESTS, [test "x$enable_dap4_remote_tests" = xyes])
 AM_CONDITIONAL(ENABLE_DAP_AUTH_TESTS, [test "x$enable_dap_auth_tests" = xyes])
 AM_CONDITIONAL(ENABLE_DAP_LONG_TESTS, [test "x$enable_dap_long_tests" = xyes])
 AM_CONDITIONAL(EXTRA_EXAMPLE_TESTS, [test "x$enable_extra_example_tests" = xyes])
@@ -1292,8 +1266,7 @@ AC_DEFINE([JNA], [1], [if true, include JNA bug fix])
 fi
 
 AC_SUBST(NC_LIBS,[$NC_LIBS])
-AC_SUBST(HAS_DAP,[$enable_dap2])
-AC_SUBST(HAS_DAP2,[$enable_dap2])
+AC_SUBST(HAS_DAP,[$enable_dap])
 AC_SUBST(HAS_DAP4,[$enable_dap4])
 AC_SUBST(HAS_NC2,[$nc_build_v2])
 AC_SUBST(HAS_NC4,[$enable_netcdf_4])
@@ -1364,8 +1337,7 @@ AX_SET_META([NC_HAS_NC4],[$enable_netcdf_4],[yes])
 AX_SET_META([NC_HAS_HDF4],[$enable_hdf4],[yes])
 AX_SET_META([NC_HAS_HDF5],[$enable_netcdf_4],[yes])
 AX_SET_META([NC_HAS_SZIP],[$ac_cv_func_H5Z_SZIP],[yes])
-AX_SET_META([NC_HAS_DAP],[$enable_dap2],[yes])
-AX_SET_META([NC_HAS_DAP2],[$enable_dap2],[yes])
+AX_SET_META([NC_HAS_DAP],[$enable_dap],[yes])
 AX_SET_META([NC_HAS_DAP4],[$enable_dap4],[yes])
 AX_SET_META([NC_HAS_DISKLESS],[$enable_diskless],[yes])
 AX_SET_META([NC_HAS_MMAP],[$enable_mmap],[yes])

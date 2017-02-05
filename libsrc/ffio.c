@@ -8,16 +8,20 @@
 
 
 #include "config.h"
-#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>	/* DEBUG */
+#include <string.h>
+#include <assert.h>
 #include <errno.h>
 #ifndef NC_NOERR
 #define NC_NOERR 0
 #endif
+#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
+#endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#include <string.h>
+#endif
 #if 0
 /* Insertion by O. R. Heudecker, AWI-Bremerhaven 12.3.98 (1 line)*/
 #include <ffio.h>

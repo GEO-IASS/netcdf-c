@@ -61,3 +61,8 @@ ncsettings.c: $(top_srcdir)/libnetcdf.settings ncsettings.hdr
 	sed -e 's/\(.*\)/\"\1\\n\"/' | \
 	cat >> ncsettings.c
 	echo ';' >> ncsettings.c
+
+# Unit test for ncuri
+test_ncuri_SOURCES = test_ncuri.c ncuri.c ncbytes.c nclist.c
+check_PROGRAMS = test_ncuri
+TESTS = test_ncuri

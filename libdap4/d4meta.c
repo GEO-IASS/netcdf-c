@@ -523,7 +523,7 @@ buildCompound(NCD4meta* builder, NCD4node* cmpdtype, NCD4node* group, char* name
     /* Step 3: add the fields to type */
     for(i=0;i<nclistlength(cmpdtype->vars);i++) {  
 	int rank;
-	int dimsizes[NC_MAX_VAR_DIMS];
+	size_t dimsizes[NC_MAX_VAR_DIMS];
         NCD4node* field = (NCD4node*)nclistget(cmpdtype->vars,i);
 	rank = nclistlength(field->dims);
         if(rank == 0) { /* scalar */

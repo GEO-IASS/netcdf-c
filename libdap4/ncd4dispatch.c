@@ -6,8 +6,9 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifdef _MSC_VER
+#if defined(_WIN32) || defined(_WIN64)
 #include <crtdbg.h>
+#include <direct.h>
 #endif
 #include "ncd4dispatch.h"
 #include "d4includes.h"
@@ -815,7 +816,11 @@ globalinit(void)
 #endif
         if(tempdir == NULL) {
 	    fprintf(stderr,"Cannot find a temp dir; using ./\n");
+#if defined(_WIN32) || defined(_WIN64)
 	    tempdir = getcwd(cwd,sizeof(cwd));
+#else
+	    tempdir = getcwd(cwd,sizeof(cwd));
+#endif
 	    if(tempdir == NULL || *tempdir == '\0') tempdir = ".";
 	}
         NCD4_globalstate->tempdir= (char*)malloc(strlen(tempdir) + 1);

@@ -14,28 +14,28 @@
 extern "C" {
 #endif
 
-EXTERNL int
+extern int
 NCD4_open(const char *path, int mode,
          int basepe, size_t *chunksizehintp,
          int use_parallel, void* mpidata,
          struct NC_Dispatch* dispatch, NC* ncp);
 
-EXTERNL int
+extern int
 NCD4_close(int ncid);
 
-EXTERNL int
+extern int
 NCD4_abort(int ncid);
 
-EXTERNL int
+extern int
 NCD4_inq_dim(int ncid, int dimid, char* name, size_t* lenp);
 
-EXTERNL int
+extern int
 NCD4_get_vara(int ncid, int varid,
 	    const size_t *start, const size_t *edges,
             void *value,
 	    nc_type memtype);
 
-EXTERNL int
+extern int
 NCD4_get_vars(int ncid, int varid,
 	    const size_t *start, const size_t *edges, const ptrdiff_t* strides,
             void *value,

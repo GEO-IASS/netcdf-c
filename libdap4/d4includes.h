@@ -8,15 +8,13 @@
 
 #include "config.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <assert.h>
+
 #include <curl/curl.h>
 
 #ifdef HAVE_SYS_TIME_H
@@ -32,8 +30,8 @@
 #  endif
 #endif
 
-#include "nc.h"
 #include "netcdf.h"
+#include "nc.h"
 #include "ncbytes.h"
 #include "nclist.h"
 #include "ncuri.h"

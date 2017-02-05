@@ -829,7 +829,7 @@ getOpaque(NCD4parser* parser, ezxml_t varxml, NCD4node* group)
         if(opaquetype == NULL) {/* create it */
 	    char name[NC_MAX_NAME+1];
 	    /* Make name be "opaqueN" */
-	    snprintf(name,NC_MAX_NAME,"opaque%d_t",len);
+	    snprintf(name,NC_MAX_NAME,"opaque%lld_t",len);
 	    /* Opaque types are always created in the current group */
 	    if((ret=makeNode(parser,group,NULL,NCD4_TYPE,NC_OPAQUE,&opaquetype)))
 	        goto done;
@@ -1378,17 +1378,17 @@ convertString(union ATOMICS* converter, NCD4node* type, const char* s)
     case NC_SHORT:
     case NC_INT:
     case NC_INT64:
-	if(sscanf(s,"%lld",&converter->i64) != 1) return THROW(NC_ERANGE);
+	if(sscanf(s,"%lld",converter->i64) != 1) return THROW(NC_ERANGE);
 	break;
     case NC_UBYTE:
     case NC_USHORT:
     case NC_UINT:
     case NC_UINT64:
-	if(sscanf(s,"%llu",&converter->u64) != 1) return THROW(NC_ERANGE);
+	if(sscanf(s,"%llu",converter->u64) != 1) return THROW(NC_ERANGE);
 	break;
     case NC_FLOAT:
     case NC_DOUBLE:
-	if(sscanf(s,"%lf",&converter->f64) != 1) return THROW(NC_ERANGE);
+	if(sscanf(s,"%lf",converter->f64) != 1) return THROW(NC_ERANGE);
 	break;
     case NC_STRING:
 	converter->s[0]= strdup(s);

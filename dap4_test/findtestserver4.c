@@ -39,7 +39,6 @@ main(int argc, char** argv)
     const char* proto = NULL;
     const char* serverlist = NULL;
     int isdap4 = 0; /* 1 => dap4 */
-    int i;
 
     argc--; argv++;
     if(argc < 2)
@@ -49,7 +48,7 @@ main(int argc, char** argv)
     if(argc >= 3)
 	serverlist = strdup(argv[2]);
 
-#ifdef ENABLE_DAP2
+#ifdef ENABLE_DAP
     if(strcasecmp(proto,"dap2")==0)
 	isdap4 = 0;
     else

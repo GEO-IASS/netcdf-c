@@ -35,19 +35,16 @@
 /* set this only when building a DLL under MinGW */
 #undef DLL_NETCDF
 
-/* if true, build DAP2 and DAP4 Client */
+/* if true, build DAP Client */
 #undef ENABLE_DAP
-
-/* if true, build DAP2 Client */
-#undef ENABLE_DAP2
 
 /* if true, build DAP4 Client */
 #undef ENABLE_DAP4
 
-/* if true, do dap4 remote tests */
-#undef ENABLE_DAP4_REMOTE_TESTS
+/* if true, enable DAP group names */
+#undef ENABLE_DAP_GROUPS
 
-/* if true, do dap remote tests */
+/* if true, do remote tests */
 #undef ENABLE_DAP_REMOTE_TESTS
 
 /* if true, run extra tests which may not work yet */
@@ -482,7 +479,7 @@
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #undef TIME_WITH_SYS_TIME
 
-/* (Deprecated) if true, build DAP Client */
+/* if true, build DAP Client */
 #undef USE_DAP
 
 /* if true, include NC_DISKLESS code */
@@ -573,6 +570,9 @@
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
+
+/* Define to `long int' if <sys/types.h> does not define. */
+#undef off_t
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t

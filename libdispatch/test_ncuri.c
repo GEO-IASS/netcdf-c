@@ -10,9 +10,7 @@ Test the ncuri parsing
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "netcdf.h"
 #include "ncuri.h"
-
 
 typedef struct Test {
     char* url;

@@ -2,18 +2,19 @@
    See the COPYRIGHT file for more information. */
 
 #include "config.h"
+#include <errno.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
 #endif
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
-#include <errno.h>
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif
 
 #if defined(_WIN32) || defined(_WIN64)
+#include <io.h>
 #define mode_t int
 #endif
 

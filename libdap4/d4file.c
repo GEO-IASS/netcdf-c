@@ -9,6 +9,15 @@
 #include "d4read.h"
 #include "d4curlfunctions.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <process.h>
+#include <direct.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif
+
 /**************************************************/
 /* Forward */
 
@@ -346,15 +355,15 @@ set_curl_properties(NCD4INFO* d4info)
 	/* If no cookie file was defined, define a default */
 	char tmp[4096+1];
         int ok;
-#ifdef  _WIN32
+#if defined(_WIN32) || defined(_WIN64)
 	int pid = _getpid();
 #else
 	pid_t pid = getpid();
 #endif
 	snprintf(tmp,sizeof(tmp)-1,"%s/%s.%ld/",NCD4_globalstate->tempdir,"netcdf",(long)pid);
 
-#ifdef _WIN32
-	ok = mkdir(tmp);
+#if defined(_WIN32) || defined(_WIN64)
+	ok = _mkdir(tmp);
 #else
 	ok = mkdir(tmp,S_IRUSR | S_IWUSR | S_IXUSR);
 #endif

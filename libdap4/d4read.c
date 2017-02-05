@@ -1,5 +1,8 @@
 #include "d4includes.h"
 #include "d4curlfunctions.h"
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif
 
 /*Forward*/
 static int readpacket(NCD4INFO* state, NCURI*, NCbytes*, NCD4mode, long*);

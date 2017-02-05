@@ -16,15 +16,14 @@ AM_CPPFLAGS += -I$(top_srcdir)/liblib
 check_PROGRAMS =
 TESTS =
 
-TESTS += tst_ncdap3.sh
-
 t_dap3a_SOURCES = t_dap3a.c t_srcdir.h
 test_cvt3_SOURCES = test_cvt.c t_srcdir.h
 test_vara_SOURCES = test_vara.c t_srcdir.h
 
+if ENABLE_DAP
 check_PROGRAMS += t_dap3a test_cvt3 test_vara
-
 TESTS += t_dap3a test_cvt3 test_vara
+TESTS += tst_ncdap3.sh
 
 check_PROGRAMS += test_environment
 test_environment_SOURCES = test_environment.c
@@ -95,6 +94,8 @@ endif ENABLE_DAP_REMOTE_TESTS
 
 endif #USE_NETCDF4
 
+endif #ENABLE_DAP
+
 # Need to add subdirs
 SUBDIRS = testdata3 expected3 expected4 expectremote3 expectremote4
 
@@ -133,3 +134,4 @@ clean-local: clean-local-check
 clean-local-check:
 	-rm -rf results
 	-rm .dodsrc
+

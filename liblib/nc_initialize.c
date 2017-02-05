@@ -64,7 +64,7 @@ nc_initialize()
 
     /* Initialize each active protocol */
     if((stat = NC3_initialize())) goto done;
-#ifdef ENABLE_DAP2
+#ifdef ENABLE_DAP
     if((stat = NCD2_initialize())) goto done;
 #endif
 #ifdef ENABLE_DAP4
