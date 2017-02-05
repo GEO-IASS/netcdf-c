@@ -2,18 +2,13 @@ set -x
 
 if test "x$SETX" = x1 ; then set -x ; fi
 
-if test "x$srcdir" = "x" ; then echo "srcdir not set"; exit 2; fi
-
 topsrcdir=`./test_environment4 topsrcdir`
 if test "x$srcdir" = "x" ; then srcdir=`dirname $0`; fi; export srcdir
 
-# validate srcdir against topsrcdir
-sd0=`pwd`
-cd ${topsrcdir}
-tsd0=`pwd`
-cd $srcdir/..
-tsd1=`pwd`
-cd $sd0
+echo "topsrcdir=${topsrcdir}"
+echo "srcdir=${srcdir}"
+WD=`pwd`
+echo "pwd=${WD}" 
 
 if test "x$tsd0" != "x${tds1}" ; then
 echo "srcdir mismatch: ${tsd0} vs ${tsd1}"
@@ -21,7 +16,7 @@ fi
 
 if test $# = 0 ; then
 TEST=1
-nelse
+else
 for arg in "$@"; do
   case "${arg}" in
   test) TEST=1 ;;

@@ -119,10 +119,11 @@ trap "st=143; $do_exit" 15
 # Test script is run here.
 if isshellscript $1 ; then
 bash -x "$@" >$log_file 2>&1
+estatus=$?
 else
 "$@" >$log_file 2>&1
-fi
 estatus=$?
+fi
 
 if test $enable_hard_errors = no && test $estatus -eq 99; then
   tweaked_estatus=1
