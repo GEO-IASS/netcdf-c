@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif
 #ifdef _MSC_VER /* Microsoft Compilers */
 #include <io.h>
 #endif
