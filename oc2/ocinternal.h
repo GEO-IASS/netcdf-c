@@ -70,10 +70,10 @@ typedef struct OCdata OCdata;
 struct OCTriplestore;
 
 /* Define the internal node classification values */
-#define OC_None  0
-#define OC_State 1
-#define OC_Node  2
-#define OC_Data  3
+#define OC_None  ((unsigned int)0)
+#define OC_State ((unsigned int)1)
+#define OC_Node  ((unsigned int)2)
+#define OC_Data  ((unsigned int)3)
 
 /* Define a magic number to mark externally visible oc objects */
 #define OCMAGIC ((unsigned int)0x0c0c0c0c) /*clever, huh*/
