@@ -4,6 +4,7 @@ if test "x$SETX" = x1 ; then echo "file=$0"; set -x ; fi
 # $Id: run_tests.sh,v 1.18 2010/05/19 13:43:39 ed Exp $
 
 set -e
+set -x
 
 if test "x$srcdir" = x ; then
 srcdir=`pwd`
@@ -12,8 +13,6 @@ fi
 echo ""
 echo "*** Testing ncgen and ncdump using some test CDL files."
 echo "*** creating tst_small.nc from ref_tst_small.cdl..."
-echo "===> $srcdir/ref_tst_small.cdl"
-ls -l $srcdir/ref_tst_small.cdl
 cat $srcdir/ref_tst_small.cdl
 ../ncgen/ncgen -b -o tst_small.nc $srcdir/ref_tst_small.cdl
 echo "*** creating tst_small.cdl from tst_small.nc..."
