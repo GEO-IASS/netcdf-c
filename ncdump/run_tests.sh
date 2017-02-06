@@ -12,7 +12,7 @@ fi
 echo ""
 echo "*** Testing ncgen and ncdump using some test CDL files."
 echo "*** creating tst_small.nc from ref_tst_small.cdl..."
-echo '===> $srcdir/ref_tst_small.cdl"
+echo "===> $srcdir/ref_tst_small.cdl"
 ls -l $srcdir/ref_tst_small.cdl
 cat $srcdir/ref_tst_small.cdl
 ../ncgen/ncgen -b -o tst_small.nc $srcdir/ref_tst_small.cdl
