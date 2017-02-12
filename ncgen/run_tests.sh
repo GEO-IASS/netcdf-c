@@ -2,9 +2,10 @@
 # This shell script runs the ncgen tests.
 # $Id: run_tests.sh,v 1.10 2010/04/04 22:06:03 dmh Exp $
 
-#Ensure srcdir
-if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+export SETX=1
+set -x
 
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
 . ${srcdir}/../nc_test/test_common.sh
 
 echo "*** Testing ncgen."

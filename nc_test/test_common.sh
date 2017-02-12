@@ -41,7 +41,7 @@ elif test "x$USECMAKE" != x ; then
 fi
 
 # Figure out srcdir
-if test "x$srcdir" == x; then
+if test "x$srcdir" = x; then
   top_srcdir="$TOPSRCDIR"
 fi
 top_srcdir=${srcdir}/..
@@ -49,9 +49,9 @@ top_srcdir=${srcdir}/..
 builddir=`pwd`
 top_builddir="$builddir/.."
 execdir="$builddir"
-if test "x$ISCMAKE" != x ; then
+if test "x$USECMAKE" != x ; then
   ls -l $buildir/CMakeFiles
-  execdir="$builddir
+  execdir="$builddir"
 fi
 
 # pick off the last component
