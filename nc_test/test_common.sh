@@ -30,8 +30,15 @@
 # Allow global set -x mechanism
 if test "x$SETX" = x1 ; then set -x ; fi
 
-# Are we under cmake?
-if test "x$CMAKE_CONFIG_TYPE" != x ; then ISCMAKE=1; else ISCMAKE=0; fi
+# Are we under cmake? This is complicated
+# because for some reason under travis, CMAKE_CONFIG_TYPE
+# is not defined
+ISCMAKE=0
+if test "x$CMAKE_CONFIG_TYPE" != x ; then
+  ISCMAKE=1;
+elif test "x$USECMAKE" != x ; then
+  ISCMAKE=1;
+fi
 
 # Figure out srcdir
 if test "x$srcdir" == x; then
@@ -43,6 +50,7 @@ builddir=`pwd`
 top_builddir="$builddir/.."
 execdir="$builddir"
 if test "x$ISCMAKE" != x ; then
+  ls -l $buildir
   execdir="$builddir/$CMAKE_CONFIG_TYPE"
 fi
 

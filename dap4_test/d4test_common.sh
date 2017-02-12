@@ -1,6 +1,5 @@
-
-if test "x$srcdir" = "x" ; then srcdir=`dirname $0`; fi; export srcdir
-. ${srcdir}/../nc_test/test_common.sh
+# Allow global set -x mechanism
+if test "x$SETX" = x1 ; then set -x ; fi
 
 if test $# = 0 ; then
 TEST=1
