@@ -50,8 +50,8 @@ builddir=`pwd`
 top_builddir="$builddir/.."
 execdir="$builddir"
 if test "x$ISCMAKE" != x ; then
-  ls -l $buildir
-  execdir="$builddir/$CMAKE_CONFIG_TYPE"
+  ls -l $buildir/CMakeFiles
+  execdir="$builddir
 fi
 
 # pick off the last component
