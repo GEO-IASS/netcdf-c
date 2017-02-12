@@ -29,8 +29,6 @@ TARGET_LINK_LIBRARIES(nc_test
   ${HAVE_LIBM}
   )
 
-  BUILD_BIN_TEST(test_environment)
-
 # Some extra stand-alone tests
 SET(TESTS t_nc tst_small tst_misc tst_norm tst_names tst_nofill tst_nofill2 tst_nofill3 tst_meta tst_inq_type)
 
