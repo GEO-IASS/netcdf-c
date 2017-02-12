@@ -48,9 +48,12 @@ top_srcdir=${srcdir}/..
 
 builddir=`pwd`
 top_builddir="$builddir/.."
-execdir="$builddir"
-if test "x$USECMAKE" != x ; then
-  ls -l $buildir/CMakeFiles
+if test "x$CMAKE_CONFIG_TYPE" != x ; then
+  execdir="$builddir/$CMAKE_CONFIG_TYPE"
+elif test "x$USECMAKE" != x ; then
+  ls -l $builddir/CMakeFiles
+  execdir="$builddir"
+else
   execdir="$builddir"
 fi
 
@@ -79,7 +82,7 @@ export srcdir top_srcdir builddir top_builddir execdir
 
 # Figure out executable extension
 ext="" # default
-if test "x$ISCMAKE" = x1 ; then
+if test "x$CMAKE_CONFIG_TYPE" != x; then
   if test -a "${top_builddir}/ncdump/${CMAKE_CONFIG_TYPE}/ncdump.exe" ; then ext=".exe"; fi
 else
   if test -a "${top_builddir}/ncdump/ncdump.exe" ; then ext=".exe"; fi
@@ -87,12 +90,12 @@ fi
 
 # We need to locate certain executables (and other things) 
 # Find the relevant directory
-if test "x$ISCMAKE" = x1 ; then
+if test "x$CMAKE_CONFIG_TYPE" != x ; then
   NCDUMP="${top_builddir}/ncdump/${CMAKE_CONFIG_TYPE}/ncdump${ext}"
   NCCOPY="${top_builddir}/ncdump/${CMAKE_CONFIG_TYPE}/nccopy${ext}"
   NCGEN="${top_builddir}/ncgen/${CMAKE_CONFIG_TYPE}/ncgen${ext}"
   NCGEN3="${top_builddir}/ncgen3/${CMAKE_CONFIG_TYPE}/ncgen3${ext}"
-else # !ISCMAKE
+else
   NCDUMP="${top_builddir}/ncdump/ncdump${ext}"
   NCCOPY="${top_builddir}/ncdump/nccopy${ext}"
   NCGEN="${top_builddir}/ncgen/ncgen${ext}"
