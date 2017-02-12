@@ -1,8 +1,9 @@
 #!/bin/sh
 
-if test "x$srcdir" = "x"; then srcdir=`dirname $0`; fi; export srcdir
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+. ${srcdir}/../nc_test/test_common.sh
 
-. ${srcdir}/test_common.sh
+. ${srcdir}/d4test_common.sh
 
 cd ${DMRTESTFILES}
 F=`ls -1 *.dmr | sed -e 's/[.]dmr//g' | tr '\r\n' '  '`
@@ -22,10 +23,10 @@ if test "x${RESET}" = x1 ; then rm -fr ${BASELINE}/*.d4m ; fi
 
 for f in ${F} ; do
     echo "checking: $f"
-    if ! ${VG} ./test_meta ${DMRTESTFILES}/${f}.dmr ./results/${f} ; then
-        failure "./test_meta ${DMRTESTFILES}/${f}.dmr ./results/${f}"
+    if ! ${VG} ${execdir}/test_meta ${DMRTESTFILES}/${f}.dmr ./results/${f} ; then
+        failure "${execdir}/test_meta ${DMRTESTFILES}/${f}.dmr ./results/${f}"
     fi
-    ../ncdump/ncdump -h ./results/${f} > ./results/${f}.d4m
+    ${NCDUMP} -h ./results/${f} > ./results/${f}.d4m
     if test "x${TEST}" = x1 ; then
 	if ! diff -wBb ${BASELINE}/${f}.d4m ./results/${f}.d4m ; then
 	    failure "diff -wBb ${BASELINE}/${f}.ncdump ./results/${f}.d4m"

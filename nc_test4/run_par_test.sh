@@ -1,5 +1,8 @@
 #!/bin/sh
 
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+. ${srcdir}/../nc_test/test_common.sh
+
 # This shell runs some parallel I/O tests.
 
 set -e

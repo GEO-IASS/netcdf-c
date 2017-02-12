@@ -19,6 +19,9 @@
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -59,6 +62,8 @@ blksize(int fd)
 {
 	struct ffc_stat_s sb;
 	struct ffsw sw;
+#ifdef HAVE_STRUCT_STAT_ST_BLKSIZE
+#ifdef HAVE_FCNTL_H
 	if (fffcntl(fd, FC_STAT, &sb, &sw) > -1)
 	{
 #ifdef __crayx1
@@ -69,6 +74,8 @@ blksize(int fd)
 			return (size_t) sb.st_oblksize;
 #endif
 	}
+#endif
+#endif
 	/* else, silent in the face of error */
 	return (size_t) 32768;
 }

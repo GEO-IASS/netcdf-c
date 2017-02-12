@@ -1,8 +1,9 @@
 #!/bin/sh
 
-if test "x$srcdir" = "x"; then srcdir=`dirname $0`; fi ; export srcdir
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+. ${srcdir}/../nc_test/test_common.sh
 
-. ${srcdir}/test_common.sh
+. ${srcdir}/d4test_common.sh
 
 # Compute the set of testfiles
 PUSHD ${srcdir}/daptestfiles
@@ -41,7 +42,7 @@ if test "x${RESET}" = x1 ; then rm -fr ${BASELINERAW}/*.dmp ; fi
 for f in $F ; do
     echo "testing: $f"
     URL="[dap4]file:${DAPTESTFILES}/${f}"
-    if ! ${VG} ../ncdump/ncdump ${URL} > ./results/${f}.dmp; then
+    if ! ${VG} ${NCDUMP} ${URL} > ./results/${f}.dmp; then
         failure "${URL}"
     fi
     if test "x${TEST}" = x1 ; then

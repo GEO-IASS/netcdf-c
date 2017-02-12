@@ -3,8 +3,13 @@ IF(BUILD_SHARED_LIBS AND WIN32)
   remove_definitions(-DDLL_NETCDF)
 ENDIF()
 
+# These generate some files used in ncdump testing
+# Specifically, they generate ctest0.nc ctest0_64.nc
+# Before, these .nc files were placed in the same place as the
+# .c file: namely build/ncdump.
+# This complicates the shell tests that use it.
 ADD_CUSTOM_COMMAND(
-  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ctest.c
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CONFIG_TYPE}/ctest.c
   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/ref_ctest.c"
   "${CMAKE_CURRENT_BINARY_DIR}/ctest.c"
   )

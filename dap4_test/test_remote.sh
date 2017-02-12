@@ -1,8 +1,9 @@
 #!/bin/sh
 
-if test "x$srcdir" = "x" ; then srcdir=`dirname $0`; fi; export srcdir
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+. ${srcdir}/../nc_test/test_common.sh
 
-. ${srcdir}/test_common.sh
+. ${srcdir}/d4test_common.sh
 
 #BIG=1
 #NOCSUM=1
@@ -51,7 +52,7 @@ test_sequence_2.syn
 test_struct_array.syn
 "
 
-TESTSERVER=`./findtestserver4 dap4 d4ts`
+TESTSERVER=`${execdir}/findtestserver4 dap4 d4ts`
 if test "x$TESTSERVER" = x ; then
 echo "***XFAIL: Cannot find d4ts testserver"
 exit 0
@@ -66,7 +67,7 @@ for f in $F ; do
     if test "x$NOCSUM" = x1; then
 	URL="[ucar.checksummode=none]${URL}"
     fi
-    if ! ${VG} ../ncdump/ncdump ${URL} > ./results/${f}.dmp; then
+    if ! ${VG} ${NCDUMP} ${URL} > ./results/${f}.dmp; then
         failure "${URL}"
     fi
     if test "x${TEST}" = x1 ; then

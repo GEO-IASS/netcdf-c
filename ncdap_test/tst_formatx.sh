@@ -2,6 +2,8 @@
 # This shell script tests the output several previous tests.
 # $Id: tst_output.sh,v 1.17 2010/05/14 16:21:15 ed Exp $
 
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+. ${srcdir}/../nc_test/test_common.sh
 
 echo ""
 echo "*** Testing extended file format output."
@@ -18,7 +20,7 @@ URL="$DTS/test.03"
 ECODE=0
 echo "Test extended format output for a DAP2  file"
 rm -f tmp
-../ncdump/ncdump -K $URL >tmp
+${NCDUMP} -K $URL >tmp
 if ! grep 'DAP2 mode=00000000' <tmp ; then
 echo "*** Fail: extended format for a DAP2 file"
 ECODE=1

@@ -9,8 +9,9 @@
 include $(top_srcdir)/lib_flags.am
 
 LDADD = ${top_builddir}/liblib/libnetcdf.la
-AM_CPPFLAGS += -DTOPSRCDIR=${abs_top_srcdir}
 AM_CPPFLAGS += -I$(top_srcdir)/liblib
+AM_CPPFLAGS += -DTOPSRCDIR=${abs_top_srcdir}
+AM_CPPFLAGS += -DTOPBINDIR=${abs_top_bindir}
 
 # Set up the tests; do the .sh first, then .c
 check_PROGRAMS =

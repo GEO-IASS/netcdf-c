@@ -1,18 +1,6 @@
-set -x
 
-if test "x$SETX" = x1 ; then set -x ; fi
-
-topsrcdir=`./test_environment4 topsrcdir`
 if test "x$srcdir" = "x" ; then srcdir=`dirname $0`; fi; export srcdir
-
-echo "topsrcdir=${topsrcdir}"
-echo "srcdir=${srcdir}"
-WD=`pwd`
-echo "pwd=${WD}" 
-
-if test "x$tsd0" != "x${tds1}" ; then
-echo "srcdir mismatch: ${tsd0} vs ${tsd1}"
-fi
+. ${srcdir}/../nc_test/test_common.sh
 
 if test $# = 0 ; then
 TEST=1

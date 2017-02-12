@@ -1,5 +1,8 @@
 #!/bin/sh
 
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+. ${srcdir}/../nc_test/test_common.sh
+
 # This shell runs some parallel tests.
 
 # $Id: run_par_tests.sh,v 1.2 2007/12/20 16:25:26 ed Exp $

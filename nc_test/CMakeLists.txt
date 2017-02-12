@@ -1,3 +1,11 @@
+message(STATUS "CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
+message(STATUS "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "CMAKE_CURRENT_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}")
+
+add_definitions(-D"TOPSRCDIR=${CMAKE_SOURCE_DIR}")
+add_definitions(-D"TOPBINDIR=${CMAKE_BINARY_DIR}")
+
 INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/include)
 
 SET (nc_test_m4_SOURCES test_get test_put)
@@ -20,6 +28,8 @@ TARGET_LINK_LIBRARIES(nc_test
   netcdf
   ${HAVE_LIBM}
   )
+
+  BUILD_BIN_TEST(test_environment)
 
 # Some extra stand-alone tests
 SET(TESTS t_nc tst_small tst_misc tst_norm tst_names tst_nofill tst_nofill2 tst_nofill3 tst_meta tst_inq_type)

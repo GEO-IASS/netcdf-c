@@ -10,7 +10,6 @@ LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver-verbose
 TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver-verbose
 
 LDADD = ${top_builddir}/liblib/libnetcdf.la
-AM_CPPFLAGS += -DTOPSRCDIR=${abs_top_srcdir}
 AM_CPPFLAGS += -I$(top_srcdir)/libdap4
 
 # Set up the tests; do the .sh first, then .c
@@ -34,11 +33,6 @@ if BUILD_UTILITIES
 TESTS += test_raw.sh
 endif
 
-# Note: This program name was changed to test_environment4
-# to avoid cmake complaint about duplicate targets.
-check_PROGRAMS += test_environment4
-test_environment4_SOURCES = test_environment4.c
-
 if ENABLE_DAP_REMOTE_TESTS
 # Note: This program name was changed to findtestserver4
 # to avoid cmake complaint about duplicate targets.
@@ -46,7 +40,7 @@ check_PROGRAMS += findtestserver4
 findtestserver4_SOURCES = findtestserver4.c
 if BUILD_UTILITIES
   # relies on ncdump
-  TESTS += test_remote.sh
+# disable for now  TESTS += test_remote.sh
 endif
 endif
 
@@ -54,7 +48,7 @@ endif #ENABLE_DAP4
 
 EXTRA_DIST = test_parse.sh test_meta.sh test_data.sh \
              test_raw.sh test_remote.sh test_hyrax.sh \
-             test_common.sh \
+             d4test_common.sh \
 	     daptestfiles dmrtestfiles cdltestfiles nctestfiles \
 	     baseline baselineraw baselineremote
 

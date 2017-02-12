@@ -806,7 +806,14 @@ enable_dap=no
 fi
 
 # Set flags for dap4
-enable_dap4=$enable_dap
+## Capture the state of the --enable-dap4 (Temporary)
+#enable_dap4=$enable_dap
+AC_MSG_CHECKING([whether DAP4 client(s) are to be built])
+AC_ARG_ENABLE([dap4],
+                 [AS_HELP_STRING([--enable-dap4],
+                                 [build with DAP4 client support (default off).])])
+test "x$enable_dap4" = xyes || enable_dap4=no
+AC_MSG_RESULT($enable_dap4)
 
 # disable dap4 if netcdf-4 is disabled
 if test "x$enable_netcdf_4" = "xno" ; then
@@ -1359,14 +1366,9 @@ AC_CONFIG_FILES([Makefile
 		         include/netcdf_meta.h
                  include/Makefile
                  h5_test/Makefile
-                 docs/Makefile
-                 docs/images/Makefile
                  libsrc/Makefile
                  libsrc4/Makefile
                  libsrcp/Makefile
-                 nctest/Makefile
-                 nc_test4/Makefile
-                 nc_test/Makefile
                  ncdump/Makefile
                  ncgen3/Makefile
                  ncgen/Makefile
@@ -1380,6 +1382,11 @@ AC_CONFIG_FILES([Makefile
                  liblib/Makefile
                  ncdump/cdl/Makefile
                  ncdump/expected/Makefile
+                 docs/Makefile
+                 docs/images/Makefile
+                 nctest/Makefile
+                 nc_test4/Makefile
+                 nc_test/Makefile
                  ncdap_test/Makefile
                  ncdap_test/testdata3/Makefile
                  ncdap_test/expected3/Makefile

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+. ${srcdir}/../nc_test/test_common.sh
+
 set -e
 
 quiet=0
@@ -7,7 +10,7 @@ leakcheck=0
 timing=0
 
 # Figure our dst server; if none, then just stop
-DTS=`./findtestserver dap2 dts`
+DTS=`${execdir}/findtestserver dap2 dts`
 if test "x$DTS" = "x" ; then
 echo "WARNING: Cannot locate test server for dts"
 exit
@@ -199,7 +202,6 @@ esac
 
 RESULTSDIR="./results"
 # Locate some tools
-NCDUMP="${builddir}/ncdump/ncdump"
 if test "x$leakcheck" = x1 ; then
 VALGRIND="valgrind -q --error-exitcode=2 --leak-check=full"
 else

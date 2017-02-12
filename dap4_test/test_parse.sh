@@ -1,10 +1,9 @@
 #!/bin/sh
 
-set -x
+if test "x$srcdir" = x ; then srcdir=`pwd`; fi
+. ${srcdir}/../nc_test/test_common.sh
 
-if test "x$srcdir" = "x"; then srcdir=`dirname $0`; fi ; export srcdir
-
-. ${srcdir}/test_common.sh
+. ${srcdir}/d4test_common.sh
 
 cd ${DMRTESTFILES}
 F=`ls -1 *.dmr | sed -e 's/[.]dmr//' |tr '\r\n' '  '`
@@ -13,7 +12,7 @@ cd $WD
 if test "x${RESET}" = x1 ; then rm -fr ${BASELINE}/*.d4p ; fi
 for f in $F ; do
     echo "testing: $f"
-    if ! ${VG} ./test_parse ${DMRTESTFILES}/${f}.dmr > ./results/${f}.d4p ; then
+    if ! ${VG} ${execdir}/test_parse ${DMRTESTFILES}/${f}.dmr > ./results/${f}.d4p ; then
 	failure "${f}"
     fi
     if test "x${TEST}" = x1 ; then

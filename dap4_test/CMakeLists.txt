@@ -1,7 +1,6 @@
 SET(abs_top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
 
 remove_definitions(-DDLL_EXPORT)
-add_definitions(-D"TOPSRCDIR=${CMAKE_SOURCE_DIR}")
 
 FILE(GLOB COPY_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.sh)
 
@@ -15,12 +14,8 @@ IF(ENABLE_TESTS)
   # keep it from being too bad.
 
   IF(BUILD_UTILITIES)
-    add_sh_test(dap4_test test_raw.sh)
+    add_sh_test(dap4_test test_raw)
   ENDIF(BUILD_UTILITIES)
-
-  # Change name (add '4') to avoid cmake
-  # complaint about duplicate targets.
-  BUILD_BIN_TEST(test_environment4)
 
   IF(ENABLE_DAP_REMOTE_TESTS)
 
@@ -29,7 +24,7 @@ IF(ENABLE_TESTS)
     BUILD_BIN_TEST(findtestserver4)
 
     IF(BUILD_UTILITIES)
-       add_sh_test(dap4_test test_remote.sh)
+       add_sh_test(dap4_test test_remote)
     ENDIF(BUILD_UTILITIES)
   ENDIF(ENABLE_DAP_REMOTE_TESTS)
 ENDIF(ENABLE_TESTS)

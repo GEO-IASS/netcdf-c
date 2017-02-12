@@ -1,4 +1,8 @@
-SET(abs_top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
+set(ENV{SETX} 1)
+#SET(abs_top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_definitions(-D"TOPSRCDIR=${CMAKE_SOURCE_DIR}")
+add_definitions(-D"TOPBINDIR=${CMAKE_BINARY_DIR}")
 
 remove_definitions(-DDLL_EXPORT)
 add_definitions(-D"TOPSRCDIR=${CMAKE_SOURCE_DIR}")
@@ -14,8 +18,6 @@ IF(ENABLE_TESTS)
   # keep it from being too bad.
   # Binary Test Macro
 
-  BUILD_BIN_TEST(test_environment)
-
   add_sh_test(ncdap tst_ncdap3)
 
   IF(NOT MSVC)
@@ -29,8 +31,8 @@ IF(ENABLE_TESTS)
     BUILD_BIN_TEST(findtestserver)
 
     IF(BUILD_UTILITIES)
-      add_sh_test(ncdap tst_remote.sh)
-# not yet      add_sh_test(ncdap tst_hyrax.sh)
+      add_sh_test(ncdap tst_remote)
+# not yet      add_sh_test(ncdap tst_hyrax)
     ENDIF(BUILD_UTILITIES)
 
     IF(ENABLE_DAP_AUTH_TESTS)
