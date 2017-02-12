@@ -3,6 +3,7 @@
 # $Id: run_tests.sh,v 1.18 2010/05/19 13:43:39 ed Exp $
 
 export SETX=1
+printenv
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
 . ${srcdir}/../nc_test/test_common.sh
