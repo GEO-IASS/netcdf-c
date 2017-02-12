@@ -2,10 +2,12 @@
 
 export SETX=1
 set -x
+
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
 . ${srcdir}/../nc_test/test_common.sh
 
 . ${srcdir}/d4test_common.sh
+set -x
 
 # Compute the set of testfiles
 PUSHD ${srcdir}/daptestfiles

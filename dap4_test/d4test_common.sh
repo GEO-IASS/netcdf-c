@@ -1,5 +1,4 @@
-# Allow global set -x mechanism
-if test "x$SETX" = x1 ; then set -x ; fi
+set -x
 
 if test $# = 0 ; then
 TEST=1
