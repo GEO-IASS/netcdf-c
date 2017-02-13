@@ -7,19 +7,38 @@
 # This will get somewhat simplified (I hope) when
 # we move to a separate test_utilities directory
 
-# The goal of this common code is to set up some
-# useful constants.
+# This code is intended to provide constants
+# for accessing various objects in the src/build
+# tree(s) across multiple ways of building netcdf-c.
+# Currently, the following build situations are supported.
+# 1. Autoconf with make check: the src and build trees are the same
+# 2. Autoconf with make distcheck: the src and build trees are distinct
+# 3. Cmake on a *nix platform using e.g. gcc:
+#    the src and build trees are distinct.
+# 4. Cmake using Visual Studio (VS) compiler: obviously this implies Windows.
+#    This only works if a number of *nix tools are available via Cygwin
+#    or MinGW.
+#
+# The big difference between #3 and #4 is the handling of executables
+# and the notion of a VS configuration type like Debug or Release.
+# When using VS, executables are placed in a subdirectory of the build
+# directory. That subdirectory is named by the configuration type.
+# Thus one finds ncdump.exe in $top_builddir/ncdump/Debug instead of 
+# $top_builddir/ncdump.
+# 
+# An additional issue is the extension of an executable: .exe vs nothing.
+# This code attempts to figure out which is used.
+
+# The goal, then, of this common code is to set up some useful
+#constants for use in test shell scripts.
 # 1. srcdir - absolute path to the source dir (e.g. ${top_srcdir}/ncgen)
 # 2. top_srcdir - absolute path to the root of the source
 # 3. top_builddir - absolute path to the root of the build directory;
-#                   may be same as top_srcdir in some cases, but for
-#                   netcdf cmake builds and automake distcheck builds,
-#                   it will differ.
-# 4. builddir - the directory into which generated stuff (.nc, .cdl, etc)
-#               is stored (absolute path)
-# 5. execdir - the directory into which executables are placed (absolute path).
-#              For autoconf builds execdir == builddir. For cmake builds,
-#              the execdir is a subdir of builddir
+#                   may be same as top_srcdir (e.g. #1).
+# 4. builddir - absolute path of th the directory into which generated
+#               stuff (.nc, .cdl, etc) is stored.
+# 5. execdir - absolute path of the directory into which executables are
+#              placed. For all but the VS case, execdir == builddir.
 # 
 # The following are defined to support inter-directory references.
 # 6. NCDUMP - absolute path to the ncdump.exe executable
@@ -30,13 +49,8 @@
 # Allow global set -x mechanism
 if test "x$SETX" = x1 ; then set -x ; fi
 
-# Are we under cmake? This is complicated
-# because for some reason under travis, CMAKE_CONFIG_TYPE
-# is not defined
-ISCMAKE=0
-if test "x$CMAKE_CONFIG_TYPE" != x ; then
-  ISCMAKE=1;
-elif test "x$USECMAKE" != x ; then
+# Test for cmake related items
+if test "x$CMAKE_CONFIG_TYPE" != x -o "x$USECMAKE" != x ; then
   ISCMAKE=1;
 fi
 
@@ -48,16 +62,19 @@ top_srcdir=${srcdir}/..
 
 builddir=`pwd`
 top_builddir="$builddir/.."
-if test "x$CMAKE_CONFIG_TYPE" != x ; then
-  execdir="$builddir/$CMAKE_CONFIG_TYPE"
-elif test "x$USECMAKE" != x ; then
-  ls -lR $top_builddir
-  execdir="$builddir"
-else
-  execdir="$builddir"
-fi
 
-# pick off the last component
+# Compute execdir as well as a suffix to use for accessing
+# executables. Note that the leading '/' is needed to avoid
+# occurrences of ...//... in a path
+if test "x$CMAKE_CONFIG_TYPE" != x ; then
+  # Assume case #4: visual studio
+  VS="/${CMAKE_CONFIG_TYPE}"
+else
+  VS=
+fi
+execdir="${builddir}$VS"
+
+# pick off the last component as the relative name of this directory
 thisdir=`basename $srcdir`
 
 WD=`pwd`
@@ -81,52 +98,29 @@ fi
 export srcdir top_srcdir builddir top_builddir execdir
 
 # Figure out executable extension
-ext="" # default
-if test "x$CMAKE_CONFIG_TYPE" != x; then
-  if test -a "${top_builddir}/ncdump/${CMAKE_CONFIG_TYPE}/ncdump.exe" ; then ext=".exe"; fi
+if test -a "${top_builddir}/ncdump${VS}/ncdump.exe" ; then
+  ext=".exe"
 else
-  if test -a "${top_builddir}/ncdump/ncdump.exe" ; then ext=".exe"; fi
+  ext=""
 fi
 
 # We need to locate certain executables (and other things) 
 # Find the relevant directory
-if test "x$CMAKE_CONFIG_TYPE" != x ; then
-  NCDUMP="${top_builddir}/ncdump/${CMAKE_CONFIG_TYPE}/ncdump${ext}"
-  NCCOPY="${top_builddir}/ncdump/${CMAKE_CONFIG_TYPE}/nccopy${ext}"
-  NCGEN="${top_builddir}/ncgen/${CMAKE_CONFIG_TYPE}/ncgen${ext}"
-  NCGEN3="${top_builddir}/ncgen3/${CMAKE_CONFIG_TYPE}/ncgen3${ext}"
-else
-  NCDUMP="${top_builddir}/ncdump/ncdump${ext}"
-  NCCOPY="${top_builddir}/ncdump/nccopy${ext}"
-  NCGEN="${top_builddir}/ncgen/ncgen${ext}"
-  NCGEN3="${top_builddir}/ncgen3/ncgen3${ext}"
-fi
+NCDUMP="${top_builddir}/ncdump${VS}/ncdump${ext}"
+NCCOPY="${top_builddir}/ncdump${VS}/nccopy${ext}"
+NCGEN="${top_builddir}/ncgen${VS}/ncgen${ext}"
+NCGEN3="${top_builddir}/ncgen3${VS}/ncgen3${ext}"
 
-# Make sure we are in builddir
+# Make sure we are in builddir (not execdir)
 cd $builddir
 
-# Final step: verify that certain programs are available
-ncavailable()
-{
-    nca_which=`which $1`
-    if test "x${nca_which:0:1}" != "x/" ; then
-      echo "$1: not available"
-    fi
-}
-
-ncavailable cut
-ncavailable cmp
-ncavailable diff
-ncavailable cp
-ncavailable cat
-
 # Temporary hacks (until we have a test_utils directory
-if test "x$ISCMAKE" = x1 ; then
-ncgen3c0="${top_builddir}/ncgen3/c0.cdl"
-ncgenc0="${top_builddir}/ncgen/c0.cdl"
-ncgenc04="${top_builddir}/ncgen/c0_4.cdl"
-else
+#if test "x$ISCMAKE" = x1 ; then
+#ncgen3c0="${top_builddir}/ncgen3/c0.cdl"
+#ncgenc0="${top_builddir}/ncgen/c0.cdl"
+#ncgenc04="${top_builddir}/ncgen/c0_4.cdl"
+#else
 ncgen3c0="${top_srcdir}/ncgen3/c0.cdl"
 ncgenc0="${top_srcdir}/ncgen/c0.cdl"
 ncgenc04="${top_srcdir}/ncgen/c0_4.cdl"
-fi
+#fi
