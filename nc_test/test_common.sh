@@ -51,7 +51,7 @@ top_builddir="$builddir/.."
 if test "x$CMAKE_CONFIG_TYPE" != x ; then
   execdir="$builddir/$CMAKE_CONFIG_TYPE"
 elif test "x$USECMAKE" != x ; then
-  ls -l $builddir/CMakeFiles
+  ls -lR $builddir/CMakeFiles
   execdir="$builddir"
 else
   execdir="$builddir"
