@@ -86,7 +86,8 @@ cd $top_builddir; top_builddir=`pwd` ; cd $WD
 cd $execdir; execdir=`pwd` ; cd $WD
 
 # If we have cygpath, then try to normalize
-if cygpath -mla $srcdir ; then
+tcc_os=`uname -o`
+if test "x$tcc_os" = xCygwin ; then
 srcdir=`cygpath -mla $srcdir`
 top_srcdir=`cygpath -mla $top_srcdir`
 builddir=`cygpath -mla $builddir`
