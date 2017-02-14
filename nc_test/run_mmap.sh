@@ -19,8 +19,6 @@ FILE3=tst_diskless3.nc
 echo ""
 echo "*** Testing in-memory (diskless) files with mmap"
 
-HASNC4=`${execdir}/nc-config --has-nc4`
-
 echo "**** Test diskless+mmap netCDF classic file without persistence"
 ${execdir}/tst_diskless mmap
 echo "PASS: diskless+mmap netCDF classic file without persistence"
