@@ -86,7 +86,8 @@ cd $top_builddir; top_builddir=`pwd` ; cd $WD
 cd $execdir; execdir=`pwd` ; cd $WD
 
 # If we have cygpath, then try to normalize
-if cygpath $srcdir ; then
+nca_which=`which cygpath`
+if test "x${nca_which:0:1}" == "x/" ; then
 srcdir=`cygpath -mla $srcdir`
 top_srcdir=`cygpath -mla $top_srcdir`
 builddir=`cygpath -mla $builddir`
@@ -98,7 +99,7 @@ fi
 export srcdir top_srcdir builddir top_builddir execdir
 
 # Figure out executable extension
-if test -a "${top_builddir}/ncdump${VS}/ncdump.exe" ; then
+if test -e "${top_builddir}/ncdump${VS}/ncdump.exe" ; then
   ext=".exe"
 else
   ext=""

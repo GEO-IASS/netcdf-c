@@ -12,7 +12,7 @@ cd $WD
 CDL=
 for f in ${F} ; do
 STEM=`echo $f | cut -d. -f 1`
-if test -a ${CDLTESTFILES}/${STEM}.cdl ; then
+if test -e ${CDLTESTFILES}/${STEM}.cdl ; then
   CDL="${CDL} ${STEM}"
 else
   echo "Not found: ${CDLTESTFILES}/${STEM}.cdl"

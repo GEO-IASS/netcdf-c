@@ -46,7 +46,7 @@ popd >>/dev/null
 
 filesexist() {
     for x in "$@" ; do
-	if ! test -a $x ; then
+	if ! test -e $x ; then
 	  failure "missing file: $x"
 	fi
     done

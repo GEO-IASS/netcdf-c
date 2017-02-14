@@ -69,7 +69,7 @@ resultclean() {
 if test "x${CDLDIFF}" = x1 ; then
   for f in $F ; do
     STEM=`echo $f | cut -d. -f 1`
-    if ! test -a ${CDLTESTFILES}/${STEM}.cdl ; then
+    if ! test -e ${CDLTESTFILES}/${STEM}.cdl ; then
       echo "Not found: ${CDLTESTFILES}/${STEM}.cdl"
       continue
     fi
