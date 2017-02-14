@@ -86,8 +86,7 @@ cd $top_builddir; top_builddir=`pwd` ; cd $WD
 cd $execdir; execdir=`pwd` ; cd $WD
 
 # If we have cygpath, then try to normalize
-nca_which=`which cygpath`
-if test "x$ncd_which" != x -a "x${nca_which:0:1}" = "x/" ; then
+if cygpath -mla $srcdir ; then
 srcdir=`cygpath -mla $srcdir`
 top_srcdir=`cygpath -mla $top_srcdir`
 builddir=`cygpath -mla $builddir`
