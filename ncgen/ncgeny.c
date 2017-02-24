@@ -76,7 +76,7 @@
 static char SccsId[] = "$Id: ncgen.y,v 1.42 2010/05/18 21:32:46 dmh Exp $";
 */
 #include        "includes.h"
-#include        "ncoffsets.h"
+#include        "offsets.h"
 #include        "ncgeny.h"
 #include        "ncgen.h"
 
@@ -90,7 +90,7 @@ static char SccsId[] = "$Id: ncgen.y,v 1.42 2010/05/18 21:32:46 dmh Exp $";
 #define YY_NO_INPUT 1
 
 /* True if string a equals string b*/
-#define STREQUAL(a, b)     (*(a) == *(b) && strcmp((a), (b)) == 0)
+#define STREQ(a, b)     (*(a) == *(b) && strcmp((a), (b)) == 0)
 #define VLENSIZE  (sizeof(nc_vlen_t))
 #define MAXFLOATDIM 4294967295.0
 
@@ -260,7 +260,7 @@ extern int ncgdebug;
     TYPES = 287,
     COMPOUND = 288,
     ENUM = 289,
-    OPAQUE = 290,
+    OPAQUE_ = 290,
     OPAQUESTRING = 291,
     GROUP = 292,
     PATH = 293,
@@ -645,7 +645,7 @@ static const char *const yytname[] =
   "BYTE_CONST", "SHORT_CONST", "INT_CONST", "INT64_CONST", "UBYTE_CONST",
   "USHORT_CONST", "UINT_CONST", "UINT64_CONST", "FLOAT_CONST",
   "DOUBLE_CONST", "DIMENSIONS", "VARIABLES", "NETCDF", "DATA", "TYPES",
-  "COMPOUND", "ENUM", "OPAQUE", "OPAQUESTRING", "GROUP", "PATH",
+  "COMPOUND", "ENUM", "OPAQUE_", "OPAQUESTRING", "GROUP", "PATH",
   "FILLMARKER", "NIL", "_FILLVALUE", "_FORMAT", "_STORAGE", "_CHUNKSIZES",
   "_DEFLATELEVEL", "_SHUFFLE", "_ENDIANNESS", "_NOFILL", "_FLETCHER32",
   "_NCPROPS", "_ISNETCDF4", "_SUPERBLOCK", "DATASETID", "'{'", "'}'",

@@ -77,7 +77,7 @@ extern int ncgdebug;
     TYPES = 287,
     COMPOUND = 288,
     ENUM = 289,
-    OPAQUE = 290,
+    OPAQUE_ = 290,
     OPAQUESTRING = 291,
     GROUP = 292,
     PATH = 293,

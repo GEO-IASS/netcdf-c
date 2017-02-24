@@ -1658,7 +1658,7 @@ YY_RULE_SETUP
 case 7:
 YY_RULE_SETUP
 #line 264 "ncgen.l"
-{return lexdebug(OPAQUE);}
+{return lexdebug(OPAQUE_);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
