@@ -597,62 +597,6 @@ ncuribuild(NCURI* duri, const char* prefix, const char* suffix, int flags)
     return newuri;
 }
 
-#if 0
-int
-ncuridecodeparams(NCURI* ncuri)
-{
-    char* cp = NULL;
-    int i,c;
-    size_t nparams, len;
-    char* params = NULL;
-    char** plist;
-
-    if(ncuri == NULL) return NCU_EPARAMS;
-    if(ncuri->params == NULL) return NCU_OK;
-
-    len = (strlen(ncuri->params)+1);
-    params = (char*)malloc(len); /* so we can modify */
-    if(!params) return NC_ENOMEM;
-    memcpy(params,ncuri->params,len);
-    params[len] = '\0';
-
-    /* Pass 1 to break string into pieces at the ampersands
-       and count # of pairs */
-    nparams=0;
-    for(cp=params;(c=*cp);cp++) {
-	if(c == '\\') {cp++;}
-	else if(c == '&') {*cp = EOFCHAR; nparams++;}
-    }
-    nparams++; /* for last one */
-
-    /* plist is an env style list */
-    plist = (char**)calloc(1,sizeof(char*)*(2*nparams+1)); /* +1 for null termination */
-    if(plist == NULL) {
-      if(params) free(params);
-      return NCU_ENOMEM;
-    }
-
-    /* Break up each param into a (name,value) pair*/
-    /* and insert into the param list */
-    /* parameters of the form name name= are converted to name=""*/
-    for(cp=params,i=0;i<nparams;i++) {
-	char* next = cp+strlen(cp)+1; /* save ptr to next pair*/
-	char* vp;
-	/*break up the ith param*/
-	vp = strchr(cp,'=');
-	if(vp != NULL) {*vp = EOFCHAR; vp++;} else {vp = "";}
-	plist[2*i] = nulldup(cp);
-	plist[2*i+1] = nulldup(vp);
-	cp = next;
-    }
-    plist[2*nparams] = NULL;
-    free(params);
-    if(ncuri->paramlist != NULL)
-	ncparamfree(ncuri->paramlist);
-    ncuri->paramlist = plist;
-    return NCU_OK;
-}
-#endif
 
 const char*
 ncurilookup(NCURI* uri, const char* key)
@@ -667,6 +611,20 @@ ncurilookup(NCURI* uri, const char* key)
   return value;
 }
 
+const char*
+ncuriquerylookup(NCURI* uri, const char* key)
+{
+  int i;
+  char* value = NULL;
+  if(uri == NULL || key == NULL || uri->querylist == NULL) return NULL;
+  i = ncfind(uri->querylist,key);
+  if(i < 0)
+    return NULL;
+  value = uri->querylist[(2*i)+1];
+  return value;
+}
+
+#if 0
 int
 ncuriremoveparam(NCURI* uri, const char* key)
 {
@@ -684,22 +642,8 @@ ncuriremoveparam(NCURI* uri, const char* key)
     }
     return NCU_OK;
 }
-
-
-
-
-#if 0
-int
-ncurisetparams(NCURI* uri, const char* newparams)
-{
-    if(uri == NULL) return NCU_EBADURL;
-    if(uri->paramlist != NULL) ncparamfree(uri->paramlist);
-    uri->paramlist = NULL;
-    if(uri->params != NULL) free(uri->params);
-    uri->params = nulldup(newparams);
-    return NCU_OK;
-}
 #endif
+
 
 /* Internal version of lookup; returns the paired index of the key */
 static int

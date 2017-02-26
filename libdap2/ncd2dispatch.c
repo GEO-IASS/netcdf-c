@@ -328,9 +328,6 @@ NCD2_open(const char * path, int mode,
     if(ncuriparse(dapcomm->oc.rawurltext,&dapcomm->oc.url) != NCU_OK)
 	{ncstat = NC_EURL; goto done;}
 
-    /* parse the client parameters */
-    ncuridecodeparams(dapcomm->oc.url);
-
     if(!constrainable(dapcomm->oc.url))
 	SETFLAG(dapcomm->controls,NCF_UNCONSTRAINABLE);
 

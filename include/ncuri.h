@@ -68,15 +68,22 @@ extern int ncurisetquery(NCURI*,const char* query);
 /* Construct a complete NC URI; caller frees returned string */
 extern char* ncuribuild(NCURI*,const char* prefix, const char* suffix, int flags);
 
-/*! Null result => entry not found; !NULL=>found;
+/*! Search the fragment for a given parameter
+    Null result => entry not found; !NULL=>found;
     In any case, the result is imutable and should not be free'd.
 */
 extern const char* ncurilookup(NCURI*, const char* param);
 
+/*! Search the query for a given parameter
+    Null result => entry not found; !NULL=>found;
+    In any case, the result is imutable and should not be free'd.
+*/
+extern const char* ncuriquerylookup(NCURI*, const char* param);
+
+/* URL Encode/Decode */
 extern char* ncuriencode(char* s, char* allowable);
 extern char* ncuridecode(char* s);
 extern char* ncuridecodeonly(char* s, char*);
-extern int ncuriremoveparam(NCURI*, const char* key);
 
 #if defined(_CPLUSPLUS_) || defined(__CPLUSPLUS__) || defined(__CPLUSPLUS)
 }

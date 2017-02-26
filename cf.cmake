@@ -10,9 +10,6 @@ VS=yes
 if test "x$VS" = x ; then
 #CC=mpicc
 CC=gcc
-else
-VSSTRING="Visual Studio 12 2013 Win64"
-G="-G\"$VSSTRING\""
 fi
 
 export CC
@@ -31,15 +28,15 @@ FLAGS="$FLAGS -DENABLE_DAP_REMOTE_TESTS=true"
 FLAGS="$FLAGS -DENABLE_TESTS=true"
 FLAGS="$FLAGS -DENABLE_EXAMPLES=false"
 #FLAGS="$FLAGS -DENABLE_DAP4=true"
-FLAGS="$FLAGS -DENABLE_HDF4=true"
+#FLAGS="$FLAGS -DENABLE_HDF4=true"
 
 rm -fr build
 mkdir build
 cd build
 
-cmake $FLAGS ${ZLIB} ${HDF5} ${CURL} ..
+cmake $FLAGS ..
 # We must use Release config here because Debug will invoke a runtime dialog box.
 # If missing, appears to default to Debug
-CFG="--config Debug"
-#cmake --build . ${CFG}
-#cmake --build . ${CFG} --target RUN_TESTS
+CFG="--config RelWithDebInfo"
+cmake --build . ${CFG}
+cmake --build . ${CFG} --target RUN_TESTS

@@ -116,12 +116,13 @@ NCGEN3="${top_builddir}/ncgen3${VS}/ncgen3${ext}"
 cd $builddir
 
 # Temporary hacks (until we have a test_utils directory
-#if test "x$ISCMAKE" = x1 ; then
-#ncgen3c0="${top_builddir}/ncgen3/c0.cdl"
-#ncgenc0="${top_builddir}/ncgen/c0.cdl"
-#ncgenc04="${top_builddir}/ncgen/c0_4.cdl"
-#else
 ncgen3c0="${top_srcdir}/ncgen3/c0.cdl"
 ncgenc0="${top_srcdir}/ncgen/c0.cdl"
 ncgenc04="${top_srcdir}/ncgen/c0_4.cdl"
-#fi
+
+# Need to put netcdf.dll into the path if using cmake
+if test "x$ISCMAKE" = x1 ; then
+  NCLIBDIR="${top_builddir}/liblib${VS}"
+  NCLIBDIR=`cygpath -ua $NCLIBDIR`
+  export PATH="${NCLIBDIR}:${PATH}"
+fi
