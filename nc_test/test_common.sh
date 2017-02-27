@@ -88,6 +88,10 @@ cd $execdir; execdir=`pwd` ; cd $WD
 # If we have cygpath, then try to normalize
 tcc_os=`uname -o`
 if test "x$tcc_os" = xCygwin ; then
+  ISCYGWIN=1
+fi
+
+if "x$ISCYGWIN" = x1; then
 srcdir=`cygpath -mla $srcdir`
 top_srcdir=`cygpath -mla $top_srcdir`
 builddir=`cygpath -mla $builddir`
@@ -123,6 +127,8 @@ ncgenc04="${top_srcdir}/ncgen/c0_4.cdl"
 # Need to put netcdf.dll into the path if using cmake
 if test "x$ISCMAKE" = x1 ; then
   NCLIBDIR="${top_builddir}/liblib${VS}"
-  NCLIBDIR=`cygpath -ua $NCLIBDIR`
+  if "x$ISCYGWIN" = x1; then
+    NCLIBDIR=`cygpath -ua $NCLIBDIR`
+  fi
   export PATH="${NCLIBDIR}:${PATH}"
 fi
