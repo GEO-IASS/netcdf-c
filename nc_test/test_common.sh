@@ -127,7 +127,7 @@ ncgenc04="${top_srcdir}/ncgen/c0_4.cdl"
 # Need to put netcdf.dll into the path if using cmake
 if test "x$ISCMAKE" = x1 ; then
   NCLIBDIR="${top_builddir}/liblib${VS}"
-  if "x$ISCYGWIN" = x1; then
+  if test "x$ISCYGWIN" = x1; then
     NCLIBDIR=`cygpath -ua $NCLIBDIR`
   fi
   export PATH="${NCLIBDIR}:${PATH}"
