@@ -91,7 +91,7 @@ if test "x$tcc_os" = xCygwin ; then
   ISCYGWIN=1
 fi
 
-if "x$ISCYGWIN" = x1; then
+if test "x$ISCYGWIN" = x1; then
 srcdir=`cygpath -mla $srcdir`
 top_srcdir=`cygpath -mla $top_srcdir`
 builddir=`cygpath -mla $builddir`
