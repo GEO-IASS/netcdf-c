@@ -113,7 +113,7 @@ fi
 # Find the relevant directory
 NCDUMP="${top_builddir}/ncdump${VS}/ncdump${ext}"
 NCCOPY="${top_builddir}/ncdump${VS}/nccopy${ext}"
-NCGEN="valgrind --leak-check=full ${top_builddir}/ncgen${VS}/ncgen${ext}"
+NCGEN="${top_builddir}/ncgen${VS}/ncgen${ext}"
 NCGEN3="${top_builddir}/ncgen3${VS}/ncgen3${ext}"
 
 # Make sure we are in builddir (not execdir)
