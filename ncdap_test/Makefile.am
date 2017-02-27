@@ -72,6 +72,8 @@ endif
 
 endif #ENABLE_DAP_REMOTE_TESTS
 
+endif #ENABLE_DAP
+
 # Need to add subdirs
 SUBDIRS = testdata3 expected3 expectremote3
 
@@ -83,10 +85,6 @@ EXTRA_DIST = tst_ncdap3.sh  \
 			t_ncf330.c
 
 CLEANFILES = test_varm3 test_cvt3 results/*.dmp results/*.das results/*.dds datadds* t_dap3a test_nstride_cached *.exe
-
-if USE_NETCDF4
-CLEANFILES += test_cvt4 t_dap4
-endif
 
 # This rule are used if someone wants to rebuild t_dap3a.c
 # Otherwise never invoked, but records how to do it.
