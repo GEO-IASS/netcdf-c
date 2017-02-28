@@ -2,11 +2,9 @@
  *   Copyright 2009, UCAR/Unidata
  *   See netcdf/COPYRIGHT file for copying and redistribution conditions.
  *********************************************************************/
-/* $Id: offsets.h,v 1.2 2010/05/24 19:59:58 dmh Exp $ */
-/* $Header: /upc/share/CVS/netcdf-3/ncgen/offsets.h,v 1.2 2010/05/24 19:59:58 dmh Exp $ */
 
-#ifndef OFFSETS_H
-#define OFFSETS_H 1
+#ifndef NCOFFSETS_H
+#define NCOFFSETS_H 1
 
 typedef struct Alignment {
     char* typename;
@@ -57,4 +55,4 @@ extern char* ctypenames[];
 
 extern unsigned int nctypealignment(nc_type nctype);
 
-#endif /*OFFSETS_H*/
+#endif /*NCOFFSETS_H*/
