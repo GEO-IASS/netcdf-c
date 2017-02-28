@@ -6,7 +6,6 @@ DAP=1
 VS=yes
 #CYGWIN=yes
 
-
 if test "x$VS" = x ; then
 #CC=mpicc
 CC=gcc
@@ -28,7 +27,7 @@ FLAGS="$FLAGS -DENABLE_DAP_REMOTE_TESTS=true"
 FLAGS="$FLAGS -DENABLE_TESTS=true"
 FLAGS="$FLAGS -DENABLE_EXAMPLES=false"
 #FLAGS="$FLAGS -DENABLE_DAP4=true"
-#FLAGS="$FLAGS -DENABLE_HDF4=true"
+FLAGS="$FLAGS -DENABLE_HDF4=true"
 
 rm -fr build
 mkdir build
@@ -37,6 +36,6 @@ cd build
 cmake $FLAGS ..
 # We must use Release config here because Debug will invoke a runtime dialog box.
 # If missing, appears to default to Debug
-CFG="--config RelWithDebInfo"
-cmake --build . ${CFG}
-cmake --build . ${CFG} --target RUN_TESTS
+#CFG="--config RelWithDebInfo"
+#cmake --build . ${CFG}
+#cmake --build . ${CFG} --target RUN_TESTS

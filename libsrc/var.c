@@ -12,7 +12,7 @@
 #include <limits.h>
 #include "ncx.h"
 #include "rnd.h"
-#include "utf8proc.h"
+#include "ncutf8.h"
 
 #ifndef OFF_T_MAX
 #if 0
@@ -126,9 +126,11 @@ new_NC_var(const char *uname, nc_type type,
 {
 	NC_string *strp = NULL;
 	NC_var *varp = NULL;
+	int stat;
+	char* name;
 
-	char *name = (char *)utf8proc_NFC((const unsigned char *)uname);
-	if(name == NULL)
+        stat = nc_utf8_normalize((const unsigned char *)uname,(unsigned char **)&name);
+        if(stat != NC_NOERR)
 	    return NULL;
 	strp = new_NC_string(strlen(name), name);
 	free(name);
@@ -355,6 +357,7 @@ NC_findvar(const NC_vararray *ncap, const char *uname, NC_var **varpp)
 {
 	int hash_var_id;
 	char *name;
+	int stat;
 
 	assert(ncap != NULL);
 
@@ -363,9 +366,9 @@ NC_findvar(const NC_vararray *ncap, const char *uname, NC_var **varpp)
 
 
 	/* normalized version of uname */
-	name = (char *)utf8proc_NFC((const unsigned char *)uname);
-	if(name == NULL)
-	    return NC_ENOMEM;
+        stat = nc_utf8_normalize((const unsigned char *)uname,(unsigned char **)&name);
+        if(stat != NC_NOERR)
+	    return stat;
 
 	hash_var_id = (int)NC_hashmapGetVar(ncap, name);
 	free(name);
@@ -754,9 +757,9 @@ NC3_rename_var(int ncid, int varid, const char *unewname)
 
 
 	old = varp->name;
-	newname = (char *)utf8proc_NFC((const unsigned char *)unewname);
-	if(newname == NULL)
-	    return NC_ENOMEM;
+        status = nc_utf8_normalize((const unsigned char *)unewname,(unsigned char **)&newname);
+        if(status != NC_NOERR)
+	    return status;
 	if(NC_indef(ncp))
 	{
 		/* Remove old name from hashmap; add new... */
