@@ -51,8 +51,6 @@ typedef struct Typealignset {
 
 typedef Alignment Typealignvec;
 
-extern char* ctypenames[];
-
-extern unsigned int nctypealignment(nc_type nctype);
+EXTERNL unsigned int nctypealignment(nc_type nctype);
 
 #endif /*NCOFFSETS_H*/

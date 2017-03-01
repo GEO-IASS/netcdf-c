@@ -90,6 +90,7 @@ all compilers seem to mimic the gcc rules.
     DST.typename = #TYPE ;        \
     DST.alignment = (size_t)((char*)(&(tmp.x)) - (char*)(&tmp));}
 
+#if 0
 char* ctypenames[NCTYPES] = {
 (char*)NULL,
 "char","unsigned char",
@@ -99,6 +100,7 @@ char* ctypenames[NCTYPES] = {
 "float","double",
 "void*","nc_vlen_t"
 };
+#endif
 
 static Typealignvec vec[NCTYPES];
 static Typealignset set;
