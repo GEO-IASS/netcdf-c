@@ -99,7 +99,6 @@ FLAGS="$FLAGS --enable-extra-tests"
 #FLAGS="$FLAGS --enable-large-file-tests"
 #FLAGS="$FLAGS --disable-testsets"
 #FLAGS="$FLAGS --disable-dap-remote-tests"
-#FLAGS="$FLAGS --with-testservers=remotetest.unidata.ucar.edu,localhost:8081"
 #FLAGS="$FLAGS --enable-dap-auth-tests" -- requires a new remotetest server
 #FLAGS="$FLAGS --enable-doxygen"
 FLAGS="$FLAGS --enable-logging"
@@ -113,6 +112,7 @@ FLAGS="$FLAGS --enable-logging"
 #FLAGS="$FLAGS --disable-properties-attribute"
 #FLAGS="$FLAGS --disable-silent-rules"
 #FLAGS="$FLAGS --enable-dap4"
+#FLAGS="$FLAGS --with-testservers=remotestserver.localhost:8083"
 
 if test "x$PAR4" != x1 ; then
 FLAGS="$FLAGS --disable-parallel4"

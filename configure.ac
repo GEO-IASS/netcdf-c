@@ -407,8 +407,8 @@ AC_ARG_WITH([testservers],
             [REMOTETESTSERVERS=$with_testservers], [REMOTETESTSERVERS=no])
 msg="$REMOTETESTSERVERS"
 if test "x$REMOTETESTSERVERS" = xno ; then
-  msg="localhost:8081,localhost:8080,remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu (default)"
-  REMOTETESTSERVERS=localhost:8081,localhost:8080,remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu
+  msg="remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu (defaults)"
+  REMOTETESTSERVERS=remotetest.unidata.ucar.edu,jetstream.unidata.ucar.edu
 fi
 AC_MSG_RESULT([$msg])
 AC_DEFINE_UNQUOTED([REMOTETESTSERVERS], ["$REMOTETESTSERVERS"], [the testservers for remote tests.])

@@ -6,6 +6,8 @@
 #include "netcdf.h"
 
 #define MAXSERVERURL 4096
+#define TIMEOUT 10 /*seconds*/
+#define BUFSIZE 8192 /*bytes*/
 
 static int ping(const char* url);
 
@@ -70,10 +72,10 @@ nc_findtestserver(const char* path, int isdap4, const char* serverlist)
     return NULL;
 }
 
-#define CERR(expr) if((stat=(expr)) != CURLE_OK) goto done;
+#define CERR(expr) if((cstat=(expr)) != CURLE_OK) goto done;
 
 struct Buffer {
-    char data[8192];
+    char data[BUFSIZE];
     size_t offset; /* into buffer */
 };
 
@@ -81,18 +83,20 @@ static size_t
 WriteMemoryCallback(void *ptr, size_t size, size_t nmemb, void *data)
 {
     struct Buffer* buffer = (struct Buffer*)data;
-    size_t realsize = size * nmemb;
-    if(realsize == 0) goto done;
+    size_t total = size * nmemb;
+    size_t canwrite = total; /* assume so */
+    if(total == 0) {
         fprintf(stderr,"WriteMemoryCallback: zero sized chunk\n");
-    if((buffer->offset + realsize) >= sizeof(buffer->data))
-	realsize = (sizeof(buffer->data) - buffer->offset); /* do partial read */
-    memcpy(&(buffer->data[buffer->offset]),ptr,realsize);
-    buffer->offset += realsize;
+	goto done;
+    }
+    if((buffer->offset + total) > sizeof(buffer->data))
+	canwrite = (sizeof(buffer->data) - buffer->offset); /* partial read */
+    if(canwrite > 0)
+        memcpy(&(buffer->data[buffer->offset]),ptr,canwrite);
+    buffer->offset += canwrite;
 done:
-    return realsize;
+    return total; /* pretend we captured everything */
 }
-
-#define CERR(expr) if((stat=(expr)) != CURLE_OK) goto done;
 
 static int
 ping(const char* url)
@@ -113,7 +117,7 @@ ping(const char* url)
     CERR((curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L)));
 
     /* use a very short timeout: 10 seconds */
-    CERR((curl_easy_setopt(curl, CURLOPT_TIMEOUT, (long)5)));
+    CERR((curl_easy_setopt(curl, CURLOPT_TIMEOUT, (long)TIMEOUT)));
 
     /* fail on HTTP 400 code errors */
     CERR((curl_easy_setopt(curl, CURLOPT_FAILONERROR, (long)1)));

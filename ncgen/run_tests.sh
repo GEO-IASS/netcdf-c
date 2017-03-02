@@ -19,7 +19,11 @@ validateNC() {
     ARGS=$@
 
     echo "*** generating $BASENAME.nc ***"
+    if test "x$VALGRIND" = x ; then
     ${NCGEN} $ARGS -o $BASENAME.nc $INFILE
+    else
+    ${VALGRIND} ${NCGEN} $ARGS -o $BASENAME.nc $INFILE
+    fi
     ${NCDUMP} $BASENAME.nc | sed 's/e+0/e+/g' > $TMPFILE
     echo "*** comparing $BASENAME.nc against $INFILE *** "
     diff -b -w $INFILE $TMPFILE

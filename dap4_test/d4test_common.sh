@@ -1,5 +1,3 @@
-set -x
-
 if test $# = 0 ; then
 TEST=1
 else

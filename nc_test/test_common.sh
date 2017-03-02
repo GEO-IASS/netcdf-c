@@ -116,14 +116,6 @@ NCCOPY="${top_builddir}/ncdump${VS}/nccopy${ext}"
 NCGEN="${top_builddir}/ncgen${VS}/ncgen${ext}"
 NCGEN3="${top_builddir}/ncgen3${VS}/ncgen3${ext}"
 
-# Make sure we are in builddir (not execdir)
-cd $builddir
-
-# Temporary hacks (until we have a test_utils directory
-ncgen3c0="${top_srcdir}/ncgen3/c0.cdl"
-ncgenc0="${top_srcdir}/ncgen/c0.cdl"
-ncgenc04="${top_srcdir}/ncgen/c0_4.cdl"
-
 # Need to put netcdf.dll into the path if using cmake
 if test "x$ISCMAKE" = x1 ; then
   NCLIBDIR="${top_builddir}/liblib${VS}"
@@ -132,3 +124,17 @@ if test "x$ISCMAKE" = x1 ; then
   fi
   export PATH="${NCLIBDIR}:${PATH}"
 fi
+
+# Temporary hacks (until we have a test_utils directory
+ncgen3c0="${top_srcdir}/ncgen3/c0.cdl"
+ncgenc0="${top_srcdir}/ncgen/c0.cdl"
+ncgenc04="${top_srcdir}/ncgen/c0_4.cdl"
+
+# Hack to see is valgrind is available
+if valgrind --version >/dev/null ; then
+VALGRIND="valgrind --leak-check=full"
+fi
+
+# Make sure we are in builddir (not execdir)
+cd $builddir
+
