@@ -362,13 +362,16 @@ NC_findattr(const NC_attrarray *ncap, const char *uname)
 
 	for(attrid = 0; attrid < ncap->nelems; attrid++, attrpp++)
 	{
-	    if(*attrpp != NULL && (*attrpp)->name != NULL) {
-		if(strlen((*attrpp)->name->cp) == slen &&
+	    if(*attrpp == NULL || (*attrpp)->name == NULL || (*attrpp->name->cp == NULL) {
+		fprintf(stderr,"bad attribute looking for %s\n",name);
+		free(name);
+		return NULL;
+	    }
+	    if(strlen((*attrpp)->name->cp) == slen &&
 			strncmp((*attrpp)->name->cp, name, slen) == 0)
-		{
-		        free(name);
-			return(attrpp); /* Normal return */
-		}
+	    {
+		free(name);
+		return(attrpp); /* Normal return */
 	    }
 	}
 	free(name);
