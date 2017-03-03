@@ -81,7 +81,6 @@ new_x_NC_attr(
 	NC_attr *attrp;
 	const size_t xsz = ncx_len_NC_attrV(type, nelems);
 	size_t sz = M_RNDUP(sizeof(NC_attr));
-
 	assert(!(xsz == 0 && nelems != 0));
 
 	sz += xsz;
@@ -91,6 +90,9 @@ new_x_NC_attr(
 		return NULL;
 
 	attrp->xsz = xsz;
+
+fprintf(stderr,"xxx: new attribute: name=%s type=%d nelems=%d\n",strp,type,nelems);
+fflush(stderr);
 
 	attrp->name = strp;
 	attrp->type = type;
@@ -362,7 +364,7 @@ NC_findattr(const NC_attrarray *ncap, const char *uname)
 
 	for(attrid = 0; attrid < ncap->nelems; attrid++, attrpp++)
 	{
-	    if(*attrpp == NULL || (*attrpp)->name == NULL || (*attrpp->name->cp == NULL) {
+	    if(*attrpp == NULL || (*attrpp)->name == NULL || (*attrpp)->name->cp == NULL) {
 		fprintf(stderr,"bad attribute looking for %s\n",name);
 		free(name);
 		return NULL;
