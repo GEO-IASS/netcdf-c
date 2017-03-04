@@ -95,8 +95,8 @@ new_x_NC_attr(
 signed char xs[512];
 memcpy(xs,strp->cp,strp->nchars);
 xs[strp->nchars] = '\0';
-fprintf(stderr,"xxx: new attribute: name=|%s| type=%d nelems=%d\n",xs,type,nelems);
-fflush(stderr);
+fprintf(stdout,"xxx: new attribute: name=|%s| type=%d nelems=%d\n",xs,type,nelems);
+fflush(stdout);
 }
 
 	attrp->name = strp;
