@@ -31,21 +31,23 @@ static void testname(NC_string* name)
     char* s = (char*)name->cp;
     if(s == NULL) {fprintf(stderr,"s==null\n"); goto fail;}
     fprintf(stderr,"xxx: test |%s|",s);
-    if(len == 0) {fprintf(stderr," len: %d\n",(int)len); goto fail;}
+    if(len == 0) {fprintf(stderr," len: %d",(int)len); goto fail;}
     truelen = strlen(s);
     if(truelen != len) {
-	fprintf(stderr," truelen=%d len=%d\n",(int)truelen,(int)len);
+	fprintf(stderr," truelen=%d len=%d",(int)truelen,(int)len);
 	goto fail;
     }
     for(i=0;i<len;i++) {
 	int c = s[i];
+	c &= 0xFF; /* force positive */
 	if(c < ' ' && c != '\r' && c != '\n' && c != '\t') {
-	    fprintf(stderr," illegal char: %d\n",c);
+	    fprintf(stderr," illegal char: %d",c);
 	    goto fail;
 	}
     }
     return;
 fail:
+    fprintf(stderr,"\n");
     fflush(stderr);
     abort();
 }
