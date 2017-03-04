@@ -91,7 +91,7 @@ new_x_NC_attr(
 
 	attrp->xsz = xsz;
 
-fprintf(stderr,"xxx: new attribute: name=%s type=%d nelems=%d\n",strp,type,nelems);
+fprintf(stderr,"xxx: new attribute: name=|%s| type=%d nelems=%d\n",strp,type,nelems);
 fflush(stderr);
 
 	attrp->name = strp;
