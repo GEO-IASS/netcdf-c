@@ -20,7 +20,7 @@ dnl
 #include "rnd.h"
 #include "ncutf8.h"
 
-#undef DEBUGA
+#define DEBUGA 1
 
 #ifdef DEBUGA
 static void testname(NC_string* name)
@@ -124,6 +124,7 @@ new_x_NC_attr(
 
 	attrp->xsz = xsz;
 
+#if 0
 #ifdef DEBUGA
 {
 signed char xs[512];
@@ -132,6 +133,7 @@ xs[strp->nchars] = '\0';
 fprintf(stderr,"xxx: new attribute: name=|%s| type=%d nelems=%d\n",xs,type,nelems);
 fflush(stderr);
 }
+#endif
 #endif
 	attrp->name = strp;
 	attrp->type = type;
@@ -415,12 +417,12 @@ if(strcmp((char*)name,(char*)uname) != 0) {
 	{
 #ifdef DEBUGA
 	    if((*attrpp) == NULL) {
-		fprintf(stderr,"xxx: (*attrpp) == NULL\n");
+		fprintf(stderr,"xxx: (*attrpp) == NULL name=|%s|\n",uname);
 		fflush(stderr);
 		abort();
 	    }
 	    if((*attrpp)->name == NULL) {
-		fprintf(stderr,"xxx: (*attrpp)->name == NULL\n");
+		fprintf(stderr,"xxx: (*attrpp)->name == NULL  name=|%s|\n",uname);
 		fflush(stderr);
 		abort();
 	    }
