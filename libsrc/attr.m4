@@ -20,37 +20,9 @@ dnl
 #include "rnd.h"
 #include "ncutf8.h"
 
-#define DEBUGA 1
+/* Try to catch bad attribute seg fault */
+#define DBGSEGFAULT
 
-#ifdef DEBUGA
-static void testname(NC_string* name)
-{
-    size_t i;
-    size_t len  = name->nchars;
-    size_t truelen = 0;
-    char* s = (char*)name->cp;
-    if(s == NULL) {fprintf(stderr,"xxx: s==null"); goto fail;}
-    if(len == 0) {fprintf(stderr,"xxx: len: %d",(int)len); goto fail;}
-    truelen = strlen(s);
-    if(truelen != len) {
-	fprintf(stderr,"xxx: truelen=%d len=%d",(int)truelen,(int)len);
-	goto fail;
-    }
-    for(i=0;i<len;i++) {
-	int c = s[i];
-	c &= 0xFF; /* force positive */
-	if(c < ' ' && c != '\r' && c != '\n' && c != '\t') {
-	    fprintf(stderr,"xxx: illegal char: %d",c);
-	    goto fail;
-	}
-    }
-    return;
-fail:
-    fprintf(stderr," attr=|%s|\n",s);
-    fflush(stderr);
-    abort();
-}
-#endif
 
 /*
  * Free attr
@@ -124,17 +96,6 @@ new_x_NC_attr(
 
 	attrp->xsz = xsz;
 
-#if 0
-#ifdef DEBUGA
-{
-signed char xs[512];
-memcpy(xs,strp->cp,strp->nchars);
-xs[strp->nchars] = '\0';
-fprintf(stderr,"xxx: new attribute: name=|%s| type=%d nelems=%d\n",xs,type,nelems);
-fflush(stderr);
-}
-#endif
-#endif
 	attrp->name = strp;
 	attrp->type = type;
 	attrp->nelems = nelems;
@@ -400,33 +361,17 @@ NC_findattr(const NC_attrarray *ncap, const char *uname)
 	/* normalized version of uname */
 	stat = nc_utf8_normalize((const unsigned char *)uname,(unsigned char**)&name);
 
-#if 0
-#ifdef DEBUGA
-if(strcmp((char*)name,(char*)uname) != 0) {
-    fprintf(stderr,"xxx: normalize failure: u=%s n=%s\n",uname,name);
-    fflush(stderr);
-}
-#endif
-#endif
-
 	if(stat != NC_NOERR)
 	    return NULL; /* TODO: need better way to indicate no memory */
 	slen = strlen(name);
 
 	for(attrid = 0; attrid < ncap->nelems; attrid++, attrpp++)
 	{
-#ifdef DEBUGA
-	    if((*attrpp) == NULL) {
-		fprintf(stderr,"xxx: (*attrpp) == NULL name=|%s|\n",uname);
-		fflush(stderr);
-		abort();
+#ifdef DBGSEGFAULT
+	    if((*attrpp) == NULL || (*attrpp)->name == NULL) {
+		if(name != NULL) free(name);
+		return NULL;
 	    }
-	    if((*attrpp)->name == NULL) {
-		fprintf(stderr,"xxx: (*attrpp)->name == NULL  name=|%s|\n",uname);
-		fflush(stderr);
-		abort();
-	    }
-	    testname((*attrpp)->name);
 #endif
 	    if(strlen((*attrpp)->name->cp) == slen &&
 			strncmp((*attrpp)->name->cp, name, slen) == 0)
