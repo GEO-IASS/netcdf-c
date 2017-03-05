@@ -9,8 +9,8 @@ dnl
  *      See netcdf/COPYRIGHT file for copying and redistribution conditions.
  */
 
-#include "netcdf.h"
 #include "nc3internal.h"
+#include "ncdispatch.h"
 #include "nc3dispatch.h"
 #include <stdlib.h>
 #include <string.h>
@@ -19,10 +19,6 @@ dnl
 #include "fbits.h"
 #include "rnd.h"
 #include "ncutf8.h"
-
-/* Try to catch bad attribute seg fault */
-#define DBGSEGFAULT
-
 
 /*
  * Free attr
@@ -360,25 +356,18 @@ NC_findattr(const NC_attrarray *ncap, const char *uname)
 
 	/* normalized version of uname */
 	stat = nc_utf8_normalize((const unsigned char *)uname,(unsigned char**)&name);
-
 	if(stat != NC_NOERR)
 	    return NULL; /* TODO: need better way to indicate no memory */
 	slen = strlen(name);
 
 	for(attrid = 0; attrid < ncap->nelems; attrid++, attrpp++)
 	{
-#ifdef DBGSEGFAULT
-	    if((*attrpp) == NULL || (*attrpp)->name == NULL) {
-		if(name != NULL) free(name);
-		return NULL;
-	    }
-#endif
-	    if(strlen((*attrpp)->name->cp) == slen &&
+		if(strlen((*attrpp)->name->cp) == slen &&
 			strncmp((*attrpp)->name->cp, name, slen) == 0)
-	    {
-		free(name);
-		return(attrpp); /* Normal return */
-	    }
+		{
+		        free(name);
+			return(attrpp); /* Normal return */
+		}
 	}
 	free(name);
 	return(NULL);
