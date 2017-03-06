@@ -27,7 +27,7 @@ FLAGS="$FLAGS -DENABLE_DAP_REMOTE_TESTS=true"
 FLAGS="$FLAGS -DENABLE_TESTS=true"
 FLAGS="$FLAGS -DENABLE_EXAMPLES=false"
 #FLAGS="$FLAGS -DENABLE_DAP4=true"
-FLAGS="$FLAGS -DENABLE_HDF4=true"
+#FLAGS="$FLAGS -DENABLE_HDF4=true"
 
 rm -fr build
 mkdir build
@@ -37,5 +37,6 @@ cmake $FLAGS ..
 # We must use Release config here because Debug will invoke a runtime dialog box.
 # If missing, appears to default to Debug
 CFG="--config RelWithDebInfo"
+export PATH="/cygdrive/d/git/dap4/build/liblib/${CFG}:$PATH"
 cmake --build . ${CFG}
-#cmake --build . ${CFG} --target RUN_TESTS
+cmake --build . ${CFG} --target RUN_TESTS

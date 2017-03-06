@@ -11,10 +11,11 @@ This file contains a high-level description of this package's evolution. Release
 
 ## 4.4.2 - TBD
 
-* [Enhancement] DAP4 is now supported. Since dap2 is the default for urls, dap4 must be specified by
+* [Enhancement] DAP4 is now included. Since dap2 is the default for urls, dap4 must be specified by
 (1) using "dap4:" as the url protocol, or
 (2) appending "#protocol=dap4" to the end of the url, or
 (3) appending "#dap4" to the end of the url 
+Note that dap4 is disabled by default until the testserver situation is resolved.
 * [Enhancement] The remote testing server can now be specified with the '--with-testserver" option to ./configure.
 * [Refactor] the oc2 library is no longer independent of the main netcdf-c library. For example, it now uses ncuri, nclist, and ncbytes instead of its homegrown equivalents.
 * [Upgrade] Update utf8proc.[ch] to use the version now maintained by the
