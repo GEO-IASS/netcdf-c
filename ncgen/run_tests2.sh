@@ -5,7 +5,7 @@
 #Ensure srcdir
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
 
-. ${srcdir}/../nc_test/test_common.sh
+. ${srcdir}/../test_common.sh
 
 echo "*** creating test0.nc from test0.cdl..."
 if !(${NCDUMP} -n c1 $(srcdir)/ctest0.nc > ctest1.cdl); then

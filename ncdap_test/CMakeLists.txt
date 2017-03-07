@@ -1,6 +1,3 @@
-set(ENV{SETX} 1)
-#SET(abs_top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
-
 add_definitions(-D"TOPSRCDIR=${CMAKE_SOURCE_DIR}")
 add_definitions(-D"TOPBINDIR=${CMAKE_BINARY_DIR}")
 
@@ -26,14 +23,12 @@ IF(ENABLE_TESTS)
     add_bin_env_test(ncdap test_vara)
   ENDIF()
 
-  BUILD_BIN_TEST(test_environment)
-
   IF(ENABLE_DAP_REMOTE_TESTS)
 
     BUILD_BIN_TEST(findtestserver)
 
     IF(BUILD_UTILITIES)
-      add_sh_test(ncdap tst_remote)
+      add_sh_test(ncdap tst_remote3)
 # not yet      add_sh_test(ncdap tst_hyrax)
     ENDIF(BUILD_UTILITIES)
 

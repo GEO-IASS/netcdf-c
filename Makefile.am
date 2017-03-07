@@ -15,7 +15,7 @@ EXTRA_DIST = README.md COPYRIGHT INSTALL.md test_prog.c \
 	FixBundle.cmake.in \
 	nc-config.cmake.in RELEASE_NOTES.md CTestCustom.cmake \
 	CTestConfig.cmake.in libnetcdf.settings.in netCDFConfig.cmake.in \
-	CMakeInstallation.cmake test-driver-verbose
+	CMakeInstallation.cmake test-driver-verbose test_common.in
 
 # Doxygen doesn't build nicely in vpath builds.
 # Don't do this; it wipes out any exported values
@@ -96,7 +96,7 @@ docs $(EXAMPLES) \
 $(UDUNITS) $(LIBCF)
 
 # Remove these generated files, for a distclean.
-DISTCLEANFILES = VERSION comps.txt test_prog libnetcdf.settings
+DISTCLEANFILES = VERSION comps.txt test_prog libnetcdf.settings test_common.sh
 
 # The nc-config script helps the user build programs with netCDF.
 bin_SCRIPTS = nc-config
@@ -185,6 +185,10 @@ check_nc_config:
 	$(CC) `./nc-config --cflags` test_prog.c -o test_prog `./nc-config --libs`
 	./test_prog
 
+# Build nc_test/test_common.sh
+all-local:
+	rm -f ${top_srcdir}/nc_test/test_common.sh
+	sed -e "s|@TOPSRCDIR@|${abs_top_srcdir}|" -e "s|@TOPBUILDDIR@|${abs_top_builddir}|" <${top_srcdir}/test_common.in >${top_srcdir}/test_common.sh
 
 install-data-hook:
 

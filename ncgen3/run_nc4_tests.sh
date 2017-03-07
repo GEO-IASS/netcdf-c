@@ -3,7 +3,7 @@
 # $Id: run_nc4_tests.sh,v 1.3 2009/09/24 18:19:10 dmh Exp $
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../nc_test/test_common.sh
+. ${srcdir}/../test_common.sh
 
 
 echo "*** Testing ncgen3 for netCDF-4."

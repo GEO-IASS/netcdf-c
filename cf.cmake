@@ -35,8 +35,10 @@ cd build
 
 cmake $FLAGS ..
 # We must use Release config here because Debug will invoke a runtime dialog box.
+
 # If missing, appears to default to Debug
-CFG="--config RelWithDebInfo"
-export PATH="/cygdrive/d/git/dap4/build/liblib/${CFG}:$PATH"
+VSCFG=RelWithDebInfo
+CFG="--config $VSCFG"
+export PATH="/cygdrive/d/git/dap4/build/liblib/${VSCFG}:$PATH"
 cmake --build . ${CFG}
 cmake --build . ${CFG} --target RUN_TESTS

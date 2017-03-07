@@ -3,7 +3,7 @@
 # $Id: tst_output.sh,v 1.17 2010/05/14 16:21:15 ed Exp $
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../nc_test/test_common.sh
+. ${srcdir}/../test_common.sh
 
 FILE=tst_interops2.h4
 

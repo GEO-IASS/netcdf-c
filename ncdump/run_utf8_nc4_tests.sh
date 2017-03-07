@@ -2,7 +2,7 @@
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi 
 
-. ${srcdir}/../nc_test/test_common.sh
+. ${srcdir}/../test_common.sh
 
 #
 # Moving some netcdf-4 only tests here, out of tst_nccopy and run_utf8_tests.

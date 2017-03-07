@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../nc_test/test_common.sh
+. ${srcdir}/../test_common.sh
 
 # This shell tests non-sequential reads for bm_file.c
 

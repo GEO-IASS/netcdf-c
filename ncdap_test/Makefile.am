@@ -26,9 +26,6 @@ check_PROGRAMS += t_dap3a test_cvt3 test_vara
 TESTS += t_dap3a test_cvt3 test_vara
 TESTS += tst_ncdap3.sh
 
-check_PROGRAMS += test_environment
-test_environment_SOURCES = test_environment.c
-
 # remote tests are optional
 # because the server may be down or inaccessible
 

@@ -1,4 +1,6 @@
-#!/bin/sh
+TOPSRCDIR=@TOPSRCDIR@
+TOPBUILDDIR=@TOPBUILDDIR@
+
 
 # Figure out various locations in the src/build tree.
 # This is relatively fragile code and is essentially
@@ -17,7 +19,7 @@
 #    the src and build trees are distinct.
 # 4. Cmake using Visual Studio (VS) compiler: obviously this implies Windows.
 #    This only works if a number of *nix tools are available via Cygwin
-#    or MinGW.
+#    or MinGW. The src and build trees are distinct.
 #
 # The big difference between #3 and #4 is the handling of executables
 # and the notion of a VS configuration type like Debug or Release.
@@ -49,19 +51,27 @@
 # Allow global set -x mechanism
 if test "x$SETX" = x1 ; then set -x ; fi
 
+# We assume that TOPSRCDIR and TOPBUILDDIR are defined 
+# At the top of this shell script
+top_srcdir="$TOPSRCDIR"
+top_builddir="$TOPBUILDDIR"
+
+# srcdir may or may not be defined, but if not, then create it
+if test "x$srcdir" = x ; then
+  # we need to figure out our directory
+  # pick off the last component as the relative name of this directory
+  srcdir=`pwd`
+  current=`basename $srcdir`
+  srcdir="${top_srcdir}/$current"
+fi
+
+# We also assume we are executing in builddir
+builddir=`pwd`
+
 # Test for cmake related items
 if test "x$CMAKE_CONFIG_TYPE" != x -o "x$USECMAKE" != x ; then
   ISCMAKE=1;
 fi
-
-# Figure out srcdir
-if test "x$srcdir" = x; then
-  top_srcdir="$TOPSRCDIR"
-fi
-top_srcdir=${srcdir}/..
-
-builddir=`pwd`
-top_builddir="$builddir/.."
 
 # Compute execdir as well as a suffix to use for accessing
 # executables. Note that the leading '/' is needed to avoid

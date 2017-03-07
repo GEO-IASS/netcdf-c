@@ -17,7 +17,7 @@
 # Do a hack to remove e.g. c: for CYGWIN
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../nc_test/test_common.sh
+. ${srcdir}/../test_common.sh
 
 OCLOGFILE=stderr
 if test "x$DBG" = x1 ; then

@@ -3,7 +3,7 @@
 # $Id: run_tests.sh,v 1.10 2010/04/04 22:06:03 dmh Exp $
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../nc_test/test_common.sh
+. ${srcdir}/../test_common.sh
 
 echo "*** Testing ncgen."
 set -e

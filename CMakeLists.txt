@@ -1319,6 +1319,7 @@ ENDIF(ENABLE_MMAP)
 ################################
 
 # Macro to append files to the EXTRA_DIST files.
+# Note: can only be used in subdirectories because of the use of PARENT_SCOPE
 SET(EXTRA_DIST "")
 MACRO(ADD_EXTRA_DIST files)
   FOREACH(F ${files})
@@ -1854,6 +1855,14 @@ configure_file(
 
 FILE(COPY ${netCDF_SOURCE_DIR}/include/netcdf_meta.h
   DESTINATION ${netCDF_BINARY_DIR}/include/)
+
+#####
+# Build nc_test/test_common.sh
+#####
+SET(EXTRA_DIST ${EXTRA_DIST} ${CMAKE_SOURCE_DIR}/test_common.in)
+SET(TOPSRCDIR "${CMAKE_SOURCE_DIR}")
+SET(TOPBUILDDIR "${CMAKE_BINARY_DIR}")
+configure_file(${CMAKE_SOURCE_DIR}/test_common.in ${CMAKE_SOURCE_DIR}/test_common.sh @ONLY NEWLINE_STYLE LF)
 
 ####
 # Export files

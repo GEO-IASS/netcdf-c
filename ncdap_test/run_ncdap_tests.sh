@@ -8,7 +8,7 @@
 # as the location of the source directory.
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../nc_test/test_common.sh
+. ${srcdir}/../test_common.sh
 
 # Locate the expected directory
 expected="${srcdir}/expected"
