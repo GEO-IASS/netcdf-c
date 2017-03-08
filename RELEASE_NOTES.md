@@ -11,6 +11,7 @@ This file contains a high-level description of this package's evolution. Release
 
 ## 4.4.2 - TBD
 
+* [Upgrade] The bash based test scripts have been upgraded to use a common test_common.sh include file that isolates build specific information.
 * [Enhancement] DAP4 is now included. Since dap2 is the default for urls, dap4 must be specified by
 (1) using "dap4:" as the url protocol, or
 (2) appending "#protocol=dap4" to the end of the url, or
