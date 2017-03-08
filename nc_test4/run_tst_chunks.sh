@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../test_common.sh
+. ../test_common.sh
 
 # This shell just tests the tst_chunks3 program by running it a few
 # times to generate a simple test file. Then it uses ncdump -s to

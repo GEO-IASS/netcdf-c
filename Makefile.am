@@ -186,9 +186,13 @@ check_nc_config:
 	./test_prog
 
 # Build nc_test/test_common.sh
-all-local:
-	rm -f ${top_srcdir}/nc_test/test_common.sh
-	sed -e "s|@TOPSRCDIR@|${abs_top_srcdir}|" -e "s|@TOPBUILDDIR@|${abs_top_builddir}|" <${top_srcdir}/test_common.in >${top_srcdir}/test_common.sh
+# Complicated by need to create during distcheck
+# which uses a read-only source tree
+#all-local:
+#	rm -f ${top_builddir}/nc_test/test_common.sh
+#	cat /dev/null > ${top_builddir}/nc_test/test_common.sh
+#	chmod a+x ${top_builddir}/nc_test/test_common.sh
+#	sed -e "s|@TOPSRCDIR@|${abs_top_srcdir}|" -e "s|@TOPBUILDDIR@|${abs_top_builddir}|" <${top_srcdir}/test_common.in >>${top_builddir}/test_common.sh
 
 install-data-hook:
 

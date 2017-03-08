@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi 
-. ${srcdir}/../test_common.sh
+. ../test_common.sh
 
 # This shell script tests ncdump -g option for specifying groups for
 # which data is to be output.

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi 
-. ${srcdir}/../test_common.sh
+. ../test_common.sh
 
 # This shell script runs ncdump tests relating to the new UTF8 name stuff.
 

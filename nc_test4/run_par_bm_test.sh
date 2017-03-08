@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../test_common.sh
+. ../test_common.sh
 
 # This shell file tests the bm_ile program for parallel I/O.
 

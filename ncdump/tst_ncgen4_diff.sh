@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi 
-. ${srcdir}/../test_common.sh
+. ../test_common.sh
 
 
 . ${srcdir}/tst_ncgen_shared.sh

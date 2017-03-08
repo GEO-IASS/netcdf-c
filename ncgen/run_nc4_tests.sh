@@ -3,7 +3,7 @@
 # $Id: run_nc4_tests.sh,v 1.4 2010/05/18 20:05:23 dmh Exp $
 
 if test "x$srcdir" = x ; then srcdir="."; fi
-. ${srcdir}/../test_common.sh
+. ../test_common.sh
 
 ##
 # Function to test a netCDF CDL file.

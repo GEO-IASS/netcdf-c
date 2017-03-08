@@ -6,7 +6,7 @@ echo "*** Testing ncgen3."
 set -e
 
 if test "x$srcdir" = x ;then srcdir=`pwd`; fi
-. ${srcdir}/../test_common.sh
+. ../test_common.sh
 
 echo "*** creating classic file c0.nc from c0.cdl..."
 ${NCGEN3} -b -o c0.nc ${ncgen3c0}

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if test "x$srcdir" = x ; then srcdir=`pwd`; fi
-. ${srcdir}/../test_common.shs
+. ../test_common.shs
 
 set -e
 

@@ -1353,6 +1353,15 @@ AX_SET_META([NC_HAS_PNETCDF],[$enable_pnetcdf],[yes])
 AX_SET_META([NC_HAS_PARALLEL],[$enable_parallel],[yes])
 AX_SET_META([NC_HAS_PARALLEL4],[$enable_parallel4],[yes])
 
+# Automake says that this is always run in top_builddir
+# and that srcdir is defined (== top_srcdir)
+abs_top_builddir=`pwd`
+cd $srcdir
+abs_top_srcdir=`pwd`
+cd $abs_top_builddir
+rm -f ${abs_top_builddir}/test_common.sh
+sed -e "s|@TOPSRCDIR@|${abs_top_srcdir}|" -e "s|@TOPBUILDDIR@|${abs_top_builddir}|" <${abs_top_srcdir}/test_common.in >${abs_top_builddir}/test_common.sh
+
 #####
 # End netcdf_meta.h definitions.
 #####
