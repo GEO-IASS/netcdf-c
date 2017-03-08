@@ -3,7 +3,7 @@
 if test "x$srcdir" = "x"; then srcdir=`dirname $0`; fi
 export srcdir;
 
-. ${srcdir}/test_common.sh
+. ${srcdir}/../test_common.sh
 
 FRAG="#checksummode=ignore"
 
