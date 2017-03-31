@@ -167,6 +167,7 @@ readfile(const NCURI* uri, const char* suffix, NCbytes* packet)
     fd = open(filename,flags);
     if(fd < 0) {
 	nclog(NCLOGERR,"open failed:%s",filename);
+	fprintf(stderr,"XXX: open failed: flags=0x%x file=%s\n",flags,filename); fflush(stderr);
 	return THROW(NC_ENOTFOUND);
     }
     /* Get the file size */
