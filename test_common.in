@@ -141,10 +141,10 @@ ncgenc04="${top_srcdir}/ncgen/c0_4.cdl"
 
 # Hack to see is valgrind is available
 # Use subshell to keep quiet
-(set +x ; if valgrind --version ; then exit 1 ; else exit 0 ; fi) >& /dev/null
-if test "x$?" = x1 ; then
-VALGRIND="valgrind --leak-check=full"
-fi
+#(set +x ; if valgrind --version ; then exit 1 ; else exit 0 ; fi) >& /dev/null
+#if test "x$?" = x1 ; then
+#VALGRIND="valgrind --leak-check=full"
+#fi
 
 # Make sure we are in builddir (not execdir)
 cd $builddir
