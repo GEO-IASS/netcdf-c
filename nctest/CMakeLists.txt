@@ -12,4 +12,5 @@ TARGET_LINK_LIBRARIES(nctest netcdf)
 ADD_TEST(nctest ${EXECUTABLE_OUTPUT_PATH}/nctest)
 
 add_bin_test_no_prefix(tst_rename)
+add_sh_test(nctest look)
 add_sh_test(nctest compare_test_files)
