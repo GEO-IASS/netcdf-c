@@ -6,8 +6,8 @@
 # Put together AM_CPPFLAGS and AM_LDFLAGS.
 include $(top_srcdir)/lib_flags.am
 
-LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver-verbose
-TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver-verbose
+#LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver-verbose
+#TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver-verbose
 
 LDADD = ${top_builddir}/liblib/libnetcdf.la
 AM_CPPFLAGS += -I$(top_srcdir)/libdap4
@@ -24,13 +24,13 @@ check_PROGRAMS += test_parse test_meta test_data
 test_parse_SOURCES = test_parse.c test_common.h
 test_meta_SOURCES = test_meta.c test_common.h
 test_data_SOURCES = test_data.c test_common.h
-TESTS += tst_parse.sh
-TESTS += tst_meta.sh
-TESTS += tst_data.sh
+TESTS += test_parse.sh
+TESTS += test_meta.sh
+TESTS += test_data.sh
 
 if BUILD_UTILITIES
 # These rely on ncdump
-TESTS += tst_raw.sh
+TESTS += test_raw.sh
 endif
 
 if ENABLE_DAP_REMOTE_TESTS
@@ -47,8 +47,8 @@ endif
 
 endif #ENABLE_DAP4
 
-EXTRA_DIST = tst_parse.sh tst_meta.sh tst_data.sh \
-             tst_raw.sh test_remote.sh test_hyrax.sh \
+EXTRA_DIST = test_parse.sh test_meta.sh test_data.sh \
+             test_raw.sh test_remote.sh test_hyrax.sh \
              d4test_common.sh \
 	     daptestfiles dmrtestfiles cdltestfiles nctestfiles \
 	     baseline baselineraw baselineremote

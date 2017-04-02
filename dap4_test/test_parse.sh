@@ -5,8 +5,6 @@ if test "x$srcdir" = x ; then srcdir=`pwd`; fi
 
 . ${srcdir}/d4test_common.sh
 
-set -x
-
 cd ${DMRTESTFILES}
 F=`ls -1 *.dmr | sed -e 's/[.]dmr//' |tr '\r\n' '  '`
 cd $WD
