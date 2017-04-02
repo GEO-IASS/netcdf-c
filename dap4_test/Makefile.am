@@ -24,13 +24,13 @@ check_PROGRAMS += test_parse test_meta test_data
 test_parse_SOURCES = test_parse.c test_common.h
 test_meta_SOURCES = test_meta.c test_common.h
 test_data_SOURCES = test_data.c test_common.h
-TESTS += test_parse.sh
-TESTS += test_meta.sh
-TESTS += test_data.sh
+TESTS += tst_parse.sh
+TESTS += tst_meta.sh
+TESTS += tst_data.sh
 
 if BUILD_UTILITIES
 # These rely on ncdump
-TESTS += test_raw.sh
+TESTS += tst_raw.sh
 endif
 
 if ENABLE_DAP_REMOTE_TESTS
@@ -47,8 +47,8 @@ endif
 
 endif #ENABLE_DAP4
 
-EXTRA_DIST = test_parse.sh test_meta.sh test_data.sh \
-             test_raw.sh test_remote.sh test_hyrax.sh \
+EXTRA_DIST = tst_parse.sh tst_meta.sh tst_data.sh \
+             tst_raw.sh test_remote.sh test_hyrax.sh \
              d4test_common.sh \
 	     daptestfiles dmrtestfiles cdltestfiles nctestfiles \
 	     baseline baselineraw baselineremote
