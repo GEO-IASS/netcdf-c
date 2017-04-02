@@ -11,6 +11,8 @@ if test "x$srcdir" = x ; then srcdir=`pwd`; fi
 echo "*** Testing ncgen."
 set -e
 
+#VALGRIND="valgrind -q --error-exitcode=2 --leak-check=full"
+
 validateNC() {
     BASENAME=$1
     INFILE=$srcdir/$1.cdl
