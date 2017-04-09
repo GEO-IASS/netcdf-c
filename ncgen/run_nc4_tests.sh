@@ -5,6 +5,8 @@
 if test "x$srcdir" = x ; then srcdir="."; fi
 . ../test_common.sh
 
+set -x
+
 ##
 # Function to test a netCDF CDL file.
 # 1. Generate binary nc.
