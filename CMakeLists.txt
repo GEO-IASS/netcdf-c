@@ -213,7 +213,7 @@ IF(CMAKE_COMPILER_IS_GNUCC OR APPLE)
   OPTION(ENABLE_LARGE_FILE_TESTS "Enable large file tests." OFF)
 
   # Debugging flags
-  SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall")
+  SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall")
 
   # Check to see if -Wl,--no-undefined is supported.
   CHECK_C_LINKER_FLAG("-Wl,--no-undefined" LIBTOOL_HAS_NO_UNDEFINED)
